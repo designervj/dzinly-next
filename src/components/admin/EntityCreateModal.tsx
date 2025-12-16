@@ -56,7 +56,6 @@ export default function EntityCreateModal({ entity }: Props) {
     name: "",
     unit: "",
     possible_values: [],
-    type: undefined,
     category_id: null,
   });
   // Generic simple state for other entities
@@ -193,7 +192,12 @@ export default function EntityCreateModal({ entity }: Props) {
     if (websiteId) payload.websiteId = websiteId;
     if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
   }
-  else if (entity === "attribute") payload = attribute;
+  else if (entity === "attribute") {
+    payload = { ...attribute } as any;
+    const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
+    if (websiteId) payload.websiteId = websiteId;
+    if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
+  }
   else payload = { name, extra };
 
     try {
@@ -220,6 +224,13 @@ export default function EntityCreateModal({ entity }: Props) {
       
             const { addCategory } = await import("@/hooks/slices/category/CategorySlice");
             dispatch(addCategory(created));
+          }
+        } else if (entity === "brand") {
+          // backend may return the created item directly or under keys like `item` or `brand`
+          const created = data?.item ?? data?.brand ?? data;
+          if (created) {
+            const { addBrand } = await import("@/hooks/slices/brand/BrandSlice");
+            dispatch(addBrand(created));
           }
         }
       } catch (e) {

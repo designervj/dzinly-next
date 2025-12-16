@@ -3,7 +3,7 @@ import pageEditReducer from '../hooks/slices/pageEditSlice';
 import userSlice from "../hooks/slices/user/userSlice"
 import categoryReducer from "../hooks/slices/category/CategorySlice";
 import websitesReducer from "../hooks/slices/websites/WebsiteSlice";
-
+import attributeReducer from "../hooks/slices/attribute/AttributeSlice"
 import brandReducer from "../hooks/slices/brand/BrandSlice"
 export const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ export const store = configureStore({
     pageEdit: pageEditReducer,
     category: categoryReducer,
     brand:brandReducer,
+    attribute:attributeReducer,
     websites: websitesReducer,
   },
 });

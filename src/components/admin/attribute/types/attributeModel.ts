@@ -1,9 +1,13 @@
+import { ObjectId } from "mongodb";
 import { MaterialCategory } from "../../category/types/CategoryModel";
 
 
 type Data_Type = "enum" | "number" | "text";
 export interface MaterialAttributes {
-  id?: number;
+ _id?: string | ObjectId;
+  id?: number | string | ObjectId;
+  websiteId?: string | ObjectId;
+  tenantId?: string | ObjectId;
   name?: string;
   data_type?: Data_Type;
   unit?: string;

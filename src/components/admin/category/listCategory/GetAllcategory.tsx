@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
-let hasFetchedCategories = false;
 
 const GetAllcategory = () => {
 const { isCategoryLoading, hasFetched } = useSelector(

@@ -12,7 +12,15 @@ import {
   updateBrand,
   createBrand,
   listBrands,
+  deleteBrand,
 } from "@/lib/material/product_brand";
+import {
+  getAttributeById,
+  updateAttribute,
+  createAttribute,
+  listAttributes,
+  deleteAttribute,
+} from "@/lib/material/product_attribute";
 
 export async function POST(req: NextRequest, ctx: any) {
   // `ctx.params` may be a Promise in Next.js app routes; await the context
@@ -42,7 +50,7 @@ export async function POST(req: NextRequest, ctx: any) {
         break;
 
       case "attribute":
-        // result = await createAttribute(body);
+         result = await createAttribute(body);
         break;
 
       default:
@@ -93,6 +101,17 @@ export async function GET(req: NextRequest, ctx: any) {
         return NextResponse.json({ items });
 
       }
+         case "attribute": {
+        if (id) {
+          const item = await getAttributeById(id);
+          if (!item)
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+          return NextResponse.json({ item });
+        }
+        const items = await listAttributes();
+        return NextResponse.json({ items });
+
+      }
 
       default:
         return NextResponse.json(
@@ -132,6 +151,20 @@ export async function DELETE(req: NextRequest, ctx: any) {
         return NextResponse.json({ success: true });
       }
 
+      case "brand": {
+        const deleted = await deleteBrand(id);
+        if (!deleted)
+          return NextResponse.json({ error: "Not found" }, { status: 404 });
+        return NextResponse.json({ success: true });
+      }
+
+      case "attribute": {
+        const deleted = await deleteAttribute(id);
+        if (!deleted)
+          return NextResponse.json({ error: "Not found" }, { status: 404 });
+        return NextResponse.json({ success: true });
+      }
+
       default:
         return NextResponse.json(
           { error: `Unsupported entity: ${entity}` },
@@ -154,13 +187,24 @@ export async function PATCH(req: NextRequest, ctx: any) {
     const body = await req.json();
 
     switch (entity) {
-      case "product_brand":
+     
       case "brand": {
         const id = body?.id ?? body?._id;
         if (!id)
           return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
         const updated = await updateBrand(id, body);
+        if (!updated)
+          return NextResponse.json({ error: "Not found" }, { status: 404 });
+        return NextResponse.json({ item: updated });
+      }
+
+      case "attribute": {
+        const id = body?.id ?? body?._id;
+        if (!id)
+          return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+        const updated = await updateAttribute(id, body);
         if (!updated)
           return NextResponse.json({ error: "Not found" }, { status: 404 });
         return NextResponse.json({ item: updated });

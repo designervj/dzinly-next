@@ -106,6 +106,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
+import { useDispatch } from "react-redux";
+import { store } from "@/store/store";
 
 // ---------------------------------------------------------------------------
 // Types & interfaces
@@ -309,11 +311,7 @@ function Sidebar({
   const pathname = usePathname();
   const [hoveredId, setHoveredId] = React.useState<string | null>(null);
 
-  // Helper function to check if user has permission (simplified for now)
-  // permission can be a string or an array of strings. If an array is
-  // provided we treat it as an OR (visible if user has any of them).
-  // If `user.permissions` is not available (rolling out), we fall back to
-  // allowing the item so behaviour remains unchanged.
+  
   const hasPermission = (permission?: string | string[]) => {
     if (!permission) return true;
     if (!user) return true; // no user means allow (server rendering fallback)
@@ -364,7 +362,7 @@ function Sidebar({
           {websites.length > 0 && (
             <div className="px-3">
               <Select
-                value={currentWebsite?.websiteId || ""}
+                value={currentWebsite?.name || ""}
                 onValueChange={onWebsiteChange}
               >
                 <SelectTrigger
@@ -644,6 +642,34 @@ type TopbarProps = {
 };
 
 function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
+  const dispatch = useDispatch();
+
+  const handleSignOut = async () => {
+    try {
+      // Clear Redux store by resetting to initial state
+      // Reset each slice to its initial state
+      store.dispatch({ type: 'user/setUser', payload: null });
+      store.dispatch({ type: 'pageEdit/resetState' });
+      store.dispatch({ type: 'category/resetState' });
+      store.dispatch({ type: 'brand/resetState' });
+      store.dispatch({ type: 'websites/resetState' });
+      
+      // Clear localStorage and sessionStorage
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Sign out from NextAuth and redirect to home page
+      await signOut({ 
+        callbackUrl: '/',
+        redirect: true 
+      });
+    } catch (error) {
+      console.error('Error during sign out:', error);
+      // Fallback: still try to sign out even if clearing fails
+      await signOut({ callbackUrl: '/' });
+    }
+  };
+
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background/80 px-3 pl-2 pr-4 backdrop-blur md:h-16">
       <div className="flex items-center gap-2 md:gap-3">
@@ -716,7 +742,7 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
             <DropdownMenuItem>Account settings</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => signOut()}
+              onClick={handleSignOut}
               className="text-destructive"
             >
               Sign out

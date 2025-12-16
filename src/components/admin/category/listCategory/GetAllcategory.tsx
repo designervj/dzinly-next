@@ -1,23 +1,24 @@
-
+"use client"
+import React, { useEffect } from "react";
 import { fetchCategories } from "@/hooks/slices/category/CategorySlice";
 import { AppDispatch, RootState } from "@/store/store";
-import React, { useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const GetAllcategory = () => {
-const { isCategoryLoading, hasFetched } = useSelector(
+  const { isCategoryLoading, hasFetched } = useSelector(
     (state: RootState) => state.category
-  );console.log(  )
-
+  );
+  const { user } = useSelector((state: RootState) => state.user);
+  const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (!hasFetched && !isCategoryLoading) {
+    if (!hasFetched && 
+      !isCategoryLoading) {
       dispatch(fetchCategories());
     }
-  }, [hasFetched, isCategoryLoading, dispatch]);
+  }, [hasFetched, isCategoryLoading, user,dispatch,currentWebsite]);
 
   return null;
 };

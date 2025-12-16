@@ -4,6 +4,7 @@ import { listCategories } from "@/lib/material/category";
 import { MaterialCategory } from "@/components/admin/category/types/CategoryModel";
 import CategoryHome from "@/components/admin/category/CategoryHome";
 import BrandHome from "@/components/admin/brand/BrandHome";
+import AttributeHome from "@/components/admin/attribute/AttributeHome";
 
 export default async function EntityIndexPage(props: any) {
   const params = await props.params;
@@ -31,6 +32,9 @@ export default async function EntityIndexPage(props: any) {
 
     {entity=="brand" &&
     <BrandHome/>}
+
+    {entity=="attribute" &&
+    <AttributeHome/>}
     </div>
   );
 }

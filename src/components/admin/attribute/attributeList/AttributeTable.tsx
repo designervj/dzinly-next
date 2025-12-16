@@ -1,6 +1,6 @@
 "use client";
 import { AppDispatch, RootState } from '@/store/store';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTableExt } from '@/components/admin/DataTableExt';
 import { removeAttribute } from '@/hooks/slices/attribute/AttributeSlice';
@@ -11,10 +11,27 @@ const AttributeTable = () => {
   const { listAttribute, isAttributeLoading } = useSelector(
     (state: RootState) => state.attribute
   );
+   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
   const router = useRouter();
 
+
+    const product_attribute = useMemo(() => {
+      if (
+        currentWebsite &&
+        currentWebsite._id &&
+        listAttribute &&
+        listAttribute.length > 0
+      ) {
+        const list = listAttribute.filter(
+          (item) => item.websiteId === currentWebsite._id
+        );
+        
+        return list.length > 0 ? list : listAttribute;
+      }
+      return [];
+    }, [currentWebsite, listAttribute]);
   const handleDelete = async (row: any) => {
     const id = row?._id ?? row?.id;
     if (!id) {
@@ -61,7 +78,7 @@ const AttributeTable = () => {
     <div>
       <DataTableExt
         title="Attributes"
-        data={listAttribute ?? []}
+        data={product_attribute ?? []}
         createHref="/admin/attribute/create"
         initialColumns={initialColumns}
         onDelete={(row) => handleDelete(row)}

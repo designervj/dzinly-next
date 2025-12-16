@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { DataTableExt } from '../../DataTableExt';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
@@ -14,6 +14,22 @@ const BrandTable = () => {
   const dispatch = useDispatch<AppDispatch>();
     const { toast } = useToast();
   const router = useRouter();
+ const { currentWebsite } = useSelector((state: RootState) => state.websites);
+  const product_brand = useMemo(() => {
+      if (
+        currentWebsite &&
+        currentWebsite._id &&
+        listBrand &&
+        listBrand.length > 0
+      ) {
+        const list = listBrand.filter(
+          (item) => item.websiteId === currentWebsite._id
+        );
+        
+        return list.length > 0 ? list : listBrand;
+      }
+      return [];
+    }, [currentWebsite, listBrand]);
 
   const handleDelete = async (row: any) => {
     const id = row?._id ?? row?.id;
@@ -63,7 +79,7 @@ const BrandTable = () => {
   return (
     <div> <DataTableExt
             title="Brands"
-            data={listBrand ?? []}
+            data={product_brand ?? []}
             createHref="/admin/brand/create"
             initialColumns={initialColumns}
             onDelete={(row) => handleDelete(row)}

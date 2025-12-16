@@ -17,11 +17,19 @@ export default function EntityCreateModal({ entity }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // read tenant and website from redux store so we can include them in payloads
-  const currentWebsite = useSelector((state: RootState) => state.websites.currentWebsite);
-  const currentUser = useSelector((state: RootState) => state.user.user);
-  const dispatch = useDispatch();
 
+  const {listCategory}=useSelector(
+    (state: RootState) => state.category
+  );
+  // read tenant and website from redux store so we can include them in payloads
+  const currentWebsite = useSelector(
+    (state: RootState) => state.websites.currentWebsite
+  );
+  const currentUser = useSelector((state: RootState) => state.user.user);
+
+
+  const filterCategory= listCategory.filter(item=>item.websiteId===currentWebsite?._id)
+  const dispatch = useDispatch();
 
   // Category-specific state derived from MaterialCategory
   const [category, setCategory] = useState<MaterialCategory>({
@@ -83,7 +91,13 @@ export default function EntityCreateModal({ entity }: Props) {
       gallery: "",
     });
     setBrand({ name: "", url: "", description: "", logo: "" });
-    setAttribute({ name: "", unit: "", possible_values: [], type: undefined, category_id: null });
+    setAttribute({
+      name: "",
+      unit: "",
+      possible_values: [],
+      type: undefined,
+      category_id: null,
+    });
     setName("");
     setExtra("");
   };
@@ -108,7 +122,13 @@ export default function EntityCreateModal({ entity }: Props) {
       categories: "",
       gallery: "",
     });
-    setAttribute({ name: "", unit: "", possible_values: [], type: undefined, category_id: null });
+    setAttribute({
+      name: "",
+      unit: "",
+      possible_values: [],
+      type: undefined,
+      category_id: null,
+    });
     setName("");
     setExtra("");
     // Auto-open modal when entity prop changes
@@ -127,7 +147,8 @@ export default function EntityCreateModal({ entity }: Props) {
       if (Number.isNaN(Number(category.sort_order)) || category.sort_order! < 0)
         errs.sort_order = "Sort order must be >= 0";
     } else if (entity === "segment") {
-      if (!segment.name || segment.name.trim() === "") errs.name = "Name is required";
+      if (!segment.name || segment.name.trim() === "")
+        errs.name = "Name is required";
       // optionally validate index
       if (Number.isNaN(Number(segment.index ?? 0)) || (segment.index ?? 0) < 0)
         errs.index = "Index must be >= 0";
@@ -148,6 +169,9 @@ export default function EntityCreateModal({ entity }: Props) {
           errs.url = "Invalid URL format";
         }
       }
+    } else if (entity === "attribute") {
+      if (!attribute.name || attribute.name.trim() === "")
+        errs.name = "Name is required";
     } else {
       if (!name || name.trim() === "") errs.name = "Name is required";
     }
@@ -177,33 +201,30 @@ export default function EntityCreateModal({ entity }: Props) {
       return;
     }
 
-  let payload: any;
-  if (entity === "category") {
-    // include websiteId and tenantId for multi-tenant scoping
-    payload = { ...category } as any;
-    const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
-    if (websiteId) payload.websiteId = websiteId;
-    if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
-  }
-  else if (entity === "segment") payload = segment;
-  else if (entity === "brand") {
+    let payload: any;
+    if (entity === "category") {
+      // include websiteId and tenantId for multi-tenant scoping
+      payload = { ...category } as any;
+      const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
+      if (websiteId) payload.websiteId = websiteId;
+      if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
+    } else if (entity === "segment") payload = segment;
+    else if (entity === "brand") {
       payload = { ...brand } as any;
-    const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
-    if (websiteId) payload.websiteId = websiteId;
-    if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
-  }
-  else if (entity === "attribute") {
-    payload = { ...attribute } as any;
-    const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
-    if (websiteId) payload.websiteId = websiteId;
-    if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
-  }
-  else payload = { name, extra };
+      const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
+      if (websiteId) payload.websiteId = websiteId;
+      if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
+    } else if (entity === "attribute") {
+      payload = { ...attribute } as any;
+      const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
+      if (websiteId) payload.websiteId = websiteId;
+      if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
+    } else payload = { name, extra };
 
     try {
       const res = await fetch(`/api/admin/${entity}`, {
         method: "POST",
-        credentials: 'same-origin',
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -211,7 +232,11 @@ export default function EntityCreateModal({ entity }: Props) {
       // Try to parse JSON body for structured errors or response
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        const msg = data?.error ?? data?.message ?? (typeof data === 'string' ? data : undefined) ?? "Failed to create";
+        const msg =
+          data?.error ??
+          data?.message ??
+          (typeof data === "string" ? data : undefined) ??
+          "Failed to create";
         throw new Error(msg);
       }
 
@@ -221,16 +246,29 @@ export default function EntityCreateModal({ entity }: Props) {
           // backend may return the created item directly or under keys like `item` or `category`
           const created = data?.item ?? data?.category ?? data;
           if (created) {
-      
-            const { addCategory } = await import("@/hooks/slices/category/CategorySlice");
+            const { addCategory } = await import(
+              "@/hooks/slices/category/CategorySlice"
+            );
             dispatch(addCategory(created));
           }
         } else if (entity === "brand") {
           // backend may return the created item directly or under keys like `item` or `brand`
           const created = data?.item ?? data?.brand ?? data;
           if (created) {
-            const { addBrand } = await import("@/hooks/slices/brand/BrandSlice");
+            const { addBrand } = await import(
+              "@/hooks/slices/brand/BrandSlice"
+            );
             dispatch(addBrand(created));
+          }
+        }
+        else if (entity === "attribute") {
+          // backend may return the created item directly or under keys like `item` or `brand`
+          const created = data?.item ?? data?.brand ?? data;
+          if (created) {
+            const { addAttribute } = await import(
+              "@/hooks/slices/attribute/AttributeSlice"
+            );
+            dispatch(addAttribute(created));
           }
         }
       } catch (e) {
@@ -334,11 +372,15 @@ export default function EntityCreateModal({ entity }: Props) {
                     <label className="block text-sm font-medium">Name</label>
                     <input
                       value={segment.name || ""}
-                      onChange={(e) => setSegment({ ...segment, name: e.target.value })}
+                      onChange={(e) =>
+                        setSegment({ ...segment, name: e.target.value })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
                     />
                     {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">{fieldErrors.name}</div>
+                      <div className="text-sm text-destructive mt-1">
+                        {fieldErrors.name}
+                      </div>
                     )}
                   </div>
 
@@ -346,7 +388,9 @@ export default function EntityCreateModal({ entity }: Props) {
                     <label className="block text-sm font-medium">Color</label>
                     <input
                       value={segment.color || ""}
-                      onChange={(e) => setSegment({ ...segment, color: e.target.value })}
+                      onChange={(e) =>
+                        setSegment({ ...segment, color: e.target.value })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
                     />
                   </div>
@@ -356,11 +400,18 @@ export default function EntityCreateModal({ entity }: Props) {
                     <input
                       type="number"
                       value={segment.index ?? 0}
-                      onChange={(e) => setSegment({ ...segment, index: Number(e.target.value) })}
+                      onChange={(e) =>
+                        setSegment({
+                          ...segment,
+                          index: Number(e.target.value),
+                        })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
                     />
                     {fieldErrors.index && (
-                      <div className="text-sm text-destructive mt-1">{fieldErrors.index}</div>
+                      <div className="text-sm text-destructive mt-1">
+                        {fieldErrors.index}
+                      </div>
                     )}
                   </div>
 
@@ -369,7 +420,12 @@ export default function EntityCreateModal({ entity }: Props) {
                       <input
                         type="checkbox"
                         checked={segment.is_active}
-                        onChange={(e) => setSegment({ ...segment, is_active: e.target.checked })}
+                        onChange={(e) =>
+                          setSegment({
+                            ...segment,
+                            is_active: e.target.checked,
+                          })
+                        }
                       />
                       <span className="text-sm">Active</span>
                     </label>
@@ -377,7 +433,12 @@ export default function EntityCreateModal({ entity }: Props) {
                       <input
                         type="checkbox"
                         checked={segment.is_visible}
-                        onChange={(e) => setSegment({ ...segment, is_visible: e.target.checked })}
+                        onChange={(e) =>
+                          setSegment({
+                            ...segment,
+                            is_visible: e.target.checked,
+                          })
+                        }
                       />
                       <span className="text-sm">Visible</span>
                     </label>
@@ -456,38 +517,78 @@ export default function EntityCreateModal({ entity }: Props) {
                 </>
               ) : entity === "attribute" ? (
                 <>
+              
                   <div>
                     <label className="block text-sm font-medium">Name</label>
                     <input
                       value={attribute.name || ""}
-                      onChange={(e) => setAttribute({ ...attribute, name: e.target.value })}
+                      onChange={(e) =>
+                        setAttribute({ ...attribute, name: e.target.value })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
                     />
                     {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">{fieldErrors.name}</div>
+                      <div className="text-sm text-destructive mt-1">
+                        {fieldErrors.name}
+                      </div>
                     )}
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium">Data type</label>
+                    <label className="block text-sm font-medium">
+                      Category
+                    </label>
                     <select
-                      value={attribute.data_type || ""}
-                      onChange={(e) => setAttribute({ ...attribute, data_type: e.target.value as any })}
+                      value={String(attribute.category_id || "")} 
+                      onChange={(e) =>
+                        setAttribute({
+                          ...attribute,
+                          category_id: e.target.value ? e.target.value as any : null,
+                        })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
                     >
-                      <option value="">Select type</option>
-                      <option value="enum">enum</option>
-                      <option value="number">number</option>
-                      <option value="text">text</option>
+                      <option value="">Select category</option>
+                      {filterCategory.map((cat) => (
+                        <option key={String(cat._id || cat.id)} value={String(cat._id || cat.id)}>
+                          {cat.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium">Possible values (comma separated)</label>
+                    <label className="block text-sm font-medium">
+                      Unit
+                    </label>
+                    <input
+                      value={attribute.unit || ""}
+                      onChange={(e) =>
+                        setAttribute({
+                          ...attribute,
+                          unit: e.target.value,
+                        })
+                      }
+                      className="mt-1 block w-full rounded-md border p-2"
+                      placeholder="e.g., kg, cm, pcs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium">
+                      Possible values (comma separated)
+                    </label>
                     <input
                       value={(attribute.possible_values || []).join(",")}
-                      onChange={(e) => setAttribute({ ...attribute, possible_values: e.target.value ? e.target.value.split(",").map(v => v.trim()) : [] })}
+                      onChange={(e) =>
+                        setAttribute({
+                          ...attribute,
+                          possible_values: e.target.value
+                            ? e.target.value.split(",").map((v) => v.trim())
+                            : [],
+                        })
+                      }
                       className="mt-1 block w-full rounded-md border p-2"
+                      placeholder="e.g., Red, Blue, Green"
                     />
                   </div>
                 </>

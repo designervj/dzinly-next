@@ -28,7 +28,7 @@ export const fetchAttributes = createAsyncThunk<
       }
       const data = await res.json();
       // API returns { items }
-      console.log("data", data);
+    
       return data?.items || [];
     } catch (error: unknown) {
       return rejectWithValue(

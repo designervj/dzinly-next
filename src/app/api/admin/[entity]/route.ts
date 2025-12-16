@@ -77,8 +77,7 @@ export async function GET(req: NextRequest, ctx: any) {
   try {
     const id = req.nextUrl?.searchParams?.get("id");
     switch (entity) {
-      case "category":
-      case "product_categories": {
+      case "category":{
         if (id) {
           const item = await getCategoryById(id);
           if (!item)
@@ -86,6 +85,12 @@ export async function GET(req: NextRequest, ctx: any) {
           return NextResponse.json({ item });
         }
 
+        const tenantId = req.nextUrl?.searchParams?.get("tenantId");
+        const websiteId = req.nextUrl?.searchParams?.get("websiteId");
+        
+        console.log("tenantId---", tenantId);
+        console.log("websiteId--", websiteId);
+        
         const items = await listCategories();
         return NextResponse.json({ items });
       }

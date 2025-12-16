@@ -1,3 +1,4 @@
+"use client";
 import { fetchAttributes } from '@/hooks/slices/attribute/AttributeSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import React, { useEffect } from 'react'

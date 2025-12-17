@@ -318,7 +318,7 @@ const lastSegment = path.split("/").filter(Boolean).pop();
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="text-xl font-semibold">{title}</div>
+        <div className="text-xl font-semibold">{title} </div>
         <div className="flex items-center gap-2">
           {/* {createHref && (
             <Link href={createHref} className="text-sm">
@@ -337,11 +337,12 @@ const lastSegment = path.split("/").filter(Boolean).pop();
               setQuery(e.target.value);
               setPage(1);
             }}
+            className="bg-white h-10 text-xl"
           />
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="lg" className="gap-2">
               <Columns className="h-4 w-4" /> Columns
             </Button>
           </DropdownMenuTrigger>
@@ -363,7 +364,7 @@ const lastSegment = path.split("/").filter(Boolean).pop();
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="lg" className="gap-2">
               <ListFilter className="h-4 w-4" /> Filters
             </Button>
           </DropdownMenuTrigger>
@@ -407,7 +408,7 @@ const lastSegment = path.split("/").filter(Boolean).pop();
                     </Select>
                   ) : type === "string" ? (
                     <Input
-                      className="h-8"
+                      className="h-8 bg-white"
                       placeholder="contains..."
                       value={textFilters[c.key] ?? ""}
                       onChange={(e) =>
@@ -522,9 +523,9 @@ const lastSegment = path.split("/").filter(Boolean).pop();
         </DropdownMenu>
       </div>
 
-      <div className="border rounded-md">
+      <div className="border rounded-md bg-white p-4 border-gray-300">
         <Table>
-          <TableHeader>
+          <TableHeader >
             <TableRow>
               {columns
                 .filter((c) => columnVisibility[c.key] !== false)
@@ -645,8 +646,9 @@ const lastSegment = path.split("/").filter(Boolean).pop();
               setPageSize(Number(v));
               setPage(1);
             }}
+ 
           >
-            <SelectTrigger className="h-8 w-[90px]">
+            <SelectTrigger className="h-8 w-[90px] bg-white">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

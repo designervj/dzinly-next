@@ -1,104 +1,158 @@
 "use client";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
-
-
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { Shield, Layout, Users, Zap, CheckCircle, ArrowRight } from "lucide-react"; // Install lucide-react if not present
 
 export default function RootClientPage() {
-  const dispatch= useDispatch<AppDispatch>()
   const router = useRouter();
-  const {user}= useSelector((state:RootState)=>state.user)
-  console.log("user---", user)
-  const handleLogin=()=>{
-     if(user){
-      router.push("/admin")
-     }else{
-       router.push("/auth/signin");
-     }
-  }
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const handleLogin = () => {
+    if (user) router.push("/admin");
+    else router.push("/auth/signin");
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center justify-center px-4">
-      <section className="max-w-3xl w-full text-center py-16">
-        <img
-          src="/logo.svg"
-          alt="Dzinly Logo"
-          className="mx-auto mb-6 w-24 h-24"
-        />
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-          Dzinly Admin Dashboard
-        </h1>
-        <p className="text-lg md:text-xl text-gray-700 mb-8">
-          Comprehensive Role-Based Access Control (RBAC) system with franchise
-          white-labeling capabilities. Dynamic user management, granular
-          permissions, and extensive customization for franchise partners.
-        </p>
-        <a
-          onClick={handleLogin}
-          className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition"
-        >
-          Go to Admin Dashboard
-        </a>
-      </section>
-      z
-      <section className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-3 gap-8 py-12">
-        <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <span className="inline-block bg-blue-100 text-blue-700 rounded-full px-3 py-1 mb-4 font-bold">
-            RBAC
-          </span>
-          <h2 className="text-xl font-bold mb-2">Granular Permissions</h2>
-          <p className="text-gray-600">
-            Hierarchical, context-aware permissions for secure, scalable access
-            control across all roles.
+    <main className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100">
+      
+      {/* SECTION 1: HERO SECTION (Dark Modern) */}
+      <section className="relative bg-[#0f172a] pt-20 pb-32 px-6 overflow-hidden">
+        {/* Abstract Background Glows */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full -mr-40 -mt-40"></div>
+        
+        <div className="max-w-6xl mx-auto relative z-10 text-center">
+          <div className="inline-block p-4 rounded-2xl mb-8 animate-fade-in">
+            <img src="/dzinlylogo.svg" alt="Dzinly Logo" className="w-60 h-auto brightness-0 invert" />
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+            Management <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Redefined.</span>
+          </h1>
+          
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            The ultimate RBAC engine for enterprise franchises. White-labeling, 
+            deep analytics, and granular control in one powerful dashboard.
           </p>
-        </div>
-        <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <span className="inline-block bg-purple-100 text-purple-700 rounded-full px-3 py-1 mb-4 font-bold">
-            White-label
-          </span>
-          <h2 className="text-xl font-bold mb-2">Franchise Customization</h2>
-          <p className="text-gray-600">
-            Full branding control: colors, logos, typography, and advanced CSS
-            for franchise partners.
-          </p>
-        </div>
-        <div className="bg-white rounded-xl shadow p-6 flex flex-col items-center">
-          <span className="inline-block bg-green-100 text-green-700 rounded-full px-3 py-1 mb-4 font-bold">
-            Management
-          </span>
-          <h2 className="text-xl font-bold mb-2">Dynamic User Management</h2>
-          <p className="text-gray-600">
-            Create, manage, and monitor users, clients, and roles with real-time
-            activity tracking.
-          </p>
+
+          <button
+            onClick={handleLogin}
+            className="group px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold transition-all shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:shadow-blue-500/50 flex items-center mx-auto gap-2"
+          >
+            Go to Admin Dashboard <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </section>
-      <section className="max-w-4xl w-full py-12 text-center">
-        <h3 className="text-2xl font-bold mb-4 text-gray-900">Why Dzinly?</h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left list-disc list-inside mx-auto text-gray-700">
-          <li>Enterprise-grade security & tenant isolation</li>
-          <li>Real-time branding preview and customization</li>
-          <li>Comprehensive audit logging & monitoring</li>
-          <li>Performance-optimized for high-traffic environments</li>
-          <li>Extensive documentation & support</li>
-          <li>Scalable for unlimited franchises and clients</li>
-        </ul>
+
+      {/* SECTION 2: STATS BAR (Floating) */}
+      <section className="relative z-20 -mt-12 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 bg-white p-8 rounded-[12px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-slate-100">
+          <Stat item="10k+" label="Active Users" />
+          <Stat item="500+" label="Franchises" />
+          <Stat item="99.9%" label="Uptime" />
+          <Stat item="24/7" label="Support" />
+        </div>
       </section>
+
+      {/* SECTION 3: CORE FEATURES (White Grid) */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-[48px] font-bold mb-4">Powerful Features</h2>
+          <div className="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <FeatureCard 
+            icon={<Shield className="text-blue-600" />}
+            title="RBAC Security"
+            desc="Enterprise-level Role Based Access Control with custom permission levels."
+          />
+          <FeatureCard 
+            icon={<Layout className="text-indigo-600" />}
+            title="White Labeling"
+            desc="Transform the UI to match your franchise branding with dynamic CSS injection."
+          />
+          <FeatureCard 
+            icon={<Zap className="text-amber-500" />}
+            title="Fast Onboarding"
+            desc="Invite clients and setup franchises in seconds with our automated workflow."
+          />
+        </div>
+      </section>
+
+      {/* SECTION 4: CAPABILITIES (Alternating Layout) */}
+      <section className="py-20 bg-slate-50 px-6">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <span className="text-blue-600 font-bold tracking-widest uppercase text-sm">Enterprise Ready</span>
+            <h2 className="text-4xl font-bold mt-4 mb-6 leading-tight">Advanced User Management for Global Teams</h2>
+            <div className="space-y-4">
+              <CheckItem text="Hierarchical data isolation between tenants" />
+              <CheckItem text="Custom theme engine for colors & typography" />
+              <CheckItem text="Real-time audit logs and security monitoring" />
+              <CheckItem text="Bulk user import and permission syncing" />
+            </div>
+          </div>
+          <div className="bg-white p-4 rounded-3xl shadow-2xl border border-slate-200 rotate-2">
+            <div className="bg-slate-900 rounded-2xl h-80 flex items-center justify-center text-blue-400 font-mono italic">
+              {"// Dynamic Dashboard Preview"}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: FINAL CTA (Dark Blue) */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto bg-[#0f172a] rounded-[40px] p-12 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent"></div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 relative z-10">Ready to transform your workflow?</h2>
+          <p className="text-slate-400 mb-10 max-w-xl mx-auto relative z-10 text-lg">
+            Join hundreds of franchises worldwide using Dzinly to power their operations.
+          </p>
+          <button 
+            onClick={handleLogin}
+            className="relative z-10 px-12 py-5 bg-white text-slate-900 rounded-full font-bold hover:bg-blue-50 transition-all shadow-xl"
+          >
+            Get Started Now
+          </button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-6  border-t border-slate-200 text-center text-gray-600 font-medium text-sm bg-[#f7f7f7]">
+        <p>&copy; 2024 Dzinly Admin System. High-performance enterprise solutions.</p>
+      </footer>
     </main>
+  );
+}
+
+// Helper Components
+function Stat({ item, label }: { item: string, label: string }) {
+  return (
+    <div className="text-center border-r last:border-0 border-slate-100">
+      <div className="text-4xl font-black text-blue-600 font-bold">{item}</div>
+      <div className="text-slate-500 text-sm font-medium pt-2">{label}</div>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, desc }: { icon: any, title: string, desc: string }) {
+  return (
+    <div className="p-10 rounded-[32px] bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+      <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold mb-3">{title}</h3>
+      <p className="text-slate-500 leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function CheckItem({ text }: { text: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <CheckCircle className="w-5 h-5 text-blue-500" />
+      <span className="text-slate-700 font-medium">{text}</span>
+    </div>
   );
 }

@@ -121,7 +121,7 @@ type NavSection = {
 
 const currentWebsiteSections: NavSection[] = [
   {
-    id: "website-overview",
+    id: "overview",
     label: "Overview",
     items: [
       { label: "Dashboard", href: "/admin/pages", icon: LayoutDashboard },
@@ -135,7 +135,7 @@ const currentWebsiteSections: NavSection[] = [
 
 
   {
-    id: "website-overview",
+    id: "websites",
     label: "Websites",
     items: [
       { label: "Pages", href: "/admin/pages", icon: LayoutDashboard },
@@ -176,8 +176,94 @@ const currentWebsiteSections: NavSection[] = [
       { label: "Brand", href: "/admin/brand", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
       { label: "Segment", href: "/admin/segment", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
       { label: "Attribute", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Styles", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Tags", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Attributes", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Variants", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Pricing Rules", href: "/admin/attribute", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+
     ],
   },
+
+   {
+    id: "ecommerce",
+    label: "E-Commerce",
+    items: [
+      { label: "Orders", href: "/admin/ecommerce/orders", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Customers", href: "/admin/ecommerce/customers", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Reports", href: "/admin/ecommerce/reports", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Abandoned Carts", href: "/admin/ecommerce/abandoned-carts", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Subscriptions", href: "/admin/ecommerce/subscriptions", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Taxes", href: "/admin/ecommerce/taxes", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Shipping", href: "/admin/ecommerce/shipping", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Payments", href: "/admin/ecommerce/payments", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Invoices", href: "/admin/ecommerce/invoices", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Settings", href: "/admin/ecommerce/settings", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+    ],
+  },
+
+
+   {
+    id: "marketing",
+    label: "Marketing",
+    items: [
+      { label: "Banners", href: "/admin/marketing/banners", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Campaigns", href: "/admin/marketing/campaigns", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Catalog Generation", href: "/admin/marketing/catalog-generation", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Quotations", href: "/admin/marketing/quotations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Coupons", href: "/admin/marketing/coupons", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Email Templates", href: "/admin/marketing/email-templates", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Integrations", href: "/admin/marketing/integrations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Automation Rules", href: "/admin/marketing/automation-rules", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+    ],
+  },
+
+  {
+    id: "ai-studio",
+    label: "AI Studio", 
+    items: [
+      { label: "Image Uploads", href: "/admin/ai-studio/banners", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Segment Detection", href: "/admin/ai-studio/campaigns", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Material Application", href: "/admin/ai-studio/catalog-generation", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Prompt Library", href: "/admin/ai-studio/quotations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Render History", href: "/admin/ai-studio/coupons", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Saved Designs", href: "/admin/ai-studio/email-templates", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Reference Images", href: "/admin/ai-studio/integrations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "AI Settings", href: "/admin/ai-studio/automation-rules", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+    ],
+  },
+
+   {
+    id: "users",
+    label: "Users",
+    items: [
+      { label: "All Users", href: "/admin/users/all-users", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Roles & Permissions", href: "/admin/users/roles-permissions", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Teams", href: "/admin/users/teams", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Invitations", href: "/admin/users/invitations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Activity Logs", href: "/admin/users/activity-logs", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "API Access", href: "/admin/users/api-access", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+     
+    ],
+  },
+
+    {
+    id: "settings",
+    label: "Settings",
+    items: [
+      { label: "General", href: "/admin/settings/general", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Domain & DNS", href: "/admin/settings/domain-dns", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Billing & Plans", href: "/admin/settings/billing-plans", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Usage & Limits", href: "/admin/settings/usage-limits", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Integrations", href: "/admin/settings/integrations", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Webhooks", href: "/admin/settings/webhooks", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Data Export", href: "/admin/settings/data-export", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Security", href: "/admin/settings/security", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
+    
+     
+    ],
+  },
+
   
   {
     id: "domains",

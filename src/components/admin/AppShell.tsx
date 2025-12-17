@@ -42,6 +42,10 @@ import {
   ImagePlus, 
   ScanSearch, 
   Paintbrush, 
+  Bot,
+  Network ,
+  Compass ,
+  Tag,
   Terminal, 
   Heart, 
   GalleryVerticalEnd, 
@@ -82,7 +86,7 @@ import {
 
   PanelTop, 
   PanelBottom, 
-  Compass, 
+
   ClipboardList, 
   ArrowLeftRight, 
 
@@ -188,11 +192,11 @@ const currentWebsiteSections: NavSection[] = [
     label: "Overview",
     items: [
       { label: "Dashboard", href: "/admin/pages", icon: LayoutDashboard },
-      { label: "Analytics", href: "/admin/posts", icon: BarChart3, permission: "websites:update" },
-      { label: "Activity Log", href: "/admin/media", icon: Activity, permission: "analytics:view" },
-      { label: "Notifications", href: "/admin/header", icon: Bell, permission: "security:read" },
-      { label: "System Health", href: "/admin/footer", icon: HeartPulse, permission: "security:read" },
-      { label: "Quick Actions", href: "/admin/navigation", icon: Zap, permission: "security:read" },
+      { label: "Analytics", href: "/admin/analytics", icon: BarChart3, permission: "websites:update" },
+      { label: "Activity Log", href: "/admin/activity-log", icon: Activity, permission: "analytics:view" },
+      { label: "Notifications", href: "/admin/notifications", icon: Bell, permission: "security:read" },
+      { label: "System Health", href: "/admin/system-health", icon: HeartPulse, permission: "security:read" },
+      { label: "Quick Actions", href: "/admin/quick-actions", icon: Zap, permission: "security:read" },
     ],
   },
 
@@ -259,7 +263,7 @@ const currentWebsiteSections: NavSection[] = [
       { 
         label: "Brand Profile", 
         href: "/admin/branding/brand-profile", 
-        icon: Briefcase, 
+        icon: LayoutGrid, 
         permission: ["content:read", "content:update", "content:delete"] 
       },
       {
@@ -482,7 +486,7 @@ const currentWebsiteSections: NavSection[] = [
         permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-  },
+},
 
   {
       id: "ai-studio",
@@ -490,53 +494,108 @@ const currentWebsiteSections: NavSection[] = [
       items: [
         { 
           label: "Image Uploads", 
-          href: "/admin/ai-studio/banners", 
+          href: "/admin/ai-studio/image-uploads", 
           icon: ImagePlus, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Segment Detection", 
-          href: "/admin/ai-studio/campaigns", 
+          href: "/admin/ai-studio/segment-detection", 
           icon: ScanSearch, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Material Application", 
-          href: "/admin/ai-studio/catalog-generation", 
+          href: "/admin/ai-studio/material-application", 
           icon: Paintbrush, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Prompt Library", 
-          href: "/admin/ai-studio/quotations", 
+          href: "/admin/ai-studio/prompt-library", 
           icon: Terminal, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Render History", 
-          href: "/admin/ai-studio/coupons", 
+          href: "/admin/ai-studio/render-history", 
           icon: History, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Saved Designs", 
-          href: "/admin/ai-studio/email-templates", 
+          href: "/admin/ai-studio/saved-designs", 
           icon: Heart, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "Reference Images", 
-          href: "/admin/ai-studio/integrations", 
+          href: "/admin/ai-studio/reference-images", 
           icon: GalleryVerticalEnd, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
         { 
           label: "AI Settings", 
-          href: "/admin/ai-studio/automation-rules", 
+          href: "/admin/ai-studio/ai-settings", 
           icon: Cpu, 
           permission: ["content:read", "content:update", "content:delete"] 
         },
       ],
+  },
+
+  {
+    id: "ai-studio",
+    label: "AI Studio",
+    items: [
+      {
+        label: "Image Uploads",
+        href: "/admin/ai-studio/banners",
+        icon: ImagePlus,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Segment Detection",
+        href: "/admin/ai-studio/campaigns",
+        icon: ScanSearch,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Material Application",
+        href: "/admin/ai-studio/catalog-generation",
+        icon: Paintbrush,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Prompt Library",
+        href: "/admin/ai-studio/quotations",
+        icon: Terminal,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Render History",
+        href: "/admin/ai-studio/coupons",
+        icon: History,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Saved Designs",
+        href: "/admin/ai-studio/email-templates",
+        icon: Heart,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Reference Images",
+        href: "/admin/ai-studio/integrations",
+        icon: GalleryVerticalEnd,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "AI Settings",
+        href: "/admin/ai-studio/automation-rules",
+        icon: Cpu,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+    ],
   },
 
   {
@@ -673,12 +732,14 @@ function useHasPermission(user: User | null) {
 }
 
 // Section "header icon" like screenshot (one icon per group)
-const sectionIconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  "dashboard-overview": LayoutDashboard,
-  "website-overview": LayoutDashboard,
-  products: Tags,
+const sectionIconMap: Record<
+  string,
+  React.ComponentType<React.SVGProps<SVGSVGElement>>
+> = {
+  "dashboard-overview": LayoutGrid,
+  websites: Globe,
   branding: Palette,
-  products: Tag,
+  products: Tags,
   ecommerce: ShoppingCart,
   marketing: Megaphone,
   "ai-studio": Bot,

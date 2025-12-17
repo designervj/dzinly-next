@@ -26,72 +26,60 @@ import {
   Globe,
   ChevronDown,
   ChevronRight,
-  Settings2, 
-  CreditCard, 
-  Activity, 
-  Blocks, 
-  Webhook, 
-  Download, 
+  Settings2,
+  CreditCard,
+  Activity,
+  Blocks,
+  Webhook,
+  Download,
   ShieldCheck,
-  Users, 
-  Fingerprint, 
-  UsersRound, 
-  UserPlus, 
-  History, 
+  Users,
+  Fingerprint,
+  UsersRound,
+  UserPlus,
+  History,
   KeyRound,
-  ImagePlus, 
-  ScanSearch, 
-  Paintbrush, 
-  Terminal, 
-  Heart, 
-  GalleryVerticalEnd, 
+  ImagePlus,
+  ScanSearch,
+  Paintbrush,
+  Terminal,
+  Heart,
+  GalleryVerticalEnd,
   Cpu,
-  Image as ImageIcon, 
-  Megaphone, 
-  BookOpen,  
-  TicketPercent, 
-  MailPlus, 
+  Image as ImageIcon,
+  Megaphone,
+  BookOpen,
+  TicketPercent,
+  MailPlus,
   Zap,
-  ShoppingBag, 
-
-  BarChart4, 
-  ShoppingCart, 
-  RefreshCcw, 
+  ShoppingBag,
+  BarChart4,
+  ShoppingCart,
+  RefreshCcw,
   ReceiptIndianRupee, // or Banknote / Percent
-  Truck, 
- 
+  Truck,
   Settings,
-  Package, 
-  LayoutGrid, 
-  Award, 
-  Layers, 
-  ListTree, 
-
-  Hash, 
-  Component, 
-  Boxes, 
+  Package,
+  LayoutGrid,
+  Award,
+  Layers,
+  ListTree,
+  Hash,
+  Component,
+  Boxes,
   CircleDollarSign,
-  Briefcase, 
-  Image, 
-
+  Briefcase,
+  Image,
   SwatchBook,
-
-
-  BarChart3, 
-
-  HeartPulse, 
-
-  FileCode2, 
-  Newspaper, 
-
-  PanelTop, 
-  PanelBottom, 
-  Compass, 
-  ClipboardList, 
-  ArrowLeftRight, 
-
-
-
+  BarChart3,
+  HeartPulse,
+  FileCode2,
+  Newspaper,
+  PanelTop,
+  PanelBottom,
+  Compass,
+  ClipboardList,
+  ArrowLeftRight,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -191,382 +179,491 @@ const currentWebsiteSections: NavSection[] = [
     label: "Overview",
     items: [
       { label: "Dashboard", href: "/admin/pages", icon: LayoutDashboard },
-      { label: "Analytics", href: "/admin/posts", icon: BarChart3, permission: "websites:update" },
-      { label: "Activity Log", href: "/admin/media", icon: Activity, permission: "analytics:view" },
-      { label: "Notifications", href: "/admin/header", icon: Bell, permission: "security:read" },
-      { label: "System Health", href: "/admin/footer", icon: HeartPulse, permission: "security:read" },
-      { label: "Quick Actions", href: "/admin/navigation", icon: Zap, permission: "security:read" },
+      {
+        label: "Analytics",
+        href: "/admin/posts",
+        icon: BarChart3,
+        permission: "websites:update",
+      },
+      {
+        label: "Activity Log",
+        href: "/admin/media",
+        icon: Activity,
+        permission: "analytics:view",
+      },
+      {
+        label: "Notifications",
+        href: "/admin/header",
+        icon: Bell,
+        permission: "security:read",
+      },
+      {
+        label: "System Health",
+        href: "/admin/footer",
+        icon: HeartPulse,
+        permission: "security:read",
+      },
+      {
+        label: "Quick Actions",
+        href: "/admin/navigation",
+        icon: Zap,
+        permission: "security:read",
+      },
     ],
-},
+  },
 
-{
+  {
     id: "websites",
     label: "Websites",
     items: [
       { label: "Pages", href: "/admin/pages", icon: FileCode2 },
-      { label: "Posts", href: "/admin/posts", icon: Newspaper, permission: "websites:update" },
-      { label: "Media", href: "/admin/media", icon: ImageIcon, permission: "analytics:view" },
-      { label: "Header", href: "/admin/header", icon: PanelTop, permission: "security:read" },
-      { label: "Footer", href: "/admin/footer", icon: PanelBottom, permission: "security:read" },
-      { label: "Navigation", href: "/admin/navigation", icon: Compass, permission: "security:read" },
-      { label: "Forms", href: "/admin/forms", icon: ClipboardList, permission: "security:read" },
-      { label: "Redirects", href: "/admin/redirects", icon: ArrowLeftRight, permission: "security:read" },
-      { label: "Domain Settings", href: "/admin/domains", icon: Globe2, permission: "security:read" },
+      {
+        label: "Posts",
+        href: "/admin/posts",
+        icon: Newspaper,
+        permission: "websites:update",
+      },
+      {
+        label: "Media",
+        href: "/admin/media",
+        icon: ImageIcon,
+        permission: "analytics:view",
+      },
+      {
+        label: "Header",
+        href: "/admin/header",
+        icon: PanelTop,
+        permission: "security:read",
+      },
+      {
+        label: "Footer",
+        href: "/admin/footer",
+        icon: PanelBottom,
+        permission: "security:read",
+      },
+      {
+        label: "Navigation",
+        href: "/admin/navigation",
+        icon: Compass,
+        permission: "security:read",
+      },
+      {
+        label: "Forms",
+        href: "/admin/forms",
+        icon: ClipboardList,
+        permission: "security:read",
+      },
+      {
+        label: "Redirects",
+        href: "/admin/redirects",
+        icon: ArrowLeftRight,
+        permission: "security:read",
+      },
+      {
+        label: "Domain Settings",
+        href: "/admin/domains",
+        icon: Globe2,
+        permission: "security:read",
+      },
     ],
-},
+  },
 
-
- {
+  {
     id: "branding",
     label: "Branding & Design",
     items: [
-      { 
-        label: "Brand Profile", 
-        href: "/admin/branding/brand-profile", 
-        icon: Briefcase, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Brand Profile",
+        href: "/admin/branding/brand-profile",
+        icon: Briefcase,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Logo", 
-        href: "/admin/branding/logo", 
-        icon: Image, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Logo",
+        href: "/admin/branding/logo",
+        icon: Image,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Colors", 
-        href: "/admin/branding/colors", 
-        icon: Palette, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Colors",
+        href: "/admin/branding/colors",
+        icon: Palette,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Typography", 
-        href: "/admin/branding/typography", 
-        icon: Type, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Typography",
+        href: "/admin/branding/typography",
+        icon: Type,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Layout Settings", 
-        href: "/admin/branding/layout-settings", 
-        icon: LayoutTemplate, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Layout Settings",
+        href: "/admin/branding/layout-settings",
+        icon: LayoutTemplate,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Theme Presets", 
-        href: "/admin/branding/theme-presets", 
-        icon: SwatchBook, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Theme Presets",
+        href: "/admin/branding/theme-presets",
+        icon: SwatchBook,
+        permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-},
-
+  },
 
   {
     id: "products",
     label: "Products",
     items: [
-      { 
-        label: "Products", 
-        href: "/admin/products", 
-        icon: Package, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Products",
+        href: "/admin/products",
+        icon: Package,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Category", 
-        href: "/admin/category", 
-        icon: LayoutGrid, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Category",
+        href: "/admin/category",
+        icon: LayoutGrid,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Brand", 
-        href: "/admin/brand", 
-        icon: Award, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Brand",
+        href: "/admin/brand",
+        icon: Award,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Segment", 
-        href: "/admin/segment", 
-        icon: Layers, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Segment",
+        href: "/admin/segment",
+        icon: Layers,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Attribute", 
-        href: "/admin/attribute", 
-        icon: ListTree, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Attribute",
+        href: "/admin/attribute",
+        icon: ListTree,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Styles", 
-        href: "/admin/styles", 
-        icon: Palette, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Styles",
+        href: "/admin/styles",
+        icon: Palette,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Tags", 
-        href: "/admin/tags", 
-        icon: Hash, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Tags",
+        href: "/admin/tags",
+        icon: Hash,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Attributes", 
-        href: "/admin/attributes-list", 
-        icon: Component, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Attributes",
+        href: "/admin/attributes-list",
+        icon: Component,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Variants", 
-        href: "/admin/variants", 
-        icon: Boxes, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Variants",
+        href: "/admin/variants",
+        icon: Boxes,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Pricing Rules", 
-        href: "/admin/pricing-rules", 
-        icon: CircleDollarSign, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Pricing Rules",
+        href: "/admin/pricing-rules",
+        icon: CircleDollarSign,
+        permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-},
+  },
 
   {
     id: "ecommerce",
     label: "E-Commerce",
     items: [
-      { 
-        label: "Orders", 
-        href: "/admin/ecommerce/orders", 
-        icon: ShoppingBag, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Orders",
+        href: "/admin/ecommerce/orders",
+        icon: ShoppingBag,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Customers", 
-        href: "/admin/ecommerce/customers", 
-        icon: Users, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Customers",
+        href: "/admin/ecommerce/customers",
+        icon: Users,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Reports", 
-        href: "/admin/ecommerce/reports", 
-        icon: BarChart4, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Reports",
+        href: "/admin/ecommerce/reports",
+        icon: BarChart4,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Abandoned Carts", 
-        href: "/admin/ecommerce/abandoned-carts", 
-        icon: ShoppingCart, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Abandoned Carts",
+        href: "/admin/ecommerce/abandoned-carts",
+        icon: ShoppingCart,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Subscriptions", 
-        href: "/admin/ecommerce/subscriptions", 
-        icon: RefreshCcw, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Subscriptions",
+        href: "/admin/ecommerce/subscriptions",
+        icon: RefreshCcw,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Taxes", 
-        href: "/admin/ecommerce/taxes", 
-        icon: ReceiptIndianRupee, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Taxes",
+        href: "/admin/ecommerce/taxes",
+        icon: ReceiptIndianRupee,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Shipping", 
-        href: "/admin/ecommerce/shipping", 
-        icon: Truck, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Shipping",
+        href: "/admin/ecommerce/shipping",
+        icon: Truck,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Payments", 
-        href: "/admin/ecommerce/payments", 
-        icon: CreditCard, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Payments",
+        href: "/admin/ecommerce/payments",
+        icon: CreditCard,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Invoices", 
-        href: "/admin/ecommerce/invoices", 
-        icon: FileText, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Invoices",
+        href: "/admin/ecommerce/invoices",
+        icon: FileText,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Settings", 
-        href: "/admin/ecommerce/settings", 
-        icon: Settings, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Settings",
+        href: "/admin/ecommerce/settings",
+        icon: Settings,
+        permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-},
+  },
 
-
-   {
+  {
     id: "marketing",
     label: "Marketing",
     items: [
-      { 
-        label: "Banners", 
-        href: "/admin/marketing/banners", 
-        icon: ImageIcon, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Banners",
+        href: "/admin/marketing/banners",
+        icon: ImageIcon,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Campaigns", 
-        href: "/admin/marketing/campaigns", 
-        icon: Megaphone, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Campaigns",
+        href: "/admin/marketing/campaigns",
+        icon: Megaphone,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Catalog Generation", 
-        href: "/admin/marketing/catalog-generation", 
-        icon: BookOpen, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Catalog Generation",
+        href: "/admin/marketing/catalog-generation",
+        icon: BookOpen,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Quotations", 
-        href: "/admin/marketing/quotations", 
-        icon: FileText, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Quotations",
+        href: "/admin/marketing/quotations",
+        icon: FileText,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Coupons", 
-        href: "/admin/marketing/coupons", 
-        icon: TicketPercent, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Coupons",
+        href: "/admin/marketing/coupons",
+        icon: TicketPercent,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Email Templates", 
-        href: "/admin/marketing/email-templates", 
-        icon: MailPlus, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Email Templates",
+        href: "/admin/marketing/email-templates",
+        icon: MailPlus,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Integrations", 
-        href: "/admin/marketing/integrations", 
-        icon: Share2, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Integrations",
+        href: "/admin/marketing/integrations",
+        icon: Share2,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Automation Rules", 
-        href: "/admin/marketing/automation-rules", 
-        icon: Zap, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Automation Rules",
+        href: "/admin/marketing/automation-rules",
+        icon: Zap,
+        permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-},
-
-  {
-      id: "ai-studio",
-      label: "AI Studio", 
-      items: [
-        { 
-          label: "Image Uploads", 
-          href: "/admin/ai-studio/banners", 
-          icon: ImagePlus, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Segment Detection", 
-          href: "/admin/ai-studio/campaigns", 
-          icon: ScanSearch, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Material Application", 
-          href: "/admin/ai-studio/catalog-generation", 
-          icon: Paintbrush, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Prompt Library", 
-          href: "/admin/ai-studio/quotations", 
-          icon: Terminal, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Render History", 
-          href: "/admin/ai-studio/coupons", 
-          icon: History, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Saved Designs", 
-          href: "/admin/ai-studio/email-templates", 
-          icon: Heart, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "Reference Images", 
-          href: "/admin/ai-studio/integrations", 
-          icon: GalleryVerticalEnd, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-        { 
-          label: "AI Settings", 
-          href: "/admin/ai-studio/automation-rules", 
-          icon: Cpu, 
-          permission: ["content:read", "content:update", "content:delete"] 
-        },
-      ],
   },
 
-   {
+  {
+    id: "ai-studio",
+    label: "AI Studio",
+    items: [
+      {
+        label: "Image Uploads",
+        href: "/admin/ai-studio/banners",
+        icon: ImagePlus,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Segment Detection",
+        href: "/admin/ai-studio/campaigns",
+        icon: ScanSearch,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Material Application",
+        href: "/admin/ai-studio/catalog-generation",
+        icon: Paintbrush,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Prompt Library",
+        href: "/admin/ai-studio/quotations",
+        icon: Terminal,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Render History",
+        href: "/admin/ai-studio/coupons",
+        icon: History,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Saved Designs",
+        href: "/admin/ai-studio/email-templates",
+        icon: Heart,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Reference Images",
+        href: "/admin/ai-studio/integrations",
+        icon: GalleryVerticalEnd,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "AI Settings",
+        href: "/admin/ai-studio/automation-rules",
+        icon: Cpu,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+    ],
+  },
+
+  {
     id: "users",
     label: "Users",
     items: [
-      { 
-        label: "All Users", 
-        href: "/admin/users/all-users", 
-        icon: Users, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "All Users",
+        href: "/admin/users/all-users",
+        icon: Users,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Roles & Permissions", 
-        href: "/admin/users/roles-permissions", 
-        icon: Fingerprint, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Roles & Permissions",
+        href: "/admin/users/roles-permissions",
+        icon: Fingerprint,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Teams", 
-        href: "/admin/users/teams", 
-        icon: UsersRound, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Teams",
+        href: "/admin/users/teams",
+        icon: UsersRound,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Invitations", 
-        href: "/admin/users/invitations", 
-        icon: UserPlus, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Invitations",
+        href: "/admin/users/invitations",
+        icon: UserPlus,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "Activity Logs", 
-        href: "/admin/users/activity-logs", 
-        icon: History, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "Activity Logs",
+        href: "/admin/users/activity-logs",
+        icon: History,
+        permission: ["content:read", "content:update", "content:delete"],
       },
-      { 
-        label: "API Access", 
-        href: "/admin/users/api-access", 
-        icon: KeyRound, 
-        permission: ["content:read", "content:update", "content:delete"] 
+      {
+        label: "API Access",
+        href: "/admin/users/api-access",
+        icon: KeyRound,
+        permission: ["content:read", "content:update", "content:delete"],
       },
     ],
-},
+  },
 
-   {
+  {
     id: "settings",
     label: "Settings",
     items: [
-      { label: "General", href: "/admin/settings/general", icon: Settings2, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Domain & DNS", href: "/admin/settings/domain-dns", icon: Globe, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Billing & Plans", href: "/admin/settings/billing-plans", icon: CreditCard, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Usage & Limits", href: "/admin/settings/usage-limits", icon: Activity, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Integrations", href: "/admin/settings/integrations", icon: Blocks, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Webhooks", href: "/admin/settings/webhooks", icon: Webhook, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Data Export", href: "/admin/settings/data-export", icon: Download, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Security", href: "/admin/settings/security", icon: ShieldCheck, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "General",
+        href: "/admin/settings/general",
+        icon: Settings2,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Domain & DNS",
+        href: "/admin/settings/domain-dns",
+        icon: Globe,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Billing & Plans",
+        href: "/admin/settings/billing-plans",
+        icon: CreditCard,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Usage & Limits",
+        href: "/admin/settings/usage-limits",
+        icon: Activity,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Integrations",
+        href: "/admin/settings/integrations",
+        icon: Blocks,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Webhooks",
+        href: "/admin/settings/webhooks",
+        icon: Webhook,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Data Export",
+        href: "/admin/settings/data-export",
+        icon: Download,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
+      {
+        label: "Security",
+        href: "/admin/settings/security",
+        icon: ShieldCheck,
+        permission: ["content:read", "content:update", "content:delete"],
+      },
     ],
-},
-  
+  },
+
   {
     id: "domains",
     label: "Domain & Hosting",
-    items: [{ label: "Domains", href: "/admin/domain", icon: Globe, permission: "content:read" }],
+    items: [
+      {
+        label: "Domains",
+        href: "/admin/domain",
+        icon: Globe,
+        permission: "content:read",
+      },
+    ],
   },
 ];
 
@@ -592,7 +689,10 @@ function useHasPermission(user: User | null) {
 }
 
 // Section "header icon" like screenshot (one icon per group)
-const sectionIconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+const sectionIconMap: Record<
+  string,
+  React.ComponentType<React.SVGProps<SVGSVGElement>>
+> = {
   "dashboard-overview": LayoutDashboard,
   "website-overview": LayoutDashboard,
   products: Tags,
@@ -634,11 +734,13 @@ function Sidebar({
   }, [hasPermission]);
 
   // open/close groups (dropdown like "Income" in screenshot)
-  const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(() => {
-    const init: Record<string, boolean> = {};
-    filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0)); // first group open by default
-    return init;
-  });
+  const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(
+    () => {
+      const init: Record<string, boolean> = {};
+      filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0)); // first group open by default
+      return init;
+    }
+  );
 
   React.useEffect(() => {
     setOpenGroups((prev) => {
@@ -673,64 +775,82 @@ function Sidebar({
             )}
           >
             <div className="flex h-full flex-col">
-              <div className="border-b pb-4"> 
-              {/* Brand row */}
-              <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
-                <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-md">
-                  <img src="../dzinly-favicon.svg" className="w-10 h-10"></img> 
-                  </div>
-                  {!collapsed && (
-                    <div className="leading-tight">
-                      <div className="text-sm font-semibold">Dzinly</div>
-                      <div className="text-[11px] text-black/45">Admin panel</div>
+              <div className="border-b pb-4">
+                {/* Brand row */}
+                <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-md">
+                      <img
+                        src="../dzinly-favicon.svg"
+                        className="w-10 h-10"
+                      ></img>
                     </div>
-                  )}
+                    {!collapsed && (
+                      <div className="leading-tight">
+                        <div className="text-sm font-semibold">Dzinly</div>
+                        <div className="text-[11px] text-black/45">
+                          Admin panel
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {/* Website selector */}
-              {websites.length > 0 && (
-                <div className={cn("px-3 pt-2", collapsed && "px-2")}>
-                  <Select value={currentWebsite?._id || ""} onValueChange={onWebsiteChange}>
-                    <SelectTrigger
-                      className={cn(
-                        "py-6 w-full rounded-md bg-white text-start shadow",
-                        collapsed && "justify-start px-2"
-                      )}
+                {/* Website selector */}
+                {websites.length > 0 && (
+                  <div className={cn("px-3 pt-2", collapsed && "px-2")}>
+                    <Select
+                      value={currentWebsite?._id || ""}
+                      onValueChange={onWebsiteChange}
                     >
-                      {!collapsed ? (
-                        <SelectValue placeholder="Select website" />
-                      ) : (
-                        <Globe2 className="h-4 w-4 text-black/70" />
-                      )}
-                    </SelectTrigger>
-                    <SelectContent>
-                      {websites.map((site) => (
-                        <SelectItem key={site._id} value={site._id}>
-                          <div className="flex flex-col">
-                            <span className="text-xs font-medium uppercase">{site.name}</span>
-                            <span className="text-[11px] text-muted-foreground">
-                              {site.primaryDomain || site.systemSubdomain}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+                      <SelectTrigger
+                        className={cn(
+                          "py-6 w-full rounded-md bg-white text-start shadow",
+                          collapsed && "justify-start px-2"
+                        )}
+                      >
+                        {!collapsed ? (
+                          <SelectValue placeholder="Select website" />
+                        ) : (
+                          <Globe2 className="h-4 w-4 text-black/70" />
+                        )}
+                      </SelectTrigger>
+                      <SelectContent>
+                        {websites.map((site) => (
+                          <SelectItem key={site._id} value={site._id}>
+                            <div className="flex flex-col">
+                              <span className="text-xs font-medium uppercase">
+                                {site.name}
+                              </span>
+                              <span className="text-[11px] text-muted-foreground">
+                                {site.primaryDomain || site.systemSubdomain}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
 
-              <ScrollArea className={cn("mt-3 flex-1 px-2 pb-3", collapsed && "px-2")}>
+              <ScrollArea
+                className={cn("mt-3 flex-1 px-2 pb-3", collapsed && "px-2")}
+              >
                 <div className="space-y-2">
                   {!currentWebsite ? (
-                    <div className={cn("px-3 py-6 text-sm text-black/45", collapsed && "text-center px-1")}>
+                    <div
+                      className={cn(
+                        "px-3 py-6 text-sm text-black/45",
+                        collapsed && "text-center px-1"
+                      )}
+                    >
                       Select website
                     </div>
                   ) : (
                     filteredWebsiteSections.map((section) => {
-                      const HeaderIcon = sectionIconMap[section.id] || LayoutDashboard;
+                      const HeaderIcon =
+                        sectionIconMap[section.id] || LayoutDashboard;
                       const isOpen = !!openGroups[section.id];
 
                       // if collapsed: icon only + hover opens floating panel
@@ -755,7 +875,9 @@ function Sidebar({
                                   <HeaderIcon className="h-5 w-5 text-black/70" />
                                 </button>
                               </TooltipTrigger>
-                              <TooltipContent side="right">{section.label}</TooltipContent>
+                              <TooltipContent side="right">
+                                {section.label}
+                              </TooltipContent>
                             </Tooltip>
 
                             {/* floating panel like screenshot */}
@@ -763,13 +885,23 @@ function Sidebar({
                               {hoverGroupId === section.id && (
                                 <motion.div
                                   initial={{ opacity: 0, x: 10, y: 0 }}
-                                  animate={{ opacity: 1, x: 0, transition: { duration: 0.18, ease } }}
-                                  exit={{ opacity: 0, x: 10, transition: { duration: 0.14, ease } }}
+                                  animate={{
+                                    opacity: 1,
+                                    x: 0,
+                                    transition: { duration: 0.18, ease },
+                                  }}
+                                  exit={{
+                                    opacity: 0,
+                                    x: 10,
+                                    transition: { duration: 0.14, ease },
+                                  }}
                                   className="absolute left-[92px] top-0 z-50 w-[240px]"
                                 >
                                   <div className="rounded-md bg-white border shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-3">
                                     <div className="flex items-center justify-between px-2 pb-2">
-                                      <div className="text-sm font-semibold text-black/80">{section.label}</div>
+                                      <div className="text-sm font-semibold text-black/80">
+                                        {section.label}
+                                      </div>
                                       <FiCloseHint />
                                     </div>
 
@@ -781,7 +913,11 @@ function Sidebar({
                                           pathname?.startsWith(item.href + "/");
 
                                         return (
-                                          <Link key={item.href} href={item.href} className="block">
+                                          <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className="block"
+                                          >
                                             <div
                                               className={cn(
                                                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
@@ -791,7 +927,9 @@ function Sidebar({
                                               )}
                                             >
                                               <Icon className="h-4 w-4" />
-                                              <span className="truncate flex-1">{item.label}</span>
+                                              <span className="truncate flex-1">
+                                                {item.label}
+                                              </span>
                                               {item.badge && (
                                                 <span className="text-[11px] rounded-lg bg-black/5 px-2 py-0.5">
                                                   {item.badge}
@@ -835,7 +973,11 @@ function Sidebar({
                             </div>
 
                             <div className="text-black/40">
-                              {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                              {isOpen ? (
+                                <ChevronDown className="h-4 w-4" />
+                              ) : (
+                                <ChevronRight className="h-4 w-4" />
+                              )}
                             </div>
                           </button>
 
@@ -844,8 +986,16 @@ function Sidebar({
                             {isOpen && (
                               <motion.div
                                 initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1, transition: { duration: 0.22, ease } }}
-                                exit={{ height: 0, opacity: 0, transition: { duration: 0.16, ease } }}
+                                animate={{
+                                  height: "auto",
+                                  opacity: 1,
+                                  transition: { duration: 0.22, ease },
+                                }}
+                                exit={{
+                                  height: 0,
+                                  opacity: 0,
+                                  transition: { duration: 0.16, ease },
+                                }}
                                 className="overflow-hidden"
                               >
                                 <div className="pl-[22px] pr-1 pt-2 pb-2">
@@ -859,7 +1009,11 @@ function Sidebar({
                                           pathname?.startsWith(item.href + "/");
 
                                         return (
-                                          <Link key={item.href} href={item.href} className="block">
+                                          <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className="block"
+                                          >
                                             <div
                                               className={cn(
                                                 "group flex items-center gap-3 rounded-md px-3 py-2",
@@ -918,11 +1072,7 @@ function Sidebar({
 
 // small helper icon for floating panel (optional)
 function FiCloseHint() {
-  return (
-    <div className="text-[11px] text-black/35">
-      hover
-    </div>
-  );
+  return <div className="text-[11px] text-black/35">hover</div>;
 }
 
 // ---------------------------------------------------------------------------
@@ -954,17 +1104,22 @@ function MobileSidebar({
       .filter((section) => section.items.length > 0);
   }, [hasPermission]);
 
-  const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(() => {
-    const init: Record<string, boolean> = {};
-    filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0));
-    return init;
-  });
+  const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(
+    () => {
+      const init: Record<string, boolean> = {};
+      filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0));
+      return init;
+    }
+  );
 
   return (
     <div className="flex flex-col h-full">
       {websites.length > 0 && (
         <div className="p-3 border-b">
-          <Select value={currentWebsite?._id || ""} onValueChange={onWebsiteChange}>
+          <Select
+            value={currentWebsite?._id || ""}
+            onValueChange={onWebsiteChange}
+          >
             <SelectTrigger className="h-10 w-full rounded-md">
               <SelectValue placeholder="Select website" />
             </SelectTrigger>
@@ -996,47 +1151,78 @@ function MobileSidebar({
               const isOpen = !!openGroups[section.id];
 
               return (
-                <div key={section.id} className="rounded-md border bg-muted/10 overflow-hidden">
+                <div
+                  key={section.id}
+                  className="rounded-md border bg-muted/10 overflow-hidden"
+                >
                   <button
                     type="button"
-                    onClick={() => setOpenGroups((p) => ({ ...p, [section.id]: !isOpen }))}
+                    onClick={() =>
+                      setOpenGroups((p) => ({ ...p, [section.id]: !isOpen }))
+                    }
                     className="w-full flex items-center justify-between px-3 py-3"
                   >
                     <div className="flex items-center gap-3">
                       <div className="grid h-9 w-9 place-items-center rounded-md bg-background border">
                         <HeaderIcon className="h-4 w-4" />
                       </div>
-                      <div className="text-sm font-semibold">{section.label}</div>
+                      <div className="text-sm font-semibold">
+                        {section.label}
+                      </div>
                     </div>
-                    {isOpen ? <ChevronDown className="h-4 w-4 opacity-60" /> : <ChevronRight className="h-4 w-4 opacity-60" />}
+                    {isOpen ? (
+                      <ChevronDown className="h-4 w-4 opacity-60" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 opacity-60" />
+                    )}
                   </button>
 
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1, transition: { duration: 0.2, ease } }}
-                        exit={{ height: 0, opacity: 0, transition: { duration: 0.14, ease } }}
+                        animate={{
+                          height: "auto",
+                          opacity: 1,
+                          transition: { duration: 0.2, ease },
+                        }}
+                        exit={{
+                          height: 0,
+                          opacity: 0,
+                          transition: { duration: 0.14, ease },
+                        }}
                         className="overflow-hidden"
                       >
                         <div className="px-3 pb-3 space-y-1">
                           {section.items.map((item) => {
                             const Icon = item.icon;
                             const active =
-                              pathname === item.href || pathname?.startsWith(item.href + "/");
+                              pathname === item.href ||
+                              pathname?.startsWith(item.href + "/");
 
                             return (
-                              <Link key={item.href} href={item.href} className="block">
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="block"
+                              >
                                 <div
                                   className={cn(
                                     "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
-                                    active ? "bg-background shadow-sm" : "hover:bg-muted"
+                                    active
+                                      ? "bg-background shadow-sm"
+                                      : "hover:bg-muted"
                                   )}
                                 >
                                   <Icon className="h-4 w-4 opacity-70" />
-                                  <span className="truncate flex-1">{item.label}</span>
+                                  <span className="truncate flex-1">
+                                    {item.label}
+                                  </span>
                                   {item.badge && (
-                                    <Badge variant="secondary" className="text-[10px] px-1 py-0">
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-[10px] px-1 py-0"
+                                    >
                                       {item.badge}
                                     </Badge>
                                   )}
@@ -1080,7 +1266,7 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
       // store.dispatch({ type: 'category/resetState' });
       // store.dispatch({ type: 'brand/resetState' });
       // store.dispatch({ type: 'websites/resetState' });
-      resetRedux()
+      resetRedux();
       // Clear localStorage and sessionStorage
       localStorage.clear();
       sessionStorage.clear();
@@ -1092,17 +1278,22 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
     }
   };
 
-  const resetRedux=()=>{
-    dispatch(clearAttributes())
-      dispatch(clearBrands())
-      dispatch(clearSegments())
-      dispatch(clearCategories())
-  }
+  const resetRedux = () => {
+    dispatch(clearAttributes());
+    dispatch(clearBrands());
+    dispatch(clearSegments());
+    dispatch(clearCategories());
+  };
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background/80 px-8 backdrop-blur md:h-16 shadow-sm">
       <div className="flex items-center gap-2 md:gap-3">
         <div className="md:hidden">
-          <Button variant="outline" size="icon" className="h-8 w-8" onClick={onToggleMobileSidebar}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8"
+            onClick={onToggleMobileSidebar}
+          >
             <Menu className="h-4 w-4" />
           </Button>
         </div>
@@ -1124,7 +1315,11 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="hidden text-xs sm:inline-flex">
+        <Button
+          variant="outline"
+          size="sm"
+          className="hidden text-xs sm:inline-flex"
+        >
           <Search className="h-3 w-3 mr-1" />
           Search
         </Button>
@@ -1138,7 +1333,11 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="ml-1 h-8 w-8 rounded-full">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-1 h-8 w-8 rounded-full"
+            >
               <Avatar className="h-7 w-7">
                 <AvatarFallback>
                   {user?.name?.charAt(0).toUpperCase() || "U"}
@@ -1158,7 +1357,10 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar }: TopbarProps) {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Account settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+            <DropdownMenuItem
+              onClick={handleSignOut}
+              className="text-destructive"
+            >
               Sign out
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -1207,7 +1409,9 @@ export function AppShell({
       <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
         <SheetContent side="left" className="p-0 w-72">
           <SheetHeader className="border-b px-4 py-3">
-            <SheetTitle className="text-sm font-semibold">Navigation</SheetTitle>
+            <SheetTitle className="text-sm font-semibold">
+              Navigation
+            </SheetTitle>
           </SheetHeader>
           <MobileSidebar
             websites={websites}

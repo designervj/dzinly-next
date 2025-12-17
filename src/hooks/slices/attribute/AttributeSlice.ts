@@ -98,12 +98,9 @@ const attributeSlice = createSlice({
       .addCase(
         fetchAttributes.fulfilled,
         (state, action: PayloadAction<MaterialAttributes[]>) => {
-          if(action.payload && action.payload.length){
-              state.listAttribute = action.payload;
-          state.hasFetched = true;
-          }
           state.listAttribute = action.payload;
           state.hasFetched = true;
+          state.isAttributeLoading = false;
         }
       )
       .addCase(fetchAttributes.rejected, (state) => {

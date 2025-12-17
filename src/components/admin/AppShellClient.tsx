@@ -13,6 +13,7 @@ import { clearAttributes } from "@/hooks/slices/attribute/AttributeSlice";
 import { clearBrands } from "@/hooks/slices/brand/BrandSlice";
 import { clearSegments } from "@/hooks/slices/segment/SegmentSlice";
 import { clearCategories } from "@/hooks/slices/category/CategorySlice";
+import { clearProducts } from "@/hooks/slices/product/ProductSlice";
 
 type AppShellClientProps = {
   children: React.ReactNode;
@@ -48,6 +49,7 @@ export function AppShellClient({
     dispatch(clearBrands());
     dispatch(clearSegments());
     dispatch(clearCategories());
+    dispatch(clearProducts());
   };
 
   const handleWebsiteChange = async (websiteId: string) => {

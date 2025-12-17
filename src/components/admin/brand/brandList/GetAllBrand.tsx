@@ -1,3 +1,5 @@
+
+"use client"
 import { fetchBrands } from "@/hooks/slices/brand/BrandSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import React, { useEffect } from "react";

@@ -26,6 +26,13 @@ import {
   listSegments, 
   deleteSegment 
 } from "@/lib/material/product_segments";
+import { 
+  getProductById, 
+  updateProduct, 
+  createProduct, 
+  listProducts, 
+  deleteProduct 
+} from "@/lib/material/product";
 
 export interface EntityOperations {
   create: (data: any) => Promise<any>;
@@ -63,6 +70,13 @@ export const entityConfig: Record<string, EntityOperations> = {
     getById: getSegmentById,
     update: updateSegment,
     delete: deleteSegment,
+  },
+  products: {
+    create: createProduct,
+    list: listProducts,
+    getById: getProductById,
+    update: updateProduct,
+    delete: deleteProduct,
   },
   // Add more entities here as needed
 };

@@ -8,7 +8,12 @@ import type { MaterialCategory } from "./category/types/CategoryModel";
 import type { MaterialBrandModel } from "./brand/types/brandModel";
 import { MaterialAttributes } from "./attribute/types/attributeModel";
 import { MaterialSegmentModel } from "./segment/types/SegmentModel";
-import { IconImg, IconSVG } from "@/components/ui/icon-display";
+import { ProductModel } from "./product/type/ProductModel";
+import CategoryForm from "./category/forms/CategoryForm";
+import BrandForm from "./brand/forms/BrandForm";
+import SegmentForm from "./segment/forms/SegmentForm";
+import AttributeForm from "./attribute/forms/AttributeForm";
+import ProductForm from "./product/forms/ProductForm";
 
 type Props = { entity: string };
 
@@ -19,6 +24,8 @@ export default function EntityCreateModal({ entity }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const { listCategory } = useSelector((state: RootState) => state.category);
+  const { listBrand } = useSelector((state: RootState) => state.brand);
+  const { listSegment } = useSelector((state: RootState) => state.segment);
   // read tenant and website from redux store so we can include them in payloads
   const currentWebsite = useSelector(
     (state: RootState) => state.websites.currentWebsite
@@ -27,6 +34,12 @@ export default function EntityCreateModal({ entity }: Props) {
 
   const filterCategory = listCategory.filter(
     (item) => item.websiteId === currentWebsite?._id
+  );
+  const filterBrand = listBrand.filter(
+    (item) => (item as any).websiteId === currentWebsite?._id
+  );
+  const filterSegment = listSegment.filter(
+    (item) => (item as any).websiteId === currentWebsite?._id
   );
   const dispatch = useDispatch();
 
@@ -65,6 +78,18 @@ export default function EntityCreateModal({ entity }: Props) {
     possible_values: [],
     category_id: null,
   });
+
+  const [product, setProduct] = useState<ProductModel>({
+    name: "",
+    description: "",
+    brand_id: undefined,
+    product_category_id: undefined,
+    material_segment_id: undefined,
+    base_price: null,
+    photo: "",
+    ai_summary: null,
+  });
+
   // Generic simple state for other entities
   const [name, setName] = useState("");
   const [extra, setExtra] = useState("");
@@ -97,6 +122,16 @@ export default function EntityCreateModal({ entity }: Props) {
       type: undefined,
       category_id: null,
     });
+    setProduct({
+      name: "",
+      description: "",
+      brand_id: undefined,
+      product_category_id: undefined,
+      material_segment_id: undefined,
+      base_price: null,
+      photo: "",
+      ai_summary: null,
+    });
     setName("");
     setExtra("");
   };
@@ -127,6 +162,16 @@ export default function EntityCreateModal({ entity }: Props) {
       possible_values: [],
       type: undefined,
       category_id: null,
+    });
+    setProduct({
+      name: "",
+      description: "",
+      brand_id: undefined,
+      product_category_id: undefined,
+      material_segment_id: undefined,
+      base_price: null,
+      photo: "",
+      ai_summary: null,
     });
     setName("");
     setExtra("");
@@ -170,6 +215,9 @@ export default function EntityCreateModal({ entity }: Props) {
       }
     } else if (entity === "attribute") {
       if (!attribute.name || attribute.name.trim() === "")
+        errs.name = "Name is required";
+    } else if (entity === "products") {
+      if (!product.name || product.name.trim() === "")
         errs.name = "Name is required";
     } else {
       if (!name || name.trim() === "") errs.name = "Name is required";
@@ -219,6 +267,11 @@ export default function EntityCreateModal({ entity }: Props) {
       if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
     } else if (entity === "attribute") {
       payload = { ...attribute } as any;
+      const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
+      if (websiteId) payload.websiteId = websiteId;
+      if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
+    } else if (entity === "products") {
+      payload = { ...product } as any;
       const websiteId = currentWebsite?.websiteId ?? currentWebsite?._id;
       if (websiteId) payload.websiteId = websiteId;
       if (currentUser?.tenantId) payload.tenantId = currentUser.tenantId;
@@ -281,6 +334,15 @@ export default function EntityCreateModal({ entity }: Props) {
             );
             dispatch(addSegment(created));
           }
+        } else if (entity === "products") {
+          // backend may return the created item directly or under keys like `item` or `product`
+          const created = data?.item ?? data?.product ?? data;
+          if (created) {
+            const { addProduct } = await import(
+              "@/hooks/slices/product/ProductSlice"
+            );
+            dispatch(addProduct(created));
+          }
         }
       } catch (e) {
         // ignore dispatch errors and continue with navigation
@@ -316,410 +378,40 @@ export default function EntityCreateModal({ entity }: Props) {
             <form onSubmit={submit} className="flex flex-col flex-1 min-h-0">
               <div className="px-6 py-4 space-y-4 overflow-y-auto flex-1">
               {entity === "category" ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium">Name</label>
-                    <input
-                      value={category.name || ""}
-                      onChange={(e) =>
-                        setCategory({ ...category, name: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.name}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Icon</label>
-                    <div className="mt-1 flex gap-2">
-                      {["tag", "star", "folder", "bookmark", "grid"].map(
-                        (ic) => (
-                          <button
-                            key={ic}
-                            type="button"
-                            onClick={() =>
-                              setCategory({ ...category, icon: ic })
-                            }
-                            className={`px-2 py-1 rounded border ${
-                              category.icon === ic ? "bg-accent text-white" : ""
-                            }`}
-                          >
-                            {ic}
-                          </button>
-                        )
-                      )}
-                    </div>
-                    <div className="mt-2 text-xs text-muted-foreground">
-                      Selected: {category.icon}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Sort order
-                    </label>
-                    <input
-                      type="number"
-                      value={category.sort_order ?? 0}
-                      onChange={(e) =>
-                        setCategory({
-                          ...category,
-                          sort_order: Number(e.target.value),
-                        })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.sort_order && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.sort_order}
-                      </div>
-                    )}
-                  </div>
-                </>
+                <CategoryForm
+                  category={category}
+                  setCategory={setCategory}
+                  fieldErrors={fieldErrors}
+                />
               ) : entity === "segment" ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium">Name</label>
-                    <input
-                      value={segment.name || ""}
-                      onChange={(e) =>
-                        setSegment({ ...segment, name: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.name}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Description
-                    </label>
-                    <span className="text-gray-400 text-xs font-normal">
-                      Optional
-                    </span>
-                    <textarea
-                      value={segment.description || ""}
-                      onChange={(e) =>
-                        setSegment({ ...segment, description: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Short Code
-                    </label>
-                    <input
-                      value={segment.short_code || ""}
-                      onChange={(e) =>
-                        setSegment({ ...segment, short_code: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.short_code && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.short_code}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium">Color</label>
-                    <input
-                      value={segment.color || ""}
-                      onChange={(e) =>
-                        setSegment({ ...segment, color: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Color Code
-                    </label>
-                    <input
-                      type="color"
-                      value={segment.color_code||""}
-                       onChange={(e) =>
-                        setSegment({ ...segment, color_code: e.target.value })
-                      }
-                      className="w-12 h-10 p-1 border rounded"
-                    />
-                    <input
-                      type="text"
-                    value={segment.color_code||""}
-                       onChange={(e) =>
-                        setSegment({ ...segment, color_code: e.target.value })
-                      }
-                      className="flex-1"
-                      placeholder="#000000"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Index</label>
-                    <input
-                      type="number"
-                      value={segment.index ?? 0}
-                      onChange={(e) =>
-                        setSegment({
-                          ...segment,
-                          index: Number(e.target.value),
-                        })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.index && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.index}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mb-5">
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Icon URL
-                    </label>
-                    <div className="space-y-2">
-                      <input
-                        type="text"
-                        name="icon"
-                        value={segment.icon || ""}
-                        placeholder="https://example.com/icon.png"
-                        className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-shadow"
-                        onChange={(e) =>
-                          setSegment({ ...segment, icon: e.target.value })
-                        }
-                      />
-                      {/* Icon Preview */}
-                      {segment.icon && (
-                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <span className="text-xs text-gray-600 font-medium">
-                            Preview:
-                          </span>
-                          <IconImg src={segment.icon} />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mb-5">
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Icon SVG
-                    </label>
-                    <div className="space-y-2">
-                      <textarea
-                        name="icon_svg"
-                        value={segment.icon_svg || ""}
-                        placeholder='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">...</svg>'
-                        rows={3}
-                        className="w-full border border-gray-300 px-4 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono resize-none transition-shadow"
-                        onChange={(e) =>
-                          setSegment({ ...segment, icon_svg: e.target.value })
-                        }
-                      />
-                      {/* SVG Preview */}
-                      {segment.icon_svg && (
-                        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <span className="text-xs text-gray-600 font-medium">
-                            Preview:
-                          </span>
-                          <IconSVG svg={segment.icon_svg as any} />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <label htmlFor="segment-is-active" className="inline-flex items-center gap-2">
-                      <input
-                        id="segment-is-active"
-                        name="is_active"
-                        type="checkbox"
-                        checked={segment.is_active}
-                        onChange={(e) =>
-                          setSegment({
-                            ...segment,
-                            is_active: e.target.checked,
-                          })
-                        }
-                      />
-                      <span className="text-sm">Active</span>
-                    </label>
-                    <label htmlFor="segment-is-visible" className="inline-flex items-center gap-2">
-                      <input
-                        id="segment-is-visible"
-                        name="is_visible"
-                        type="checkbox"
-                        checked={segment.is_visible}
-                        onChange={(e) =>
-                          setSegment({
-                            ...segment,
-                            is_visible: e.target.checked,
-                          })
-                        }
-                      />
-                      <span className="text-sm">Visible</span>
-                    </label>
-                  </div>
-                </>
+                <SegmentForm
+                  segment={segment}
+                  setSegment={setSegment}
+                  fieldErrors={fieldErrors}
+                />
               ) : entity === "brand" ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium">Name</label>
-                    <input
-                      value={brand.name || ""}
-                      onChange={(e) =>
-                        setBrand({ ...brand, name: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.name}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">URL</label>
-                    <input
-                      value={brand.url || ""}
-                      onChange={(e) =>
-                        setBrand({ ...brand, url: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.url && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.url}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Logo</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleLogoFile(
-                          e.target.files ? e.target.files[0] : undefined
-                        )
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {brand.logo && (
-                      <div className="mt-2">
-                        <img
-                          src={brand.logo}
-                          alt="logo preview"
-                          className="h-16 object-contain"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Description
-                    </label>
-                    <textarea
-                      value={brand.description || ""}
-                      onChange={(e) =>
-                        setBrand({ ...brand, description: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                      rows={3}
-                    />
-                  </div>
-                </>
+                <BrandForm
+                  brand={brand}
+                  setBrand={setBrand}
+                  fieldErrors={fieldErrors}
+                  handleLogoFile={handleLogoFile}
+                />
               ) : entity === "attribute" ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium">Name</label>
-                    <input
-                      value={attribute.name || ""}
-                      onChange={(e) =>
-                        setAttribute({ ...attribute, name: e.target.value })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    />
-                    {fieldErrors.name && (
-                      <div className="text-sm text-destructive mt-1">
-                        {fieldErrors.name}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Category
-                    </label>
-                    <select
-                      value={String(attribute.category_id || "")}
-                      onChange={(e) =>
-                        setAttribute({
-                          ...attribute,
-                          category_id: e.target.value
-                            ? (e.target.value as any)
-                            : null,
-                        })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                    >
-                      <option value="">Select category</option>
-                      {filterCategory.map((cat) => (
-                        <option
-                          key={String(cat._id || cat.id)}
-                          value={String(cat._id || cat.id)}
-                        >
-                          {cat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Unit</label>
-                    <input
-                      value={attribute.unit || ""}
-                      onChange={(e) =>
-                        setAttribute({
-                          ...attribute,
-                          unit: e.target.value,
-                        })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                      placeholder="e.g., kg, cm, pcs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Possible values (comma separated)
-                    </label>
-                    <input
-                      value={(attribute.possible_values || []).join(",")}
-                      onChange={(e) =>
-                        setAttribute({
-                          ...attribute,
-                          possible_values: e.target.value
-                            ? e.target.value.split(",").map((v) => v.trim())
-                            : [],
-                        })
-                      }
-                      className="mt-1 block w-full rounded-md border p-2"
-                      placeholder="e.g., Red, Blue, Green"
-                    />
-                  </div>
-                </>
+                <AttributeForm
+                  attribute={attribute}
+                  setAttribute={setAttribute}
+                  fieldErrors={fieldErrors}
+                  filterCategory={filterCategory}
+                />
+              ) : entity === "products" ? (
+                <ProductForm
+                  product={product}
+                  setProduct={setProduct}
+                  fieldErrors={fieldErrors}
+                  filterCategory={filterCategory}
+                  listBrand={filterBrand}
+                  listSegment={filterSegment}
+                />
               ) : (
                 <>
                   <div>

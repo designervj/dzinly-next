@@ -77,8 +77,11 @@ const AttributeTable = () => {
     { key: '_id', label: 'ID', hidden: true },
     { key: 'id', label: 'ID', hidden: true },
     { key: 'name', label: 'Name' },
-
-    { key: 'category', label: 'Category' },
+    { 
+      key: 'category', 
+      label: 'Category',
+      render: (value: any, row: any) => value?.name || '-'
+    },
     { key: 'createdAt', label: 'Created' },
   ];
 

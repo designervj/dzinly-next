@@ -6,6 +6,7 @@ import websitesReducer from "../hooks/slices/websites/WebsiteSlice";
 import attributeReducer from "../hooks/slices/attribute/AttributeSlice"
 import brandReducer from "../hooks/slices/brand/BrandSlice"
 import segmentReducer from "../hooks/slices/segment/SegmentSlice"
+import productReducer from "../hooks/slices/product/ProductSlice"
 
 
 
@@ -17,6 +18,7 @@ export const store = configureStore({
     brand:brandReducer,
     segment:segmentReducer,
     attribute:attributeReducer,
+    product:productReducer,
     websites: websitesReducer,
   },
 });

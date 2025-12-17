@@ -3,13 +3,15 @@ import CategoryHome from "./category/CategoryHome";
 import BrandHome from "./brand/BrandHome";
 import AttributeHome from "./attribute/AttributeHome";
 import SegmentHome from "./segment/SegmnetHome";
+import ProductHome from "./product/ProductHome";
 
 // Entity component registry
 export const entityComponents: Record<string, React.ComponentType> = {
   category: CategoryHome,
   brand: BrandHome,
   attribute: AttributeHome,
-  segment:SegmentHome
+  segment:SegmentHome,
+  products:ProductHome
   // Add more entities here as needed
 };
 

@@ -136,6 +136,7 @@ const currentWebsiteSections: NavSection[] = [
     id: "products",
     label: "Products",
     items: [
+      { label: "Products", href: "/admin/products", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
       { label: "Category", href: "/admin/category", icon: Tags, permission: ["content:read", "content:update", "content:delete"] },
       { label: "Brand", href: "/admin/brand", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },
       { label: "Segment", href: "/admin/segment", icon: Building2, permission: ["content:read", "content:update", "content:delete"] },

@@ -52,9 +52,8 @@ function SignInForm() {
         dispatch(setUser(mappedUser));
       }
 
-      // navigate to the provided URL (or /admin as fallback)
-      const target = (result && (result as any).url) || "/admin";
-      router.push(target);
+      // Navigate to /admin instead of using result.url to prevent redirect to localhost
+      router.push("/admin");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Sign-in failed";
       setError(msg);

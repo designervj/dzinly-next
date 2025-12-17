@@ -55,6 +55,7 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const json = await req.json();
+
   const ok = await pageService.updatePage(id, json.tenantId, json.content);
   if (!ok)
     return NextResponse.json({ error: "Update failed" }, { status: 500 });

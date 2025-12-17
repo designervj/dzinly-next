@@ -1,7 +1,6 @@
 import { cookies as cookiesFn, headers as headersFn } from "next/headers";
 import PageEditor, { FieldConfig } from "@/components/admin/Editor";
 
-
 export default async function PageDetail({
   params,
 }: {
@@ -16,23 +15,26 @@ export default async function PageDetail({
   const proto = headers.get("x-forwarded-proto") ?? "http";
   const baseUrl = `${proto}://${host}`;
 
-  const res = await fetch(`${baseUrl}/api/pages/${t}`, {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/pages/${t}`, {
     cache: "no-store",
     headers: { cookie },
   });
 
-  const websiteId = cookies.get("current_website_id")?.value
+  const websiteId = cookies.get("current_website_id")?.value;
 
-  
-  const viewwebsiteurl = await fetch(`${baseUrl}/api/domain/website?id=${websiteId}`, {
-    cache: "no-store",
-  });
+  console.log(websiteId)
 
-  const website = await viewwebsiteurl.json()
+  const viewwebsiteurl = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/domain/website?id=${websiteId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  const website = await viewwebsiteurl.json();
 
   if (!res.ok) return <div className="text-sm text-red-600">Not found</div>;
 
-  
   const { item } = await res.json();
 
   const fieldConfig: FieldConfig[] = [
@@ -81,15 +83,15 @@ export default async function PageDetail({
       type: "text",
       side: "right",
       placeholder: "tenant-id",
-      readOnly: true
+      readOnly: true,
     },
-     {
+    {
       name: "websiteId",
       label: "Website",
       type: "text",
       side: "right",
       placeholder: "website-id",
-      readOnly: true
+      readOnly: true,
     },
   ];
 

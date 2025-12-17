@@ -33,6 +33,27 @@ export function AppShellClient({
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleWebsiteChange = async (websiteId: string) => {
+    try {
+      // Call API to update the current website cookie
+      await fetch("/api/session/website", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ websiteId }),
+      });
+    } catch (error) {
+      console.error("Error updating website context:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (initialCurrentWebsite) {
+      handleWebsiteChange(initialCurrentWebsite._id);
+    }
+  }, []);
+
   // When client receives server-provided websites, save them to Redux
   useEffect(() => {
     if (websites && websites.length > 0) {
@@ -50,40 +71,6 @@ export function AppShellClient({
     dispatch(clearSegments());
     dispatch(clearCategories());
     dispatch(clearProducts());
-  };
-
-  const handleWebsiteChange = async (websiteId: string) => {
-    const newWebsite = websites.find((w) => w._id === websiteId) || null;
-    console.log("newWebsite", newWebsite);
-    setCurrentWebsite(newWebsite);
-
-    startTransition(async () => {
-      try {
-        // Call API to update the current website cookie
-        const response = await fetch("/api/session/website", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ websiteId }),
-        });
-
-        if (response.ok) {
-          // Clear Redux state first to prevent old data from being used
-          resetRedux();
-          // Navigate to /admin (which will load fresh data for new website)
-          window.location.href = "/admin";
-        } else {
-          console.error("Failed to update website context");
-          // Revert the optimistic update
-          setCurrentWebsite(initialCurrentWebsite);
-        }
-      } catch (error) {
-        console.error("Error updating website context:", error);
-        // Revert the optimistic update
-        setCurrentWebsite(initialCurrentWebsite);
-      }
-    });
   };
 
   return (

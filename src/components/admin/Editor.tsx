@@ -58,8 +58,6 @@ export default function PageEditor({
     return initialData;
   });
 
-  console.log("===>>>",viewUrl)
-  
 
   const [saving, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
@@ -110,6 +108,7 @@ export default function PageEditor({
     start(async () => {
       // Transform formData to handle nested objects
       const transformedData = { ...formData };
+      console.log(transformedData)
       const res = await fetch(`${apiEndpoint}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

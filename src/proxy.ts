@@ -33,6 +33,7 @@ export async function proxy(req: NextRequest) {
           headers: { host: hostHeader },
           cache: "no-store",
         });
+ 
         if (r.ok) {
           const data = await r.json();
           console.log("===>>>>in proxy", data)

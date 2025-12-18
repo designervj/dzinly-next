@@ -89,6 +89,19 @@ const ProductTable = () => {
     { key: "id", label: "ID", hidden: true },
     { key: "product_category_id", label: "Product category Id", hidden: true },
     { key: "name", label: "Name" },
+    { 
+      key: "photo", 
+      label: "Photo",
+      render: (value: any) => value ? (
+        <img 
+          src={value} 
+          alt="Product" 
+          className="w-12 h-12 object-cover rounded"
+        />
+      ) : (
+        <span className="text-gray-400 text-xs">No image</span>
+      )
+    },
     { key: "description", label: "Description" },
     { key: "category", label: "Category" },
     { key: "brand", label: "Brand" },

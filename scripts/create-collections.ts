@@ -122,7 +122,15 @@ async function createCollections() {
       { collection: 'media_folders', index: { tenantId: 1, slug: 1 }, options: { unique: true, name: 'uniq_media_folders_tenant_slug' } },
 
       // Ecommerce
-      { collection: 'products', index: { tenantId: 1, websiteId: 1, slug: 1 }, options: { unique: true, name: 'uniq_products_tenant_website_slug' } },
+      { 
+        collection: 'products', 
+        index: { tenantId: 1, websiteId: 1, slug: 1 }, 
+        options: { 
+          unique: true, 
+          partialFilterExpression: { slug: { $type: 'string' } },
+          name: 'uniq_products_tenant_website_slug' 
+        } 
+      },
       { collection: 'products', index: { tenantId: 1, websiteId: 1, status: 1 }, options: { name: 'products_tenant_website_status' } },
       { collection: 'product_categories', index: { tenantId: 1, websiteId: 1, slug: 1 }, options: { unique: true, name: 'uniq_product_categories_tenant_website_slug' } },
       { collection: 'product_variants', index: { tenantId: 1, websiteId: 1, productId: 1, name: 1 }, options: { unique: true, name: 'uniq_variants_tenant_website_product_name' } },

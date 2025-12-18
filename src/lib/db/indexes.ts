@@ -24,7 +24,14 @@ export async function ensureIndexes() {
     db.collection('media_folders').createIndex({ tenantId: 1, slug: 1 }, { unique: true, name: 'uniq_media_folders_tenant_slug' }),
 
     // Ecommerce (scoped by tenant+website)
-    db.collection('products').createIndex({ tenantId: 1, websiteId: 1, slug: 1 }, { unique: true, name: 'uniq_products_tenant_website_slug' }),
+    db.collection('products').createIndex(
+      { tenantId: 1, websiteId: 1, slug: 1 }, 
+      { 
+        unique: true, 
+        partialFilterExpression: { slug: { $type: 'string' } },
+        name: 'uniq_products_tenant_website_slug' 
+      }
+    ),
     db.collection('products').createIndex({ tenantId: 1, websiteId: 1, status: 1 }, { name: 'products_tenant_website_status' }),
     // Text index (Mongo allows only one text index per collection). Ignore if already exists differently.
     (async () => {

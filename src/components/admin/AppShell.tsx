@@ -543,60 +543,60 @@ const currentWebsiteSections: NavSection[] = [
       ],
   },
 
-  {
-    id: "ai-studio",
-    label: "AI Studio",
-    items: [
-      {
-        label: "Image Uploads",
-        href: "/admin/ai-studio/banners",
-        icon: ImagePlus,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Segment Detection",
-        href: "/admin/ai-studio/campaigns",
-        icon: ScanSearch,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Material Application",
-        href: "/admin/ai-studio/catalog-generation",
-        icon: Paintbrush,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Prompt Library",
-        href: "/admin/ai-studio/quotations",
-        icon: Terminal,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Render History",
-        href: "/admin/ai-studio/coupons",
-        icon: History,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Saved Designs",
-        href: "/admin/ai-studio/email-templates",
-        icon: Heart,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Reference Images",
-        href: "/admin/ai-studio/integrations",
-        icon: GalleryVerticalEnd,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "AI Settings",
-        href: "/admin/ai-studio/automation-rules",
-        icon: Cpu,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-    ],
-  },
+  // {
+  //   id: "ai-studio",
+  //   label: "AI Studio",
+  //   items: [
+  //     {
+  //       label: "Image Uploads",
+  //       href: "/admin/ai-studio/banners",
+  //       icon: ImagePlus,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Segment Detection",
+  //       href: "/admin/ai-studio/campaigns",
+  //       icon: ScanSearch,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Material Application",
+  //       href: "/admin/ai-studio/catalog-generation",
+  //       icon: Paintbrush,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Prompt Library",
+  //       href: "/admin/ai-studio/quotations",
+  //       icon: Terminal,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Render History",
+  //       href: "/admin/ai-studio/coupons",
+  //       icon: History,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Saved Designs",
+  //       href: "/admin/ai-studio/email-templates",
+  //       icon: Heart,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "Reference Images",
+  //       href: "/admin/ai-studio/integrations",
+  //       icon: GalleryVerticalEnd,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //     {
+  //       label: "AI Settings",
+  //       href: "/admin/ai-studio/automation-rules",
+  //       icon: Cpu,
+  //       permission: ["content:read", "content:update", "content:delete"],
+  //     },
+  //   ],
+  // },
 
   {
     id: "users",

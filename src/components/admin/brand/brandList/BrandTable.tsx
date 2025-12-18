@@ -70,7 +70,17 @@ const BrandTable = () => {
     { key: 'name', label: 'Name' },
     { key: 'url', label: 'URL' },
     { key: 'description', label: 'Description' },
-    { key: 'logo', label: 'Logo' },
+    { key: 'logo', label: 'Logo' ,
+      render:(value:any)=>value?(
+        <img 
+          src={value} 
+          alt="Product" 
+          className="w-12 h-12 object-cover rounded"
+        />
+      ) : (
+        <span className="text-gray-400 text-xs">No image</span>
+      )
+    },
     { key: 'websiteId', label: 'Website ID' },
     { key: 'tenantId', label: 'Tenant ID' },
     { key: 'created_at', label: 'Created' },

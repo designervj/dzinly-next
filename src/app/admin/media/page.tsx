@@ -63,15 +63,15 @@ export default function MediaGalleryCMS() {
   });
 
   const categories = useMemo(() => {
-    const cats = [...new Set(mediaItems.map((item) => item.category))];
+    const cats = [...new Set(mediaItems.map((item) => item.category))].filter(Boolean);
     return ["all", ...cats];
   }, [mediaItems]);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
     mediaItems.forEach((item) => {
-      if (item.tags && typeof item.tags !== "string") {
-        item?.tags?.forEach((t: any) => tags.add(t));
+      if (Array.isArray(item.tags)) {
+        item.tags.forEach((t: string) => tags.add(t));
       }
     });
     return Array.from(tags);
@@ -88,13 +88,14 @@ export default function MediaGalleryCMS() {
       const matchesCategory =
         selectedCategory === "all" || item.category === selectedCategory;
 
+      const itemTags = Array.isArray(item.tags) ? item.tags : [];
       const matchesTags =
         selectedTags.length === 0 ||
-        selectedTags.every((tag) => item?.tags?.includes(tag));
-      allTags;
+        selectedTags.every((tag) => itemTags.includes(tag));
+
       return matchesSearch && matchesCategory && matchesTags;
     });
-  }, [mediaItems, searchTerm, selectedCategory, selectedTags]);
+  }, [mediaItems, searchTerm, selectedCategory, selectedTags, allTags]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -285,8 +286,8 @@ export default function MediaGalleryCMS() {
                   </span>
 
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {typeof item.tags !== "string" &&
-                      item?.tags?.map((tag) => (
+                    {Array.isArray(item.tags) &&
+                      item.tags.map((tag) => (
                         <span
                           key={tag}
                           className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
@@ -321,8 +322,8 @@ export default function MediaGalleryCMS() {
                       {item.category}
                     </span>
 
-                    {typeof item.tags !== "string" &&
-                      item?.tags?.map((tag) => (
+                    {Array.isArray(item.tags) &&
+                      item.tags.map((tag) => (
                         <span
                           key={tag}
                           className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"

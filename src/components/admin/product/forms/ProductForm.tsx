@@ -1,10 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ProductModel } from "../type/ProductModel";
 import { MaterialBrandModel } from "../../brand/types/brandModel";
 import { MaterialCategory } from "../../category/types/CategoryModel";
 import { MaterialSegmentModel } from "../../segment/types/SegmentModel";
+import { Upload, X } from "lucide-react";
+import { DirectS3UploadService, UploadResult } from "../../uploadImage/utilies/DirectS3UploadService";
+import { convertImageFileToWebp } from "../../uploadImage/utilies/ConvertImageToWebp";
+import UploadImage from "../../uploadImage/UploadImage";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 type ProductFormProps = {
   product: ProductModel;
@@ -23,6 +30,36 @@ export default function ProductForm({
   listBrand,
   listSegment,
 }: ProductFormProps) {
+  const [uploading, setUploading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+ 
+  const {  currentWebsite}= useSelector((state:RootState)=>state.websites)  
+ const {  user}= useSelector((state:RootState)=>state.user)  
+
+
+  const folderName = useMemo(() => {
+    if (currentWebsite && currentWebsite.name && user && user.name)  {
+      return currentWebsite.name.replace(/\s+/g, '-');
+    }
+    return '';
+  }, [currentWebsite, user]);
+  const handleRemoveImage = () => {
+    setProduct({ ...product, photo: undefined });
+  };
+
+
+  const CheckJobImageUpload = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload a valid image file');
+      return false;
+    }
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      toast.error('File size must be less than 10MB');
+      return false;
+    }
+    setImageLoading(true);
+    return true;
+  };
   return (
     <>
       <div>
@@ -141,21 +178,50 @@ export default function ProductForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Photo URL</label>
-        <input
-          type="text"
-          value={product.photo || ""}
-          onChange={(e) => setProduct({ ...product, photo: e.target.value })}
-          className="mt-1 block w-full rounded-md border p-2"
-          placeholder="https://example.com/photo.jpg"
-        />
-        {product.photo && (
-          <div className="mt-2">
+        <label className="block text-sm font-medium mb-2">Product Photo</label>
+        
+        {product.photo ? (
+          <div className="relative inline-block">
             <img
               src={product.photo}
               alt="product preview"
-              className="h-20 w-20 object-cover rounded border"
+              className="h-32 w-32 object-cover rounded border"
             />
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            {imageLoading ? (
+              <div className="flex items-center gap-2 px-4 py-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+                <span className="text-sm text-gray-600">Loading image...</span>
+              </div>
+            ) : (
+              <>
+                <label
+                  htmlFor="photo-upload"
+                  className={`flex items-center gap-2 px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer hover:border-blue-500 transition ${
+                    uploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                </label>
+                <UploadImage
+                  createdProjectId={`${folderName}/products` || null}
+                  jobImageUpload={CheckJobImageUpload}
+                  onUploadSuccess={(data) => {
+                    setImageLoading(false);
+                    setProduct({...product, photo: data});
+                  }}
+                  onUploadError={() => setImageLoading(false)}
+                />
+              </>
+            )}
           </div>
         )}
       </div>

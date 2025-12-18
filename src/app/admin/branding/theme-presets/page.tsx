@@ -45,7 +45,7 @@ export default function ThemePresetsPage() {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Theme Presets</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Theme Presets </h1>
         <p className="text-muted-foreground">Instantly apply a cohesive look to your entire workspace.</p>
       </div>
 

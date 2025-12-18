@@ -771,7 +771,7 @@ function Sidebar({
         <div className="w-full ">
           <div
             className={cn(
-              "h-full  border bg-[#f5f6f7] text-[#111]",
+              "h-full  border bg-sidebar text-sidebar-foreground",
               "shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
             )}
           >
@@ -779,31 +779,31 @@ function Sidebar({
               <div className="border-b pb-4 ">
                 {/* Brand row */}
                 <div className="flex justify-between items-center">
-                <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-md">
-                      <img src="../dzinly-favicon.svg" className="w-10 h-10"></img>
-                    </div>
-                    {!collapsed && (
-                      <div className="leading-tight">
-                        <div className="text-sm font-semibold">Dzinly</div>
-                        <div className="text-[11px] text-black/45">Admin panel</div>
+                  <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
+                    <div className="flex items-center gap-3">
+                      <div className="grid h-10 w-10 place-items-center rounded-md">
+                        <img src="../dzinly-favicon.svg" className="w-10 h-10"></img>
                       </div>
-                    )}
+                      {!collapsed && (
+                        <div className="leading-tight">
+                          <div className="text-sm font-semibold">Dzinly</div>
+                          <div className="text-[11px] text-black/45">Admin panel</div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Website selector */}
-                {websites.length > 0 && (
-                  <div className={cn("px-3 pt-2", collapsed && "px-2")}>
-                    <Select
-                      value={currentWebsite?._id || ""}
-                      onValueChange={onWebsiteChange}
-                    >
-                      {/* Trigger */}
-                      <SelectTrigger
+                  {/* Website selector */}
+                  {websites.length > 0 && (
+                    <div className={cn("px-3 pt-2", collapsed && "px-2")}>
+                      <Select
+                        value={currentWebsite?._id || ""}
+                        onValueChange={onWebsiteChange}
+                      >
+                        {/* Trigger */}
+                        <SelectTrigger
                           className={cn(
-                            "h-12 w-full rounded-md bg-white shadow border border-black/5",
+                            "h-12 w-full rounded-md bg-sidebar-accent shadow border border-sidebar-border",
                             "flex items-center justify-between px-3",
                             "[&>svg]:hidden", // 👈 DEFAULT SELECT ICON REMOVED
                             collapsed && "justify-center px-2"
@@ -811,10 +811,10 @@ function Sidebar({
                         >
                           {!collapsed ? (
 
-                            
+
                             <div className="flex items-center gap-2">
 
-                               
+
 
                               {/* Your custom icon */}
                               <ChevronsUpDown className="h-4 w-4 text-black/50" />
@@ -825,56 +825,56 @@ function Sidebar({
                         </SelectTrigger>
 
 
-                      {/* Dropdown */}
-                      <SelectContent className="w-[260px] rounded-lg border shadow-lg">
-                        <div className="px-3 py-2 text-xs font-medium text-muted-foreground">
-                          Websites
-                        </div>
+                        {/* Dropdown */}
+                        <SelectContent className="w-[260px] rounded-lg border shadow-lg">
+                          <div className="px-3 py-2 text-xs font-medium text-muted-foreground">
+                            Websites
+                          </div>
 
-                        {websites.map((site, index) => (
-                          <SelectItem key={site._id} value={site._id}>
-                            <div className="flex items-center justify-between w-full">
-                              <div className="flex items-center gap-2">
-                                <div className="h-7 w-7 rounded-md border bg-white flex items-center justify-center">
-                                  <Globe2 className="h-4 w-4 text-black/60" />
+                          {websites.map((site, index) => (
+                            <SelectItem key={site._id} value={site._id}>
+                              <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center gap-2">
+                                  <div className="h-7 w-7 rounded-md border bg-sidebar-accent flex items-center justify-center">
+                                    <Globe2 className="h-4 w-4 text-black/60" />
+                                  </div>
+
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-medium">{site.name}</span>
+                                    <span className="text-[11px] text-muted-foreground">
+                                      {site.primaryDomain || site.systemSubdomain}
+                                    </span>
+                                  </div>
                                 </div>
 
-                                <div className="flex flex-col">
-                                  <span className="text-sm font-medium">{site.name}</span>
-                                  <span className="text-[11px] text-muted-foreground">
-                                    {site.primaryDomain || site.systemSubdomain}
-                                  </span>
-                                </div>
-                              </div>
-
-                              {/* Shortcut hint (UI only) */}
-                              {/* <span className="text-[11px] text-muted-foreground">
+                                {/* Shortcut hint (UI only) */}
+                                {/* <span className="text-[11px] text-muted-foreground">
                                 ⌘{index + 1}
                               </span> */}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                )}
+                  )}
                 </div>
 
-                <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-white shadow-sm rounded-sm px-3 py-2 mt-4">
-                                  <span className="text-xs font-medium">
-                                    {currentWebsite?.name || "Select website"}
-                                  </span>
-                                  <span className="text-[11px] text-muted-foreground">
-                                    {currentWebsite?.primaryDomain ||
-                                      currentWebsite?.systemSubdomain ||
-                                      ""}
-                                  </span>
-                                </div>
+                <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-sidebar-accent shadow-sm rounded-sm px-3 py-2 mt-4">
+                  <span className="text-xs font-medium">
+                    {currentWebsite?.name || "Select website"}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {currentWebsite?.primaryDomain ||
+                      currentWebsite?.systemSubdomain ||
+                      ""}
+                  </span>
+                </div>
 
               </div>
 
-                                
+
 
               <ScrollArea
                 className={cn("mt-3 flex-1 px-2 pb-3", collapsed && "px-2")}
@@ -910,8 +910,8 @@ function Sidebar({
                                   type="button"
                                   className={cn(
                                     "w-full flex items-center justify-center",
-                                    "h-11 rounded-md bg-white/70 hover:bg-white transition",
-                                    "border border-black/5 shadow-sm"
+                                    "h-11 rounded-md bg-sidebar-accent/70 hover:bg-sidebar-accent transition",
+                                    "border border-sidebar-border shadow-sm"
                                   )}
                                 >
                                   <HeaderIcon className="h-5 w-5 text-black/70" />
@@ -939,7 +939,7 @@ function Sidebar({
                                   }}
                                   className="absolute left-[92px] top-0 z-50 w-[240px]"
                                 >
-                                  <div className="rounded-md bg-white border shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-3">
+                                  <div className="rounded-md bg-sidebar-accent border shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-3">
                                     <div className="flex items-center justify-between px-2 pb-2">
                                       <div className="text-sm font-semibold text-black/80">
                                         {section.label}
@@ -1000,11 +1000,11 @@ function Sidebar({
                             onClick={() => toggleGroup(section.id)}
                             className={cn(
                               "w-full flex items-center gap-3 rounded-md px-3 py-2.5",
-                              "text-left bg-white/70 border border-black/5 shadow-sm",
-                              "hover:bg-white transition"
+                              "text-left bg-sidebar-accent/70 border border-sidebar-border shadow-sm",
+                              "hover:bg-sidebar-accent transition"
                             )}
                           >
-                            <div className="grid h-9 w-9 place-items-center rounded-md bg-white border shadow-sm">
+                            <div className="grid h-9 w-9 place-items-center rounded-md bg-sidebar-accent border shadow-sm">
                               <HeaderIcon className="h-4 w-4 text-black/70 " />
                             </div>
 
@@ -1094,82 +1094,90 @@ function Sidebar({
 
               {/* collapse button */}
               <div className="border-t border-black/10 p-3">
-               
 
-           <div className="mt-4">
-            <DropdownMenu>
-              {/* TRIGGER */}
-              <DropdownMenuTrigger asChild>
-                <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-muted">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>SC</AvatarFallback>
-                  </Avatar>
 
-                  <div className="flex flex-col flex-1 text-left leading-tight">
-                    <span className="text-sm font-medium">shadcn</span>
-                    <span className="text-xs text-muted-foreground">
-                      m@example.com
-                    </span>
-                  </div>
+                <div className="mt-4">
+                  <DropdownMenu>
+                    {/* TRIGGER */}
+                    <DropdownMenuTrigger asChild>
+                      <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-muted">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>SC</AvatarFallback>
+                        </Avatar>
 
-                  <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
-                </button>
-              </DropdownMenuTrigger>
+                        <div className="flex flex-col flex-1 text-left leading-tight">
+                          <span className="text-sm font-medium">shadcn</span>
+                          <span className="text-xs text-muted-foreground">
+                            m@example.com
+                          </span>
+                        </div>
 
-              {/* ✅ DROPDOWN OPENS OUTSIDE SIDEBAR */}
-              <DropdownMenuContent
-                side="right"          // 👈 sidebar se bahar
-                align="start"         // 👈 top align
-                sideOffset={12}       // 👈 gap
-                className="w-56 rounded-xl shadow-xl mb-2"
-              >
-                {/* Header */}
-                <DropdownMenuLabel className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>SC</AvatarFallback>
-                  </Avatar>
+                        <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
+                      </button>
+                    </DropdownMenuTrigger>
 
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">shadcn</span>
-                    <span className="text-xs text-muted-foreground">
-                      m@example.com
-                    </span>
-                  </div>
-                </DropdownMenuLabel>
+                    {/* ✅ DROPDOWN OPENS OUTSIDE SIDEBAR */}
+                    <DropdownMenuContent
+                      side="right"          // 👈 sidebar se bahar
+                      align="start"         // 👈 top align
+                      sideOffset={12}       // 👈 gap
+                      className="w-56 rounded-xl shadow-xl mb-2"
+                    >
+                      {/* Header */}
+                      <DropdownMenuLabel className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>SC</AvatarFallback>
+                        </Avatar>
 
-                <DropdownMenuSeparator />
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium">shadcn</span>
+                          <span className="text-xs text-muted-foreground">
+                            m@example.com
+                          </span>
+                        </div>
+                      </DropdownMenuLabel>
 
-                <DropdownMenuItem>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Upgrade to Pro
-                </DropdownMenuItem>
+                      <DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        Upgrade to Pro
+                      </DropdownMenuItem>
 
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  Account
-                </DropdownMenuItem>
+                      <DropdownMenuSeparator />
 
-                <DropdownMenuItem>
+                     <DropdownMenuItem asChild>
+                <Link href="/admin/themes" className="flex items-center w-full cursor-pointer">
                   <CreditCard className="mr-2 h-4 w-4" />
-                  Billing
-                </DropdownMenuItem>
+                  Theme
+                </Link>
+              </DropdownMenuItem>
 
-                <DropdownMenuItem>
-                  <Bell className="mr-2 h-4 w-4" />
-                  Notifications
-                </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <User className="mr-2 h-4 w-4" />
+                        Account
+                      </DropdownMenuItem>
 
-                <DropdownMenuItem className="text-red-600 focus:text-red-600">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                      <DropdownMenuItem>
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Billing
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem>
+                        <Bell className="mr-2 h-4 w-4" />
+                        Notifications
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem className="text-red-600 focus:text-red-600">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
 
 
 
@@ -1406,37 +1414,37 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background/80 px-8 backdrop-blur md:h-16 shadow-sm">
       <div className="flex items-center gap-2 md:gap-3">
-      {/* SIDEBAR COLLAPSE BUTTON */}
-<div className="border-none border-black/10 p-3">
-  <Button
-    variant="ghost"
-    onClick={onToggleCollapse}
-    // size={"xl"}
-    className={cn(
-      "w-full justify-between  hover:bg-transparent",
-      "border-e border-black/5 bg-transparent rounded-none  text-black/70 "
-    )}
-  >
-    {!collapsed ? (
-      <>
-        {/* <span className="text-xs font-medium">Collapse</span> */}
-        {/* <FaChevronCircleLeft className="h-6 w-6" /> */}
-        <GoSidebarExpand className="h-14 w-14 " size={48}/>
+        {/* SIDEBAR COLLAPSE BUTTON */}
+        <div className="border-none border-black/10 p-3">
+          <Button
+            variant="ghost"
+            onClick={onToggleCollapse}
+            // size={"xl"}
+            className={cn(
+              "w-full justify-between  hover:bg-transparent",
+              "border-e border-sidebar-border bg-transparent rounded-none  text-black/70 "
+            )}
+          >
+            {!collapsed ? (
+              <>
+                {/* <span className="text-xs font-medium">Collapse</span> */}
+                {/* <FaChevronCircleLeft className="h-6 w-6" /> */}
+                <GoSidebarExpand className="h-14 w-14 " size={48} />
 
-      </>
-    ) : (
-      <>
-        {/* <span className="sr-only">Expand</span> */}
-        {/* <FaChevronCircleRight  /> */}
-        <GoSidebarCollapse className="h-14 w-14  mx-auto" size={48}/>
+              </>
+            ) : (
+              <>
+                {/* <span className="sr-only">Expand</span> */}
+                {/* <FaChevronCircleRight  /> */}
+                <GoSidebarCollapse className="h-14 w-14  mx-auto" size={48} />
 
-      </>
-    )}
-  </Button>
-</div>
+              </>
+            )}
+          </Button>
+        </div>
 
 
-        
+
         <div className="hidden text-sm font-medium text-black md:inline">
           Dashboard
         </div>
@@ -1455,14 +1463,14 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
       </div>
 
       <div className="flex items-center gap-2">
-        
+
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-black/60" />
 
           <Input
             type="search"
             placeholder="Search"
-            className=" pl-9 h-8 bg-white/70  border border-black/10 rounded-sm focus-visible:ring-1"
+            className=" pl-9 h-8 bg-sidebar-accent/70  border border-black/10 rounded-sm focus-visible:ring-1"
           />
         </div>
 
@@ -1530,10 +1538,10 @@ export function AppShell({
 
 
 
-  
+
 
   return (
-    <div className="flex min-h-screen bg-[#e8e9eb] text-foreground overflow-hidden">
+    <div className="flex min-h-screen bg-background text-foreground overflow-hidden">
       <Sidebar
         websites={websites}
         currentWebsite={currentWebsite}

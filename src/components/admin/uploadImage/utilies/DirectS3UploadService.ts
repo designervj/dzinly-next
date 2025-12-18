@@ -56,7 +56,7 @@ export class DirectS3UploadService {
    */
   static async  uploadFile(
     file: File,
-    userProfileId?: number,
+    userProfileId?: string,
     onProgress?: (progress: UploadProgress) => void,
     projectId?: string
   ): Promise<UploadResult> {
@@ -388,7 +388,7 @@ export class DirectS3UploadService {
    */
   private static generateUniqueKey(
     fileName: string,
-    userProfileId?: number,
+    userProfileId?: string,
     projectId?: string
   ): string {
     const timestamp = Date.now();
@@ -417,7 +417,7 @@ export class DirectS3UploadService {
    */
   static generateUniqueFilename(
     originalName: string,
-    userProfileId?: number,
+    userProfileId?: string,
     projectId?: string
   ): string {
     return this.generateUniqueKey(originalName, userProfileId, projectId);

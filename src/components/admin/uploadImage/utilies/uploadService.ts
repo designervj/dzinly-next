@@ -57,7 +57,7 @@ export class UploadService {
    */
   static async uploadToS3(
     file: File | null,
-    userId?: number,
+    userId?: string,
     onProgress?: (progress: UploadProgress) => void,
     projectId?: string
   ): Promise<UploadResult> {

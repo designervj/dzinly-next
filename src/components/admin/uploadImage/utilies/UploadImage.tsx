@@ -3,10 +3,12 @@ import { Upload, X, CheckCircle, AlertCircle, Image as ImageIcon } from 'lucide-
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { DirectS3UploadService, UploadProgress, UploadResult } from '@/services/uploadImageService/directS3UploadService';
+
 import { useSelector } from 'react-redux';
-import { selectProfile } from '@/redux/slices/user/userProfileSlice';
-import { convertImageFileToWebp } from './ConvertImageFileToWebp';
+import { DirectS3UploadService, UploadProgress, UploadResult } from './DirectS3UploadService';
+import { convertImageFileToWebp } from './ConvertImageToWebp';
+import { RootState } from '@/store/store';
+
 
 interface UploadImageProps {
   onUploadSuccess?: (fileUrl: string, key: string) => void;
@@ -15,7 +17,7 @@ interface UploadImageProps {
   allowedTypes?: string[];
   className?: string;
   accept?: string;
-  createdProjectId?: number | null;
+  createdProjectId?: string | null;
   jobImageUpload: (file: File ) => void;
 
 }
@@ -42,8 +44,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const getUserProfiles = useSelector(selectProfile);
-
+ const {user }= useSelector((state:RootState)=>state.user)
 
   useEffect(() => {
      if( createdProjectId && createdProjectId!==null) {
@@ -150,7 +151,16 @@ const handleFileSelect = useCallback(async (file: File) => {
 
   // Upload file directly to S3
   const handleUpload = async () => {
-    if (!selectedFile || !getUserProfiles) return;
+    // Check if file is selected
+    if (!selectedFile) {
+      const noFileError = 'No file selected';
+      setUploadResult({
+        success: false,
+        error: noFileError,
+      });
+      onUploadError?.(noFileError);
+      return;
+    }
 
     // Check if AWS credentials are configured
     if (!DirectS3UploadService.isConfigured()) {
@@ -171,7 +181,7 @@ const handleFileSelect = useCallback(async (file: File) => {
       // Use direct S3 upload service
       const result = await DirectS3UploadService.uploadFile(
         selectedFile,
-        getUserProfiles.id,
+       createdProjectId??"",
         (progress) => setUploadProgress(progress)
       );
 

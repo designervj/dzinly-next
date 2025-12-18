@@ -135,7 +135,7 @@ const handleFileSelect = useCallback(async (file: File) => {
       // Use upload service to handle the upload
       const result = await UploadService.uploadToS3(
         selectedFile,
-        undefined, // userId (optional)
+        createdProjectId??"", // userId (optional)
         (progress) => setUploadProgress(progress),
         createdProjectId || undefined // projectId
       );

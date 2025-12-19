@@ -75,28 +75,21 @@ import {
   Briefcase,
   Image,
   SwatchBook,
-
-
   BarChart3,
-
   HeartPulse,
-
   FileCode2,
   Newspaper,
-
   PanelTop,
   PanelBottom,
-
   ClipboardList,
   ArrowLeftRight,
   ChevronsUpDown,
   User,
   LogOut,
-
-
-
 } from "lucide-react";
-import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
+
+import { GoSidebarCollapse } from "react-icons/go";
+import { GoSidebarExpand } from "react-icons/go";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -132,14 +125,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
-import { store } from "@/store/store";
+// import { store } from "@/store/store"; // Uncomment if needed
 import { clearAttributes } from "@/hooks/slices/attribute/AttributeSlice";
 import { clearBrands } from "@/hooks/slices/brand/BrandSlice";
 import { clearSegments } from "@/hooks/slices/segment/SegmentSlice";
 import { clearCategories } from "@/hooks/slices/category/CategorySlice";
-
-import { GoSidebarCollapse } from "react-icons/go";
-import { GoSidebarExpand } from "react-icons/go";
 import { Input } from "../ui/input";
 
 // ---------------------------------------------------------------------------
@@ -190,7 +180,7 @@ type NavSection = {
 };
 
 // ---------------------------------------------------------------------------
-// Navigation structure (same as you)
+// Navigation structure
 // ---------------------------------------------------------------------------
 
 const currentWebsiteSections: NavSection[] = [
@@ -206,459 +196,124 @@ const currentWebsiteSections: NavSection[] = [
       { label: "Quick Actions", href: "/admin/quick-actions", icon: Zap, permission: "security:read" },
     ],
   },
-
   {
     id: "websites",
     label: "Websites",
     items: [
       { label: "Pages", href: "/admin/pages", icon: FileCode2 },
-      {
-        label: "Posts",
-        href: "/admin/posts",
-        icon: Newspaper,
-        permission: "websites:update",
-      },
-      {
-        label: "Media",
-        href: "/admin/media",
-        icon: ImageIcon,
-        permission: "analytics:view",
-      },
-      {
-        label: "Header",
-        href: "/admin/header",
-        icon: PanelTop,
-        permission: "security:read",
-      },
-      {
-        label: "Footer",
-        href: "/admin/footer",
-        icon: PanelBottom,
-        permission: "security:read",
-      },
-      {
-        label: "Navigation",
-        href: "/admin/navigation",
-        icon: Compass,
-        permission: "security:read",
-      },
-      {
-        label: "Forms",
-        href: "/admin/forms",
-        icon: ClipboardList,
-        permission: "security:read",
-      },
-      {
-        label: "Redirects",
-        href: "/admin/redirects",
-        icon: ArrowLeftRight,
-        permission: "security:read",
-      },
-      {
-        label: "Domain Settings",
-        href: "/admin/domains",
-        icon: Globe2,
-        permission: "security:read",
-      },
+      { label: "Posts", href: "/admin/posts", icon: Newspaper, permission: "websites:update", },
+      { label: "Media", href: "/admin/media", icon: ImageIcon, permission: "analytics:view", },
+      { label: "Header", href: "/admin/header", icon: PanelTop, permission: "security:read", },
+      { label: "Footer", href: "/admin/footer", icon: PanelBottom, permission: "security:read", },
+      { label: "Navigation", href: "/admin/navigation", icon: Compass, permission: "security:read", },
+      { label: "Forms", href: "/admin/forms", icon: ClipboardList, permission: "security:read", },
+      { label: "Redirects", href: "/admin/redirects", icon: ArrowLeftRight, permission: "security:read", },
+      { label: "Domain Settings", href: "/admin/domains", icon: Globe2, permission: "security:read", },
     ],
   },
-
   {
     id: "branding",
     label: "Branding & Design",
     items: [
-      {
-        label: "Brand Profile",
-        href: "/admin/branding/brand-profile",
-        icon: LayoutGrid,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Logo",
-        href: "/admin/branding/logo",
-        icon: Image,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Colors",
-        href: "/admin/branding/colors",
-        icon: Palette,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Typography",
-        href: "/admin/branding/typography",
-        icon: Type,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Layout Settings",
-        href: "/admin/branding/layout-settings",
-        icon: LayoutTemplate,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Theme Presets",
-        href: "/admin/branding/theme-presets",
-        icon: SwatchBook,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "Brand Profile", href: "/admin/branding/brand-profile", icon: LayoutGrid, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Logo", href: "/admin/branding/logo", icon: Image, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Colors", href: "/admin/branding/colors", icon: Palette, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Typography", href: "/admin/branding/typography", icon: Type, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Layout Settings", href: "/admin/branding/layout-settings", icon: LayoutTemplate, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Theme Presets", href: "/admin/branding/theme-presets", icon: SwatchBook, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
-
   {
     id: "products",
     label: "Products",
     items: [
-      {
-        label: "Products",
-        href: "/admin/products",
-        icon: Package,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Category",
-        href: "/admin/category",
-        icon: LayoutGrid,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Brand",
-        href: "/admin/brand",
-        icon: Award,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Segment",
-        href: "/admin/segment",
-        icon: Layers,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Attribute",
-        href: "/admin/attribute",
-        icon: ListTree,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Styles",
-        href: "/admin/styles",
-        icon: Palette,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Tags",
-        href: "/admin/tags",
-        icon: Hash,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Attributes",
-        href: "/admin/attributes-list",
-        icon: Component,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Variants",
-        href: "/admin/variants",
-        icon: Boxes,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Pricing Rules",
-        href: "/admin/pricing-rules",
-        icon: CircleDollarSign,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "Products", href: "/admin/products", icon: Package, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Category", href: "/admin/category", icon: LayoutGrid, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Brand", href: "/admin/brand", icon: Award, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Segment", href: "/admin/segment", icon: Layers, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Attribute", href: "/admin/attribute", icon: ListTree, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Styles", href: "/admin/styles", icon: Palette, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Tags", href: "/admin/tags", icon: Hash, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Attributes", href: "/admin/attributes-list", icon: Component, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Variants", href: "/admin/variants", icon: Boxes, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Pricing Rules", href: "/admin/pricing-rules", icon: CircleDollarSign, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
   {
     id: "ecommerce",
     label: "E-Commerce",
     items: [
-      {
-        label: "Orders",
-        href: "/admin/ecommerce/orders",
-        icon: ShoppingBag,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Customers",
-        href: "/admin/ecommerce/customers",
-        icon: Users,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Reports",
-        href: "/admin/ecommerce/reports",
-        icon: BarChart4,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Abandoned Carts",
-        href: "/admin/ecommerce/abandoned-carts",
-        icon: ShoppingCart,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Subscriptions",
-        href: "/admin/ecommerce/subscriptions",
-        icon: RefreshCcw,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Taxes",
-        href: "/admin/ecommerce/taxes",
-        icon: ReceiptIndianRupee,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Shipping",
-        href: "/admin/ecommerce/shipping",
-        icon: Truck,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Payments",
-        href: "/admin/ecommerce/payments",
-        icon: CreditCard,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Invoices",
-        href: "/admin/ecommerce/invoices",
-        icon: FileText,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Settings",
-        href: "/admin/ecommerce/settings",
-        icon: Settings,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "Orders", href: "/admin/ecommerce/orders", icon: ShoppingBag, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Customers", href: "/admin/ecommerce/customers", icon: Users, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Reports", href: "/admin/ecommerce/reports", icon: BarChart4, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Abandoned Carts", href: "/admin/ecommerce/abandoned-carts", icon: ShoppingCart, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Subscriptions", href: "/admin/ecommerce/subscriptions", icon: RefreshCcw, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Taxes", href: "/admin/ecommerce/taxes", icon: ReceiptIndianRupee, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Shipping", href: "/admin/ecommerce/shipping", icon: Truck, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Payments", href: "/admin/ecommerce/payments", icon: CreditCard, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Invoices", href: "/admin/ecommerce/invoices", icon: FileText, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Settings", href: "/admin/ecommerce/settings", icon: Settings, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
   {
     id: "marketing",
     label: "Marketing",
     items: [
-      {
-        label: "Banners",
-        href: "/admin/marketing/banners",
-        icon: ImageIcon,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Campaigns",
-        href: "/admin/marketing/campaigns",
-        icon: Megaphone,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Catalog Generation",
-        href: "/admin/marketing/catalog-generation",
-        icon: BookOpen,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Quotations",
-        href: "/admin/marketing/quotations",
-        icon: FileText,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Coupons",
-        href: "/admin/marketing/coupons",
-        icon: TicketPercent,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Email Templates",
-        href: "/admin/marketing/email-templates",
-        icon: MailPlus,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Integrations",
-        href: "/admin/marketing/integrations",
-        icon: Share2,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Automation Rules",
-        href: "/admin/marketing/automation-rules",
-        icon: Zap,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "Banners", href: "/admin/marketing/banners", icon: ImageIcon, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Campaigns", href: "/admin/marketing/campaigns", icon: Megaphone, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Catalog Generation", href: "/admin/marketing/catalog-generation", icon: BookOpen, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Quotations", href: "/admin/marketing/quotations", icon: FileText, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Coupons", href: "/admin/marketing/coupons", icon: TicketPercent, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Email Templates", href: "/admin/marketing/email-templates", icon: MailPlus, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Integrations", href: "/admin/marketing/integrations", icon: Share2, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Automation Rules", href: "/admin/marketing/automation-rules", icon: Zap, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
   {
     id: "ai-studio",
     label: "AI Studio",
     items: [
-      {
-        label: "Image Uploads",
-        href: "/admin/ai-studio/image-uploads",
-        icon: ImagePlus,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Segment Detection",
-        href: "/admin/ai-studio/segment-detection",
-        icon: ScanSearch,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Material Application",
-        href: "/admin/ai-studio/material-application",
-        icon: Paintbrush,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Prompt Library",
-        href: "/admin/ai-studio/prompt-library",
-        icon: Terminal,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Render History",
-        href: "/admin/ai-studio/render-history",
-        icon: History,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Saved Designs",
-        href: "/admin/ai-studio/saved-designs",
-        icon: Heart,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Reference Images",
-        href: "/admin/ai-studio/reference-images",
-        icon: GalleryVerticalEnd,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "AI Settings",
-        href: "/admin/ai-studio/ai-settings",
-        icon: Cpu,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "Image Uploads", href: "/admin/ai-studio/image-uploads", icon: ImagePlus, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Segment Detection", href: "/admin/ai-studio/segment-detection", icon: ScanSearch, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Material Application", href: "/admin/ai-studio/material-application", icon: Paintbrush, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Prompt Library", href: "/admin/ai-studio/prompt-library", icon: Terminal, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Render History", href: "/admin/ai-studio/render-history", icon: History, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Saved Designs", href: "/admin/ai-studio/saved-designs", icon: Heart, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Reference Images", href: "/admin/ai-studio/reference-images", icon: GalleryVerticalEnd, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "AI Settings", href: "/admin/ai-studio/ai-settings", icon: Cpu, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
   {
     id: "users",
     label: "Users",
     items: [
-      {
-        label: "All Users",
-        href: "/admin/users/all-users",
-        icon: Users,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Roles & Permissions",
-        href: "/admin/users/roles-permissions",
-        icon: Fingerprint,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Teams",
-        href: "/admin/users/teams",
-        icon: UsersRound,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Invitations",
-        href: "/admin/users/invitations",
-        icon: UserPlus,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "Activity Logs",
-        href: "/admin/users/activity-logs",
-        icon: History,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
-      {
-        label: "API Access",
-        href: "/admin/users/api-access",
-        icon: KeyRound,
-        permission: ["content:read", "content:update", "content:delete"]
-      },
+      { label: "All Users", href: "/admin/users/all-users", icon: Users, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Roles & Permissions", href: "/admin/users/roles-permissions", icon: Fingerprint, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Teams", href: "/admin/users/teams", icon: UsersRound, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Invitations", href: "/admin/users/invitations", icon: UserPlus, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "Activity Logs", href: "/admin/users/activity-logs", icon: History, permission: ["content:read", "content:update", "content:delete"] },
+      { label: "API Access", href: "/admin/users/api-access", icon: KeyRound, permission: ["content:read", "content:update", "content:delete"] },
     ],
   },
-
   {
     id: "settings",
     label: "Settings",
     items: [
-      {
-        label: "General",
-        href: "/admin/settings/general",
-        icon: Settings2,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Domain & DNS",
-        href: "/admin/settings/domain-dns",
-        icon: Globe,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Billing & Plans",
-        href: "/admin/settings/billing-plans",
-        icon: CreditCard,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Usage & Limits",
-        href: "/admin/settings/usage-limits",
-        icon: Activity,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Integrations",
-        href: "/admin/settings/integrations",
-        icon: Blocks,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Webhooks",
-        href: "/admin/settings/webhooks",
-        icon: Webhook,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Data Export",
-        href: "/admin/settings/data-export",
-        icon: Download,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
-      {
-        label: "Security",
-        href: "/admin/settings/security",
-        icon: ShieldCheck,
-        permission: ["content:read", "content:update", "content:delete"],
-      },
+      { label: "General", href: "/admin/settings/general", icon: Settings2, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Domain & DNS", href: "/admin/settings/domain-dns", icon: Globe, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Billing & Plans", href: "/admin/settings/billing-plans", icon: CreditCard, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Usage & Limits", href: "/admin/settings/usage-limits", icon: Activity, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Integrations", href: "/admin/settings/integrations", icon: Blocks, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Webhooks", href: "/admin/settings/webhooks", icon: Webhook, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Data Export", href: "/admin/settings/data-export", icon: Download, permission: ["content:read", "content:update", "content:delete"], },
+      { label: "Security", href: "/admin/settings/security", icon: ShieldCheck, permission: ["content:read", "content:update", "content:delete"], },
     ],
   },
-
   {
     id: "domains",
     label: "Domain & Hosting",
     items: [
-      {
-        label: "Domains",
-        href: "/admin/domain",
-        icon: Globe,
-        permission: "content:read",
-      },
+      { label: "Domains", href: "/admin/domain", icon: Globe, permission: "content:read", },
     ],
   },
 ];
@@ -684,7 +339,6 @@ function useHasPermission(user: User | null) {
   );
 }
 
-// Section "header icon" like screenshot (one icon per group)
 const sectionIconMap: Record<
   string,
   React.ComponentType<React.SVGProps<SVGSVGElement>>
@@ -702,7 +356,7 @@ const sectionIconMap: Record<
 };
 
 // ---------------------------------------------------------------------------
-// Sidebar (Desktop) — matches screenshot style
+// Sidebar (Desktop)
 // ---------------------------------------------------------------------------
 
 type SidebarProps = {
@@ -734,11 +388,11 @@ function Sidebar({
       .filter((section) => section.items.length > 0);
   }, [hasPermission]);
 
-  // open/close groups (dropdown like "Income" in screenshot)
+  // open/close groups
   const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>(
     () => {
       const init: Record<string, boolean> = {};
-      filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0)); // first group open by default
+      filteredWebsiteSections.forEach((s, idx) => (init[s.id] = idx === 0));
       return init;
     }
   );
@@ -756,7 +410,6 @@ function Sidebar({
   const toggleGroup = (id: string) =>
     setOpenGroups((p) => ({ ...p, [id]: !p[id] }));
 
-  // collapsed hover floating panel (like screenshot right)
   const [hoverGroupId, setHoverGroupId] = React.useState<string | null>(null);
 
   return (
@@ -767,27 +420,28 @@ function Sidebar({
           collapsed ? "w-[84px]" : "w-[320px]"
         )}
       >
-        {/* ✅ soft container like screenshot */}
-        <div className="w-full ">
+        <div className="w-full">
           <div
             className={cn(
-              "h-full  border bg-sidebar text-sidebar-foreground",
-              "shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+              // UPDATED: Used semantic theme colors instead of hardcoded hex
+              "h-full border-r border-border bg-muted/20 text-foreground", 
+              "shadow-none"
             )}
           >
             <div className="flex h-full flex-col">
-              <div className="border-b pb-4 ">
+              <div className="border-b border-border/50 pb-4">
                 {/* Brand row */}
                 <div className="flex justify-between items-center">
                   <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
                     <div className="flex items-center gap-3">
-                      <div className="grid h-10 w-10 place-items-center rounded-md">
-                        <img src="../dzinly-favicon.svg" className="w-10 h-10"></img>
+                      <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                         {/* Inverted the logo for contrast or keep original */}
+                        <img src="../dzinly-favicon.svg" className="w-6 h-6 invert brightness-0"></img>
                       </div>
                       {!collapsed && (
                         <div className="leading-tight">
-                          <div className="text-sm font-semibold">Dzinly</div>
-                          <div className="text-[11px] text-black/45">Admin panel</div>
+                          <div className="text-sm font-bold tracking-tight">Dzinly</div>
+                          <div className="text-[11px] text-muted-foreground">Admin panel</div>
                         </div>
                       )}
                     </div>
@@ -800,34 +454,26 @@ function Sidebar({
                         value={currentWebsite?._id || ""}
                         onValueChange={onWebsiteChange}
                       >
-                        {/* Trigger */}
                         <SelectTrigger
                           className={cn(
-                            "h-12 w-full rounded-md bg-sidebar-accent shadow border border-sidebar-border",
+                            // UPDATED: Cleaner white/bg input look
+                            "h-10 w-full rounded-md bg-background shadow-sm border border-input",
                             "flex items-center justify-between px-3",
-                            "[&>svg]:hidden", // 👈 DEFAULT SELECT ICON REMOVED
+                            "[&>svg]:hidden",
                             collapsed && "justify-center px-2"
                           )}
                         >
                           {!collapsed ? (
-
-
                             <div className="flex items-center gap-2">
-
-
-
-                              {/* Your custom icon */}
-                              <ChevronsUpDown className="h-4 w-4 text-black/50" />
+                              <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
                             </div>
                           ) : (
-                            <Globe2 className="h-4 w-4 text-black/70" />
+                            <Globe2 className="h-4 w-4 text-muted-foreground" />
                           )}
                         </SelectTrigger>
 
-
-                        {/* Dropdown */}
                         <SelectContent className="w-[260px] rounded-lg border shadow-lg">
-                          <div className="px-3 py-2 text-xs font-medium text-muted-foreground">
+                          <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
                             Websites
                           </div>
 
@@ -835,10 +481,9 @@ function Sidebar({
                             <SelectItem key={site._id} value={site._id}>
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
-                                  <div className="h-7 w-7 rounded-md border bg-sidebar-accent flex items-center justify-center">
-                                    <Globe2 className="h-4 w-4 text-black/60" />
+                                  <div className="h-7 w-7 rounded-md border bg-muted flex items-center justify-center">
+                                    <Globe2 className="h-4 w-4 text-muted-foreground" />
                                   </div>
-
                                   <div className="flex flex-col">
                                     <span className="text-sm font-medium">{site.name}</span>
                                     <span className="text-[11px] text-muted-foreground">
@@ -846,35 +491,28 @@ function Sidebar({
                                     </span>
                                   </div>
                                 </div>
-
-                                {/* Shortcut hint (UI only) */}
-                                {/* <span className="text-[11px] text-muted-foreground">
-                                ⌘{index + 1}
-                              </span> */}
                               </div>
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-
                   )}
                 </div>
 
-                <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-sidebar-accent shadow-sm rounded-sm px-3 py-2 mt-4">
-                  <span className="text-xs font-medium">
-                    {currentWebsite?.name || "Select website"}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground">
-                    {currentWebsite?.primaryDomain ||
-                      currentWebsite?.systemSubdomain ||
-                      ""}
-                  </span>
-                </div>
-
+                {!collapsed && (
+                  <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-background border border-border/50 shadow-sm rounded-md px-3 py-2 mt-4">
+                    <span className="text-xs font-semibold text-foreground">
+                      {currentWebsite?.name || "Select website"}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">
+                      {currentWebsite?.primaryDomain ||
+                        currentWebsite?.systemSubdomain ||
+                        ""}
+                    </span>
+                  </div>
+                )}
               </div>
-
-
 
               <ScrollArea
                 className={cn("mt-3 flex-1 px-2 pb-3", collapsed && "px-2")}
@@ -883,7 +521,7 @@ function Sidebar({
                   {!currentWebsite ? (
                     <div
                       className={cn(
-                        "px-3 py-6 text-sm text-black/45",
+                        "px-3 py-6 text-sm text-muted-foreground",
                         collapsed && "text-center px-1"
                       )}
                     >
@@ -895,7 +533,7 @@ function Sidebar({
                         sectionIconMap[section.id] || LayoutDashboard;
                       const isOpen = !!openGroups[section.id];
 
-                      // if collapsed: icon only + hover opens floating panel
+                      // Collapsed View
                       if (collapsed) {
                         return (
                           <div
@@ -910,11 +548,11 @@ function Sidebar({
                                   type="button"
                                   className={cn(
                                     "w-full flex items-center justify-center",
-                                    "h-11 rounded-md bg-sidebar-accent/70 hover:bg-sidebar-accent transition",
-                                    "border border-sidebar-border shadow-sm"
+                                    "h-11 rounded-md transition-all duration-200",
+                                    "text-muted-foreground hover:bg-background hover:text-foreground hover:shadow-sm border border-transparent hover:border-border/50"
                                   )}
                                 >
-                                  <HeaderIcon className="h-5 w-5 text-black/70" />
+                                  <HeaderIcon className="h-5 w-5" />
                                 </button>
                               </TooltipTrigger>
                               <TooltipContent side="right">
@@ -922,7 +560,6 @@ function Sidebar({
                               </TooltipContent>
                             </Tooltip>
 
-                            {/* floating panel like screenshot */}
                             <AnimatePresence>
                               {hoverGroupId === section.id && (
                                 <motion.div
@@ -937,11 +574,11 @@ function Sidebar({
                                     x: 10,
                                     transition: { duration: 0.14, ease },
                                   }}
-                                  className="absolute left-[92px] top-0 z-50 w-[240px]"
+                                  className="absolute left-[84px] top-0 z-50 w-[240px]"
                                 >
-                                  <div className="rounded-md bg-sidebar-accent border shadow-[0_25px_60px_rgba(0,0,0,0.18)] p-3">
+                                  <div className="rounded-lg bg-popover border text-popover-foreground shadow-xl p-3">
                                     <div className="flex items-center justify-between px-2 pb-2">
-                                      <div className="text-sm font-semibold text-black/80">
+                                      <div className="text-sm font-semibold">
                                         {section.label}
                                       </div>
                                       <FiCloseHint />
@@ -962,22 +599,16 @@ function Sidebar({
                                           >
                                             <div
                                               className={cn(
-                                                "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
+                                                "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                                                 active
-                                                  ? "bg-[#f2f3f4] text-black shadow-sm"
-                                                  : "text-black/70 hover:bg-[#f6f7f8]"
+                                                  ? "bg-primary/10 text-primary font-medium"
+                                                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
                                               )}
                                             >
                                               <Icon className="h-4 w-4" />
                                               <span className="truncate flex-1">
                                                 {item.label}
                                               </span>
-                                              {item.badge && (
-                                                <span className="text-[11px] rounded-lg bg-black/5 px-2 py-0.5">
-                                                  {item.badge}
-                                                </span>
-                                              )}
-                                              <ChevronRight className="h-4 w-4 opacity-40" />
                                             </div>
                                           </Link>
                                         );
@@ -991,30 +622,32 @@ function Sidebar({
                         );
                       }
 
-                      // normal expanded sidebar
+                      // Normal Expanded View
                       return (
                         <div key={section.id} className="rounded-md">
-                          {/* Group header row (like “Income” in screenshot) */}
+                          {/* Group header row */}
                           <button
                             type="button"
                             onClick={() => toggleGroup(section.id)}
                             className={cn(
                               "w-full flex items-center gap-3 rounded-md px-3 py-2.5",
-                              "text-left bg-sidebar-accent/70 border border-sidebar-border shadow-sm",
-                              "hover:bg-sidebar-accent transition"
+                              "text-left transition-all duration-200",
+                              // UPDATED: Cleaner header style
+                              "bg-transparent hover:bg-background hover:shadow-sm border border-transparent hover:border-border/40",
+                              "group"
                             )}
                           >
-                            <div className="grid h-9 w-9 place-items-center rounded-md bg-sidebar-accent border shadow-sm">
-                              <HeaderIcon className="h-4 w-4 text-black/70 " />
+                            <div className="grid h-8 w-8 place-items-center rounded-md bg-background border shadow-sm group-hover:border-primary/20">
+                              <HeaderIcon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                             </div>
 
                             <div className="flex-1">
-                              <div className="text-[13px] font-semibold text-black/80">
+                              <div className="text-[13px] font-semibold text-foreground">
                                 {section.label}
                               </div>
                             </div>
 
-                            <div className="text-black/40">
+                            <div className="text-muted-foreground/50 group-hover:text-muted-foreground">
                               {isOpen ? (
                                 <ChevronDown className="h-4 w-4" />
                               ) : (
@@ -1023,7 +656,7 @@ function Sidebar({
                             </div>
                           </button>
 
-                          {/* Items (nested, with subtle left line like screenshot) */}
+                          {/* Items (nested) */}
                           <AnimatePresence initial={false}>
                             {isOpen && (
                               <motion.div
@@ -1040,10 +673,9 @@ function Sidebar({
                                 }}
                                 className="overflow-hidden"
                               >
-                                <div className="pl-[22px] pr-1 pt-2 pb-2">
-                                  <div className="relative pl-5">
-                                    <div className="absolute left-2 top-2 bottom-2 w-px bg-black/10" />
-                                    <div className="space-y-1">
+                                <div className="pl-[22px] pr-1 pt-1 pb-2">
+                                  <div className="relative pl-4 border-l border-border/60 ml-2">
+                                    <div className="space-y-0.5">
                                       {section.items.map((item) => {
                                         const Icon = item.icon;
                                         const active =
@@ -1058,23 +690,23 @@ function Sidebar({
                                           >
                                             <div
                                               className={cn(
-                                                "group flex items-center gap-3 rounded-md px-3 py-2",
+                                                "group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
+                                                // UPDATED: Active state pops out white with shadow
                                                 active
-                                                  ? "bg-[#fff] text-black shadow-sm"
-                                                  : "text-black/70 hover:bg-[#f6f7f8]"
+                                                  ? "bg-background text-primary shadow-sm font-medium border border-border/50"
+                                                  : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
                                               )}
                                             >
-                                              <Icon className="h-4 w-4 text-black/55" />
-                                              <span className="text-[13px] font-medium truncate flex-1">
+                                              <Icon className={cn("h-4 w-4 transition-colors", active ? "text-primary" : "opacity-70 group-hover:opacity-100")} />
+                                              <span className="text-[13px] truncate flex-1">
                                                 {item.label}
                                               </span>
 
                                               {item.badge && (
-                                                <span className="text-[11px] rounded-lg bg-[#dff4e7] text-[#146b3a] px-2 py-0.5 font-semibold">
+                                                <span className="text-[10px] rounded-full bg-primary/10 text-primary px-2 py-0.5 font-bold">
                                                   {item.badge}
                                                 </span>
                                               )}
-                                              <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-40 transition" />
                                             </div>
                                           </Link>
                                         );
@@ -1093,21 +725,18 @@ function Sidebar({
               </ScrollArea>
 
               {/* collapse button */}
-              <div className="border-t border-black/10 p-3">
-
-
-                <div className="mt-4">
+              <div className="border-t border-border/50 p-3 bg-muted/10">
+                <div className="mt-2">
                   <DropdownMenu>
-                    {/* TRIGGER */}
                     <DropdownMenuTrigger asChild>
-                      <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-muted">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback>SC</AvatarFallback>
+                      <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-background hover:shadow-sm border border-transparent hover:border-border transition-all">
+                        <Avatar className="h-8 w-8 border">
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold">SC</AvatarFallback>
                         </Avatar>
 
                         <div className="flex flex-col flex-1 text-left leading-tight">
-                          <span className="text-sm font-medium">shadcn</span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-sm font-medium truncate">shadcn</span>
+                          <span className="text-xs text-muted-foreground truncate">
                             m@example.com
                           </span>
                         </div>
@@ -1116,19 +745,16 @@ function Sidebar({
                       </button>
                     </DropdownMenuTrigger>
 
-                    {/* ✅ DROPDOWN OPENS OUTSIDE SIDEBAR */}
                     <DropdownMenuContent
-                      side="right"          // 👈 sidebar se bahar
-                      align="start"         // 👈 top align
-                      sideOffset={12}       // 👈 gap
+                      side="right"
+                      align="start"
+                      sideOffset={12}
                       className="w-56 rounded-xl shadow-xl mb-2"
                     >
-                      {/* Header */}
                       <DropdownMenuLabel className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
                           <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
-
                         <div className="flex flex-col">
                           <span className="text-sm font-medium">shadcn</span>
                           <span className="text-xs text-muted-foreground">
@@ -1146,13 +772,12 @@ function Sidebar({
 
                       <DropdownMenuSeparator />
 
-                     <DropdownMenuItem asChild>
-                <Link href="/admin/themes" className="flex items-center w-full cursor-pointer">
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Theme
-                </Link>
-              </DropdownMenuItem>
-
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/themes" className="flex items-center w-full cursor-pointer">
+                          <Palette className="mr-2 h-4 w-4" />
+                          Theme
+                        </Link>
+                      </DropdownMenuItem>
 
                       <DropdownMenuItem>
                         <User className="mr-2 h-4 w-4" />
@@ -1171,19 +796,14 @@ function Sidebar({
 
                       <DropdownMenuSeparator />
 
-                      <DropdownMenuItem className="text-red-600 focus:text-red-600">
+                      <DropdownMenuItem className="text-destructive focus:text-destructive">
                         <LogOut className="mr-2 h-4 w-4" />
                         Log out
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-
-
-
-
               </div>
-
             </div>
           </div>
         </div>
@@ -1192,13 +812,13 @@ function Sidebar({
   );
 }
 
-// small helper icon for floating panel (optional)
+// small helper icon for floating panel
 function FiCloseHint() {
-  return <div className="text-[11px] text-black/35">hover</div>;
+  return <div className="text-[11px] text-muted-foreground">hover</div>;
 }
 
 // ---------------------------------------------------------------------------
-// Mobile Sidebar (kept simple, same style)
+// Mobile Sidebar
 // ---------------------------------------------------------------------------
 
 type MobileSidebarProps = {
@@ -1235,14 +855,14 @@ function MobileSidebar({
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-muted/20">
       {websites.length > 0 && (
-        <div className="p-3 border-b">
+        <div className="p-4 border-b">
           <Select
             value={currentWebsite?._id || ""}
             onValueChange={onWebsiteChange}
           >
-            <SelectTrigger className="h-10 w-full rounded-md">
+            <SelectTrigger className="h-10 w-full rounded-md bg-background">
               <SelectValue placeholder="Select website" />
             </SelectTrigger>
             <SelectContent>
@@ -1264,7 +884,7 @@ function MobileSidebar({
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-3">
           {!currentWebsite ? (
-            <div className="text-sm text-muted-foreground px-2 py-4">
+            <div className="text-sm text-muted-foreground px-2 py-4 text-center">
               Select website
             </div>
           ) : (
@@ -1275,28 +895,27 @@ function MobileSidebar({
               return (
                 <div
                   key={section.id}
-                  className="rounded-md border bg-muted/10 overflow-hidden"
+                  className="rounded-md border bg-background overflow-hidden"
                 >
                   <button
                     type="button"
                     onClick={() =>
                       setOpenGroups((p) => ({ ...p, [section.id]: !isOpen }))
                     }
-                    className="w-full flex items-center justify-between px-3 py-3"
+                    className="w-full flex items-center justify-between px-3 py-3 hover:bg-muted/50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="grid h-9 w-9 place-items-center rounded-md bg-background border">
-                        <LayoutGrid className="h-4 w-4 text-black/70" />
-
+                      <div className="grid h-8 w-8 place-items-center rounded-md bg-muted">
+                        <LayoutGrid className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <div className="text-sm font-semibold">
+                      <div className="text-sm font-semibold text-foreground">
                         {section.label}
                       </div>
                     </div>
                     {isOpen ? (
-                      <ChevronDown className="h-4 w-4 opacity-60" />
+                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
                     ) : (
-                      <ChevronRight className="h-4 w-4 opacity-60" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     )}
                   </button>
 
@@ -1331,10 +950,10 @@ function MobileSidebar({
                               >
                                 <div
                                   className={cn(
-                                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
+                                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
                                     active
-                                      ? "bg-background shadow-sm"
-                                      : "hover:bg-muted"
+                                      ? "bg-primary/10 text-primary font-medium"
+                                      : "text-muted-foreground hover:bg-muted"
                                   )}
                                 >
                                   <Icon className="h-4 w-4 opacity-70" />
@@ -1368,7 +987,7 @@ function MobileSidebar({
 }
 
 // ---------------------------------------------------------------------------
-// Topbar (same as yours, unchanged logic)
+// Topbar
 // ---------------------------------------------------------------------------
 
 type TopbarProps = {
@@ -1379,23 +998,24 @@ type TopbarProps = {
   onToggleCollapse: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onToggleCollapse }: TopbarProps) {
+function Topbar({
+  currentWebsite,
+  user,
+  onToggleMobileSidebar,
+  collapsed,
+  onToggleCollapse,
+}: TopbarProps) {
   const dispatch = useDispatch();
 
   const handleSignOut = async () => {
     try {
-      // Clear Redux store by resetting to initial state
-      // Reset each slice to its initial state
-      // store.dispatch({ type: 'user/setUser', payload: null });
-      // store.dispatch({ type: 'pageEdit/resetState' });
-      // store.dispatch({ type: 'category/resetState' });
-      // store.dispatch({ type: 'brand/resetState' });
-      // store.dispatch({ type: 'websites/resetState' });
-      resetRedux();
-      // Clear localStorage and sessionStorage
+      // resetRedux(); // Uncomment if you have this function
+      dispatch(clearAttributes());
+      dispatch(clearBrands());
+      dispatch(clearSegments());
+      dispatch(clearCategories());
       localStorage.clear();
       sessionStorage.clear();
-
       await signOut({ callbackUrl: "/", redirect: true });
     } catch (error) {
       console.error("Error during sign out:", error);
@@ -1403,59 +1023,46 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
     }
   };
 
-  const resetRedux = () => {
-    dispatch(clearAttributes())
-    dispatch(clearBrands())
-    dispatch(clearSegments())
-    dispatch(clearCategories())
-  }
-  // Removed duplicate onToggleCollapse function to avoid identifier conflict.
-
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-background/80 px-8 backdrop-blur md:h-16 shadow-sm">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/80 px-4 md:px-6 backdrop-blur shadow-sm supports-[backdrop-filter]:bg-background/60">
       <div className="flex items-center gap-2 md:gap-3">
         {/* SIDEBAR COLLAPSE BUTTON */}
-        <div className="border-none border-black/10 p-3">
+        <div className="border-r border-border pr-3 mr-2">
           <Button
             variant="ghost"
+            size="icon"
             onClick={onToggleCollapse}
-            // size={"xl"}
-            className={cn(
-              "w-full justify-between  hover:bg-transparent",
-              "border-e border-sidebar-border bg-transparent rounded-none  text-black/70 "
-            )}
+            className="text-muted-foreground hover:text-foreground hover:bg-muted/50"
           >
             {!collapsed ? (
-              <>
-                {/* <span className="text-xs font-medium">Collapse</span> */}
-                {/* <FaChevronCircleLeft className="h-6 w-6" /> */}
-                <GoSidebarExpand className="h-14 w-14 " size={48} />
-
-              </>
+              <GoSidebarExpand className="h-5 w-5" />
             ) : (
-              <>
-                {/* <span className="sr-only">Expand</span> */}
-                {/* <FaChevronCircleRight  /> */}
-                <GoSidebarCollapse className="h-14 w-14  mx-auto" size={48} />
-
-              </>
+              <GoSidebarCollapse className="h-5 w-5" />
             )}
           </Button>
         </div>
 
+        {/* Mobile Toggle */}
+        <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden mr-2"
+            onClick={onToggleMobileSidebar}
+        >
+             <Menu className="h-5 w-5" />
+        </Button>
 
-
-        <div className="hidden text-sm font-medium text-black md:inline">
+        <div className="hidden text-sm font-medium text-foreground md:inline">
           Dashboard
         </div>
 
         {currentWebsite && (
-          <div className="flex items-center gap-2 rounded-full border bg-muted/60 px-3 py-1 text-xs text-muted-foreground">
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/15 text-[10px] font-semibold text-primary">
+          <div className="flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
               {currentWebsite.name.charAt(0).toUpperCase()}
             </span>
-            <span className="hidden md:inline">{currentWebsite.name}</span>
-            <span className="hidden text-[11px] text-muted-foreground/80 sm:inline">
+            <span className="hidden md:inline font-medium text-foreground">{currentWebsite.name}</span>
+            <span className="hidden text-[11px] text-muted-foreground/60 sm:inline">
               {currentWebsite.primaryDomain || currentWebsite.systemSubdomain}
             </span>
           </div>
@@ -1463,23 +1070,21 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
       </div>
 
       <div className="flex items-center gap-2">
-
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-black/60" />
-
+        <div className="relative w-full max-w-sm hidden md:block">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search"
-            className=" pl-9 h-8 bg-sidebar-accent/70  border border-black/10 rounded-sm focus-visible:ring-1"
+            placeholder="Search..."
+            className="pl-9 h-9 bg-muted/30 border-input rounded-md focus-visible:ring-1 focus-visible:bg-background transition-all"
           />
         </div>
 
-
-        <Button variant="outline" size="icon" className="h-8 w-8">
-          <Bell className="h-4 w-4" />
+        <Button variant="outline" size="icon" className="h-9 w-9 rounded-full border-dashed border-border">
+          <Bell className="h-4 w-4 text-muted-foreground" />
         </Button>
-        <Button size="sm" className="text-xs">
-          <Sparkles className="h-3 w-3 mr-1" />
+
+        <Button size="sm" className="hidden md:flex text-xs h-9 bg-primary text-primary-foreground shadow hover:bg-primary/90">
+          <Sparkles className="h-3 w-3 mr-2" />
           Upgrade
         </Button>
 
@@ -1488,17 +1093,17 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
             <Button
               variant="ghost"
               size="icon"
-              className="ml-1 h-8 w-8 rounded-full"
+              className="ml-1 h-9 w-9 rounded-full border bg-muted/20"
             >
-              <Avatar className="h-7 w-7">
-                <AvatarFallback>
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary/10 text-primary font-bold">
                   {user?.name?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               {user?.name || "User"}
               <div className="text-xs text-muted-foreground font-normal">
@@ -1511,7 +1116,7 @@ function Topbar({ currentWebsite, user, onToggleMobileSidebar, collapsed, onTogg
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleSignOut}
-              className="text-destructive"
+              className="text-destructive focus:text-destructive"
             >
               Sign out
             </DropdownMenuItem>
@@ -1531,14 +1136,10 @@ export function AppShell({
   websites = [],
   currentWebsite = null,
   user = null,
-  onWebsiteChange = () => { },
+  onWebsiteChange = () => {},
 }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-
-
-
-
 
   return (
     <div className="flex min-h-screen bg-background text-foreground overflow-hidden">
@@ -1551,7 +1152,7 @@ export function AppShell({
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
-      <div className="flex flex-1 min-h-screen flex-col overflow-hidden">
+      <div className="flex flex-1 min-h-screen flex-col overflow-hidden transition-all duration-300">
         <Topbar
           currentWebsite={currentWebsite}
           user={user}
@@ -1559,16 +1160,21 @@ export function AppShell({
           collapsed={sidebarCollapsed}
           onToggleCollapse={(event) => setSidebarCollapsed((prev) => !prev)}
         />
-        <main className="flex-1 px-3 py-4 md:px-6 md:py-6 overflow-auto">
-          <div className="mx-auto max-w-7xl">{children}</div>
+        <main className="flex-1 overflow-auto bg-muted/10 p-4 md:p-6">
+          <div className="mx-auto max-w-7xl h-full">
+            {children}
+          </div>
         </main>
       </div>
 
       <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
         <SheetContent side="left" className="p-0 w-72">
-          <SheetHeader className="border-b px-4 py-3">
-            <SheetTitle className="text-sm font-semibold">
-              Navigation
+          <SheetHeader className="border-b px-4 py-3 bg-muted/10">
+            <SheetTitle className="text-sm font-semibold flex items-center gap-2">
+               <div className="h-6 w-6 bg-primary rounded-md flex items-center justify-center text-primary-foreground">
+                   <img src="../dzinly-favicon.svg" className="w-4 h-4 invert brightness-0"></img>
+               </div>
+               Navigation
             </SheetTitle>
           </SheetHeader>
           <MobileSidebar

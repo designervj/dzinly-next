@@ -6,244 +6,191 @@ type Theme = {
   id: string;
   name: string;
   cssVars: Record<string, string>;
+  isDark: boolean; // Flag to tell icons/images how to behave
 };
 
-// Define your presets exactly mapping to CSS variables
 export const themePresets: Record<string, Theme> = {
-  "modern-minimal": {
-    id: "modern-minimal",
-    name: "Modern Minimal",
+  // 1. Palette: Earthy Organic (Light)
+  // https://coolors.co/palette/edede9-d6ccc2-f5ebe0-e3d5ca-d5bdaf
+  "organic-calm": {
+    id: "organic-calm",
+    name: "Organic Calm",
+    isDark: false,
     cssVars: {
-      // Main colors
-      "--background": "0 0% 100%",
-      "--foreground": "240 10% 3.9%",
-      
-      // Card
-      "--card": "0 0% 100%",
-      "--card-foreground": "240 10% 3.9%",
-      
-      // Popover
-      "--popover": "0 0% 100%",
-      "--popover-foreground": "240 10% 3.9%",
-      
-      // Primary (Black)
-      "--primary": "240 5.9% 10%",
-      "--primary-foreground": "0 0% 98%",
-      
-      // Secondary (Gray)
-      "--secondary": "240 4.8% 95.9%",
-      "--secondary-foreground": "240 5.9% 10%",
-      
-      // Muted
-      "--muted": "240 4.8% 95.9%",
-      "--muted-foreground": "240 3.8% 46.1%",
-      
-      // Accent
-      "--accent": "240 4.8% 95.9%",
-      "--accent-foreground": "240 5.9% 10%",
-      
-      // Destructive
-      "--destructive": "0 84.2% 60.2%",
+      "--background": "30 29% 97%",     // #F5EBE0 (Light Cream)
+      "--foreground": "24 7% 19%",      // Dark Brown/Gray for text (Contrast)
+      "--card": "60 17% 96%",           // #EDEDE9
+      "--card-foreground": "24 7% 19%",
+      "--popover": "60 17% 96%",
+      "--popover-foreground": "24 7% 19%",
+      "--primary": "24 16% 50%",        // #D5BDAF (Muted Brown)
+      "--primary-foreground": "0 0% 100%", // White text on button
+      "--secondary": "30 24% 86%",      // #E3D5CA
+      "--secondary-foreground": "24 7% 19%",
+      "--muted": "30 20% 90%",
+      "--muted-foreground": "24 7% 50%",
+      "--accent": "27 22% 82%",         // #D6CCC2
+      "--accent-foreground": "24 7% 19%",
+      "--destructive": "0 84% 60%",
       "--destructive-foreground": "0 0% 98%",
+      "--border": "27 22% 82%",         // Matches Accent for soft border
+      "--input": "27 22% 82%",
+      "--ring": "24 16% 50%",
       
-      // Border, Input, Ring
-      "--border": "240 5.9% 90%",
-      "--input": "240 5.9% 90%",
-      "--ring": "240 5.9% 10%",
+      // Sidebar (Creamy)
+      "--sidebar": "60 17% 94%",        
+      "--sidebar-foreground": "24 7% 19%",
+      "--sidebar-primary": "24 16% 50%",
+      "--sidebar-primary-foreground": "0 0% 100%",
+      "--sidebar-accent": "30 24% 86%",
+      "--sidebar-accent-foreground": "24 7% 19%",
+      "--sidebar-border": "27 22% 82%",
+      "--sidebar-ring": "24 16% 50%",
+      
+      // Charts (Earthy Tones)
+      "--chart-1": "24 16% 50%",
+      "--chart-2": "30 24% 60%",
+      "--chart-3": "100 20% 50%",
+      "--chart-4": "40 30% 60%",
+      "--chart-5": "20 20% 60%",
+    },
+  },
+
+  // 2. Palette: Royal Dusk (Dark/Mixed)
+  // https://coolors.co/palette/6d455a-293849-ffffff-efece3-ffe6a7
+  "royal-dusk": {
+    id: "royal-dusk",
+    name: "Royal Dusk",
+    isDark: true,
+    cssVars: {
+      "--background": "212 28% 22%",    // #293849 (Deep Blue-Grey)
+      "--foreground": "45 27% 91%",     // #EFECE3 (Off-white)
+      "--card": "212 28% 18%",          // Slightly darker than BG
+      "--card-foreground": "45 27% 91%",
+      "--popover": "212 28% 18%",
+      "--popover-foreground": "45 27% 91%",
+      "--primary": "328 22% 35%",       // #6D455A (Plum)
+      "--primary-foreground": "45 27% 91%",
+      "--secondary": "37 100% 83%",     // #FFE6A7 (Gold)
+      "--secondary-foreground": "212 28% 22%", // Dark text on gold
+      "--muted": "212 20% 30%",
+      "--muted-foreground": "212 10% 70%",
+      "--accent": "328 22% 35%",
+      "--accent-foreground": "45 27% 91%",
+      "--destructive": "0 62% 30%",
+      "--destructive-foreground": "0 0% 98%",
+      "--border": "212 20% 35%",        // Subtle border
+      "--input": "212 20% 35%",
+      "--ring": "37 100% 83%",          // Gold Ring
       
       // Sidebar
-      "--sidebar": "240 4.8% 95.9%",
-      "--sidebar-foreground": "240 5.9% 10%",
-      "--sidebar-primary": "240 5.9% 10%",
-      "--sidebar-primary-foreground": "0 0% 98%",
-      "--sidebar-accent": "240 4.8% 90%",
-      "--sidebar-accent-foreground": "240 5.9% 10%",
-      "--sidebar-border": "240 5.9% 90%",
-      "--sidebar-ring": "240 5.9% 10%",
+      "--sidebar": "212 35% 15%",       // Darker Blue-Grey
+      "--sidebar-foreground": "45 27% 91%",
+      "--sidebar-primary": "37 100% 83%", // Gold active state
+      "--sidebar-primary-foreground": "212 28% 22%",
+      "--sidebar-accent": "328 22% 35%",
+      "--sidebar-accent-foreground": "45 27% 91%",
+      "--sidebar-border": "212 20% 30%",
+      "--sidebar-ring": "37 100% 83%",
       
       // Charts
-      "--chart-1": "240 5.9% 10%",
-      "--chart-2": "0 84.2% 60.2%",
-      "--chart-3": "45 93.4% 47.5%",
-      "--chart-4": "180 80% 50%",
-      "--chart-5": "220 90% 56%",
+      "--chart-1": "37 100% 83%",
+      "--chart-2": "328 22% 50%",
+      "--chart-3": "212 28% 60%",
+      "--chart-4": "45 27% 91%",
+      "--chart-5": "0 0% 100%",
     },
   },
-  "vibrant-creative": {
-    id: "vibrant-creative",
-    name: "Vibrant Creative",
+
+  // 3. Palette: Soft Pastel (Light)
+  // https://coolors.co/palette/9381ff-b8b8ff-f8f7ff-ffeedd-ffd8be
+  "soft-pastel": {
+    id: "soft-pastel",
+    name: "Soft Pastel",
+    isDark: false,
     cssVars: {
-      // Main colors
-      "--background": "0 0% 100%",
-      "--foreground": "222.2 84% 4.9%",
-      
-      // Card
-      "--card": "0 0% 100%",
-      "--card-foreground": "222.2 84% 4.9%",
-      
-      // Popover
+      "--background": "248 100% 98%",   // #F8F7FF (Very light purple tint)
+      "--foreground": "249 20% 20%",    // Dark purple/grey text for readablity
+      "--card": "0 0% 100%",            // White
+      "--card-foreground": "249 20% 20%",
       "--popover": "0 0% 100%",
-      "--popover-foreground": "222.2 84% 4.9%",
-      
-      // Primary (Vivid Purple)
-      "--primary": "262 83% 58%",
-      "--primary-foreground": "210 40% 98%",
-      
-      // Secondary (Light Purple)
-      "--secondary": "262 83% 96%",
-      "--secondary-foreground": "262 47% 30%",
-      
-      // Muted
-      "--muted": "262 83% 96%",
-      "--muted-foreground": "262 47% 46%",
-      
-      // Accent
-      "--accent": "262 83% 92%",
-      "--accent-foreground": "262 47% 30%",
-      
-      // Destructive
-      "--destructive": "0 84.2% 60.2%",
-      "--destructive-foreground": "210 40% 98%",
-      
-      // Border, Input, Ring
-      "--border": "262 83% 85%",
-      "--input": "262 83% 85%",
-      "--ring": "262 83% 58%",
-      
-      // Sidebar (Light Purple)
-      "--sidebar": "262 83% 96%",
-      "--sidebar-foreground": "262 47% 30%",
-      "--sidebar-primary": "262 83% 58%",
-      "--sidebar-primary-foreground": "210 40% 98%",
-      "--sidebar-accent": "262 83% 92%",
-      "--sidebar-accent-foreground": "262 47% 30%",
-      "--sidebar-border": "262 83% 85%",
-      "--sidebar-ring": "262 83% 58%",
-      
-      // Charts
-      "--chart-1": "262 83% 58%",
-      "--chart-2": "340 75% 55%",
-      "--chart-3": "45 93% 47%",
-      "--chart-4": "180 80% 50%",
-      "--chart-5": "220 90% 56%",
-    },
-  },
-  "corporate-trust": {
-    id: "corporate-trust",
-    name: "Corporate Trust",
-    cssVars: {
-      // Main colors
-      "--background": "210 40% 98%",
-      "--foreground": "222.2 47.4% 11.2%",
-      
-      // Card
-      "--card": "0 0% 100%",
-      "--card-foreground": "222.2 47.4% 11.2%",
-      
-      // Popover
-      "--popover": "0 0% 100%",
-      "--popover-foreground": "222.2 47.4% 11.2%",
-      
-      // Primary (Corporate Blue)
-      "--primary": "221.2 83.2% 53.3%",
-      "--primary-foreground": "210 40% 98%",
-      
-      // Secondary (Dark Blue Gray)
-      "--secondary": "217 33% 25%",
-      "--secondary-foreground": "210 40% 98%",
-      
-      // Muted
-      "--muted": "210 40% 96.1%",
-      "--muted-foreground": "215.4 16.3% 46.9%",
-      
-      // Accent
-      "--accent": "217 33% 25%",
-      "--accent-foreground": "210 40% 98%",
-      
-      // Destructive
-      "--destructive": "0 84.2% 60.2%",
-      "--destructive-foreground": "210 40% 98%",
-      
-      // Border, Input, Ring
-      "--border": "217 33% 85%",
-      "--input": "217 33% 85%",
-      "--ring": "221.2 83.2% 53.3%",
-      
-      // Sidebar (Dark Blue)
-      "--sidebar": "217 33% 17%",
-      "--sidebar-foreground": "210 40% 98%",
-      "--sidebar-primary": "221.2 83.2% 53.3%",
-      "--sidebar-primary-foreground": "210 40% 98%",
-      "--sidebar-accent": "217 33% 25%",
-      "--sidebar-accent-foreground": "210 40% 98%",
-      "--sidebar-border": "217 33% 20%",
-      "--sidebar-ring": "221.2 83.2% 53.3%",
-      
-      // Charts
-      "--chart-1": "221.2 83.2% 53.3%",
-      "--chart-2": "212 95% 50%",
-      "--chart-3": "200 80% 50%",
-      "--chart-4": "180 70% 45%",
-      "--chart-5": "195 85% 45%",
-    },
-  },
-  "dark-mode-pro": {
-    id: "dark-mode-pro",
-    name: "Dark Future",
-    cssVars: {
-      // Main colors (Dark)
-      "--background": "240 10% 3.9%",
-      "--foreground": "0 0% 98%",
-      
-      // Card
-      "--card": "240 10% 8%",
-      "--card-foreground": "0 0% 98%",
-      
-      // Popover
-      "--popover": "240 10% 8%",
-      "--popover-foreground": "0 0% 98%",
-      
-      // Primary (Neon Green)
-      "--primary": "142.1 76.2% 36.3%",
-      "--primary-foreground": "355.7 100% 97.3%",
-      
-      // Secondary (Dark Gray)
-      "--secondary": "240 3.7% 15.9%",
-      "--secondary-foreground": "0 0% 98%",
-      
-      // Muted
-      "--muted": "240 3.7% 15.9%",
-      "--muted-foreground": "240 5% 64.9%",
-      
-      // Accent
-      "--accent": "240 3.7% 15.9%",
-      "--accent-foreground": "0 0% 98%",
-      
-      // Destructive
-      "--destructive": "0 62.8% 30.6%",
+      "--popover-foreground": "249 20% 20%",
+      "--primary": "249 100% 79%",      // #9381FF (Lavender)
+      "--primary-foreground": "0 0% 100%",
+      "--secondary": "32 100% 93%",     // #FFEEDD (Peach)
+      "--secondary-foreground": "249 20% 20%",
+      "--muted": "240 50% 96%",
+      "--muted-foreground": "249 20% 50%",
+      "--accent": "240 100% 86%",       // #B8B8FF
+      "--accent-foreground": "249 20% 20%",
+      "--destructive": "0 84% 60%",
       "--destructive-foreground": "0 0% 98%",
+      "--border": "240 100% 90%",
+      "--input": "240 100% 90%",
+      "--ring": "249 100% 79%",
       
-      // Border, Input, Ring
-      "--border": "240 3.7% 15.9%",
-      "--input": "240 3.7% 15.9%",
-      "--ring": "142.1 76.2% 36.3%",
+      // Sidebar
+      "--sidebar": "0 0% 100%",
+      "--sidebar-foreground": "249 20% 20%",
+      "--sidebar-primary": "249 100% 79%",
+      "--sidebar-primary-foreground": "0 0% 100%",
+      "--sidebar-accent": "32 100% 93%",
+      "--sidebar-accent-foreground": "249 20% 20%",
+      "--sidebar-border": "240 100% 92%",
+      "--sidebar-ring": "249 100% 79%",
+
+       // Charts
+      "--chart-1": "249 100% 79%",
+      "--chart-2": "24 100% 87%",
+      "--chart-3": "240 100% 86%",
+      "--chart-4": "32 100% 93%",
+      "--chart-5": "280 60% 70%",
+    },
+  },
+
+  // 4. Palette: Cyber Punk (Dark)
+  // https://coolors.co/palette/f72585-7209b7-3a0ca3-4361ee-4cc9f0
+  "cyber-punk": {
+    id: "cyber-punk",
+    name: "Cyber Punk",
+    isDark: true,
+    cssVars: {
+      "--background": "258 87% 20%",    // #3A0CA3 (Deep Indigo - darkened for bg)
+      "--foreground": "0 0% 100%",      // White text
+      "--card": "258 87% 15%",          // Darker Indigo
+      "--card-foreground": "0 0% 100%",
+      "--popover": "258 87% 15%",
+      "--popover-foreground": "0 0% 100%",
+      "--primary": "332 91% 56%",       // #F72585 (Neon Pink)
+      "--primary-foreground": "0 0% 100%",
+      "--secondary": "278 89% 38%",     // #7209B7 (Violet)
+      "--secondary-foreground": "0 0% 100%",
+      "--muted": "258 60% 30%",
+      "--muted-foreground": "258 30% 80%",
+      "--accent": "229 84% 60%",        // #4361EE (Electric Blue)
+      "--accent-foreground": "0 0% 100%",
+      "--destructive": "332 91% 40%",
+      "--destructive-foreground": "0 0% 100%",
+      "--border": "278 89% 38%",
+      "--input": "278 89% 38%",
+      "--ring": "193 88% 62%",          // #4CC9F0 (Cyan)
       
-      // Sidebar (Pure Black)
-      "--sidebar": "0 0% 0%",
-      "--sidebar-foreground": "240 5% 64.9%",
-      "--sidebar-primary": "142.1 76.2% 36.3%",
-      "--sidebar-primary-foreground": "355.7 100% 97.3%",
-      "--sidebar-accent": "240 3.7% 15.9%",
-      "--sidebar-accent-foreground": "0 0% 98%",
-      "--sidebar-border": "240 3.7% 15.9%",
-      "--sidebar-ring": "142.1 76.2% 36.3%",
-      
-      // Charts (Vibrant for dark mode)
-      "--chart-1": "142.1 76.2% 36.3%",
-      "--chart-2": "173 80% 40%",
-      "--chart-3": "197 37% 24%",
-      "--chart-4": "198 70% 50%",
-      "--chart-5": "160 60% 45%",
+      // Sidebar
+      "--sidebar": "258 90% 12%",       // Very dark indigo
+      "--sidebar-foreground": "0 0% 100%",
+      "--sidebar-primary": "193 88% 62%", // Cyan active
+      "--sidebar-primary-foreground": "258 87% 20%", // Dark text on cyan
+      "--sidebar-accent": "278 89% 38%",
+      "--sidebar-accent-foreground": "0 0% 100%",
+      "--sidebar-border": "278 89% 38%",
+      "--sidebar-ring": "193 88% 62%",
+
+      // Charts
+      "--chart-1": "332 91% 56%",
+      "--chart-2": "193 88% 62%",
+      "--chart-3": "278 89% 38%",
+      "--chart-4": "229 84% 60%",
+      "--chart-5": "260 80% 50%",
     },
   },
 };
@@ -256,9 +203,8 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function AdminThemeProvider({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState("modern-minimal");
+  const [currentTheme, setCurrentTheme] = useState("organic-calm");
 
-  // Apply theme CSS variables to document
   const applyTheme = (themeId: string) => {
     const theme = themePresets[themeId];
     if (!theme) return;
@@ -268,34 +214,29 @@ export function AdminThemeProvider({ children }: { children: React.ReactNode }) 
       root.style.setProperty(key, value);
     });
 
-    // Handle dark mode class for specific Tailwind utilities
-    if (themeId === 'dark-mode-pro' || themeId === 'corporate-trust') {
-      document.documentElement.classList.add('dark');
+    // Toggle Tailwind 'dark' class based on the theme definition
+    if (theme.isDark) {
+      root.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
     }
   };
 
-  // Load theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem("admin-theme");
     if (savedTheme && themePresets[savedTheme]) {
       setCurrentTheme(savedTheme);
       applyTheme(savedTheme);
     } else {
-      // Apply default theme
-      applyTheme("modern-minimal");
+      applyTheme("organic-calm");
     }
   }, []);
 
   const setTheme = (themeId: string) => {
     const theme = themePresets[themeId];
     if (!theme) return;
-
     setCurrentTheme(themeId);
     applyTheme(themeId);
-    
-    // Persist to localStorage
     localStorage.setItem("admin-theme", themeId);
   };
 

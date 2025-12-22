@@ -9,7 +9,7 @@ import segmentReducer from "../hooks/slices/segment/SegmentSlice"
 import productReducer from "../hooks/slices/product/ProductSlice"
 import llmSettingReducer from "../hooks/slices/setting/llmSetting/LLMSettingSlice"
 import dataStorageReducer from "../hooks/slices/dataStorage/DataStorageSlice";
-
+import BlockReducer from "../hooks/slices/blocks/BlockSlice"
 
 
 
@@ -25,6 +25,7 @@ export const store = configureStore({
     websites: websitesReducer,
     llmSetting:llmSettingReducer,
     dataStorage: dataStorageReducer,
+    block:BlockReducer
   },
 });
 

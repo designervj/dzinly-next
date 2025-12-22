@@ -211,6 +211,7 @@ if (block.content) {
         {filteredBlocks.length > 0 ? (
           filteredBlocks.map((block) => {
             const b = block as BlockConfig;
+            console.log("all blockk--0, ",b)
             return (
               <BlockGridItem
                 key={b.id}

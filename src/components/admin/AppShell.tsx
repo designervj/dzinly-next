@@ -314,6 +314,13 @@ const currentWebsiteSections: NavSection[] = [
     ],
   },
   {
+     id: "block-manager",
+    label: "Block Manager",
+    items: [
+          { label: "Blocks", href: "/admin/block-manager/blocks", icon: Blocks, permission: ["content:read", "content:update", "content:delete"], },
+    ]
+  },
+  {
     id: "domains",
     label: "Domain & Hosting",
     items: [

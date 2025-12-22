@@ -47,7 +47,7 @@ export default async function PageTemplate({ params }: any) {
     <div>
       {session &&
         session.user &&
-        (session.user.role == "owner" || session?.user.role == "A") && (
+        (session.user.role == "owner" || session?.user.role == "superadmin") && (
           <EditButton pageData={t.item} />
         )}
       <div dangerouslySetInnerHTML={{ __html: processedHtml }} />

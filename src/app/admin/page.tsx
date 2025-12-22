@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -21,7 +20,7 @@ import { getAllUser } from "@/hooks/slices/user/userSlice";
 //   }
 // }
 
-export default async function AdminIndex() {
+export default function AdminIndex() {
   const {user, alluser,hasFetched }= useSelector((state:RootState)=>state.user)
    const dispatch= useDispatch<AppDispatch>()
   

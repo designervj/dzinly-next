@@ -11,7 +11,7 @@ export default async function Builder() {
   }
 
   // Check if user has permission to edit (owner or admin)
-  if (session.user.role !== "owner" && session.user.role !== "A") {
+  if (session.user.role !== "owner" && session.user.role !== "superadmin") {
     redirect("/"); // Redirect to home if not authorized
   }
 

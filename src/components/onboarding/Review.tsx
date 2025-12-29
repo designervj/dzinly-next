@@ -1,7 +1,17 @@
 import React from "react";
 import { toast } from "sonner";
+import { tenantData, userData, websiteData } from "./OnboardingTenants";
 
-export const Review = ({ tenantData, userData, websiteData, handleSave }) => {
+
+export interface ReviewProps {
+  tenantData: tenantData;
+  userData: userData
+  websiteData: websiteData
+  handleSave: () => void
+}
+
+
+export const Review = ({ tenantData, userData, websiteData, handleSave }: ReviewProps) => {
   
 
   return (

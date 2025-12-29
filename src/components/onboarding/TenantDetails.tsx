@@ -1,7 +1,15 @@
 import { Check, Palette, Upload } from 'lucide-react';
 import React from 'react'
+import { tenantData } from './OnboardingTenants';
 
-export const TenantDetails = ({tenantData, setTenantData}) => {
+export interface TenantProps {
+  tenantData: tenantData;
+  setTenantData: React.Dispatch<React.SetStateAction<tenantData>>;
+}
+
+
+
+export const TenantDetails = ({tenantData, setTenantData}: TenantProps) => {
     const tenantTypes = [
     { value: "manufacturer", label: "Manufacturer", description: "Production and manufacturing businesses", icon: "🏭" },
     { value: "distributor", label: "Distributor", description: "Supply chain and distribution services", icon: "🚚" },

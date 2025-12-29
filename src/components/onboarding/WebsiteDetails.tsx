@@ -1,7 +1,24 @@
 import { Check, Plus, X } from "lucide-react";
 import React from "react";
+import { currentDomain, websiteData } from "./OnboardingTenants";
 
-export const WebsiteDetails = ({websiteData, setWebsiteData, currentDomain, setCurrentDomain, addPrimaryDomain, removePrimaryDomain}) => {
+export interface WebsiteProps {
+  websiteData: websiteData;
+  setWebsiteData: React.Dispatch<React.SetStateAction<websiteData>>;
+  currentDomain: currentDomain,
+  setCurrentDomain: React.Dispatch<React.SetStateAction<currentDomain>>
+  addPrimaryDomain: () => void,
+  removePrimaryDomain: (domain:string) =>void
+}
+
+export const WebsiteDetails = ({
+  websiteData,
+  setWebsiteData,
+  currentDomain,
+  setCurrentDomain,
+  addPrimaryDomain,
+  removePrimaryDomain,
+}: WebsiteProps) => {
   return (
     <div className="space-y-6">
       <div>

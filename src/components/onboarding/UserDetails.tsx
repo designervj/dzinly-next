@@ -1,7 +1,14 @@
 import { Check } from "lucide-react";
 import React from "react";
+import { userData } from "./OnboardingTenants";
 
-export const UserDetails = ({userData, setUserData}) => {
+export interface UserProps {
+  userData: userData;
+  setUserData: React.Dispatch<React.SetStateAction<userData>>;
+}
+
+
+export const UserDetails = ({userData, setUserData}:UserProps) => {
   return (
     <div className="space-y-6">
       <div>

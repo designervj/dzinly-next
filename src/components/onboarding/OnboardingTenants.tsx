@@ -8,11 +8,46 @@ import { WebsiteDetails } from "./WebsiteDetails";
 import { Review } from "./Review";
 import { toast } from "sonner";
 
+export interface websiteData {
+  name: string;
+  serviceType: string;
+  primaryDomains: string[];
+}
+
+export interface tenantData {
+  name: string;
+  slug: string;
+  email: string;
+  tenantType: string;
+  plan: string;
+  branding: {
+    primaryColor: string;
+    secondaryColor: string;
+    tertiaryColor: string;
+    typography: string;
+    logo: string | null;
+  };
+}
+
+export interface userData {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+export interface currentDomain {
+  type:string,
+  value: string
+}
+
+
+
 export default function OnboardingTenants() {
   const [currentStep, setCurrentStep] = useState(1);
 
   // Form state
-  const [tenantData, setTenantData] = useState({
+  const [tenantData, setTenantData] = useState<tenantData>({
     name: "",
     slug: "",
     email: "",
@@ -27,20 +62,20 @@ export default function OnboardingTenants() {
     },
   });
 
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<userData>({
     name: "",
     email: "",
     password: "",
     role: "owner",
   });
 
-  const [websiteData, setWebsiteData] = useState({
+  const [websiteData, setWebsiteData] = useState<websiteData>({
     name: "",
     serviceType: "WEBSITE_ONLY",
     primaryDomains: [],
   });
 
-  const [currentDomain, setCurrentDomain] = useState({
+  const [currentDomain, setCurrentDomain] = useState<currentDomain>({
     type: "subdomain",
     value: "",
   });
@@ -70,7 +105,7 @@ export default function OnboardingTenants() {
     }
   };
 
-  const removePrimaryDomain = (domain) => {
+  const removePrimaryDomain = (domain: string) => {
     setWebsiteData({
       ...websiteData,
       primaryDomains: websiteData.primaryDomains.filter((d) => d !== domain),
@@ -114,7 +149,7 @@ export default function OnboardingTenants() {
           password: "",
           role: "owner",
         });
-        setCurrentStep(1)
+        setCurrentStep(1);
         toast.success(`SuccessFully Onboarded ${result.userid}`);
       }
     } catch (error: any) {

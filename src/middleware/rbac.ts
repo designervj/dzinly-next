@@ -86,6 +86,7 @@ export function withRBAC(options: RBACMiddlewareOptions) {
   };
 }
 
+
 // Tenant isolation middleware
 export async function withTenantIsolation(
   request: NextRequest,

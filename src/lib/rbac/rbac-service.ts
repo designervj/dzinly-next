@@ -58,7 +58,9 @@ export class RBACService {
       {
         isOwn: context?.isOwn,
         isTenantLevel: context?.tenantId?.equals(user.tenantId),
-        isFranchiseLevel: await this.isFranchiseLevel(user.tenantId, context?.tenantId),
+        isFranchiseLevel: user.tenantId && context?.tenantId
+  ? await this.isFranchiseLevel(user.tenantId, context.tenantId)
+  : false,
       }
     );
 
@@ -277,7 +279,7 @@ export class RBACService {
     if (user.role === 'A') return true;
 
     // User can access their own tenant
-    if (user.tenantId.equals(targetTenantId)) return true;
+    if (user.tenantId && user.tenantId.equals(targetTenantId)) return true;
 
     // Franchise can access their client tenants
     if (user.role === 'F') {
@@ -318,6 +320,6 @@ export class RBACService {
       });
     }
 
-    return accessibleTenants;
+    return accessibleTenants.filter((id): id is ObjectId => !!id);
   }
 }

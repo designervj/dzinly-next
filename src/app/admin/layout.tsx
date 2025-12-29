@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { websiteService } from "@/lib/websites/website-service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Toaster } from "sonner";
 
 export default async function AdminLayout({
   children,
@@ -12,7 +13,7 @@ export default async function AdminLayout({
 }) {
   // Get session
   const session = await auth();
-  
+
   // Redirect if not authenticated
   if (!session?.user) {
     redirect("/auth/signin");
@@ -26,9 +27,11 @@ export default async function AdminLayout({
   // Get current website from cookie
   const cookieStore = await cookies();
   const currentWebsiteId = cookieStore.get("current_website_id")?.value;
-  
+
   const currentWebsite = currentWebsiteId
-    ? websites.find((w) => String(w._id) === currentWebsiteId) || websites[0] || null
+    ? websites.find((w) => String(w._id) === currentWebsiteId) ||
+      websites[0] ||
+      null
     : websites[0] || null;
 
   // Prepare user data
@@ -58,12 +61,15 @@ export default async function AdminLayout({
     : null;
 
   return (
-    <AppShellClient 
-      user={user} 
-      websites={serializedWebsites}
-      currentWebsite={serializedCurrentWebsite}
-    >
-      {children}
-    </AppShellClient>
+    <>
+    <Toaster/>
+      <AppShellClient
+        user={user}
+        websites={serializedWebsites}
+        currentWebsite={serializedCurrentWebsite}
+      >
+        {children}
+      </AppShellClient>
+    </>
   );
 }

@@ -1,41 +1,125 @@
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { tenantService } from '@/lib/tenant/tenant-service';
-import { userService } from '@/lib/auth/user-service';
-import { websiteService } from '@/lib/websites/website-service';
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getDatabase } from "@/lib/db/mongodb";
+import bcrypt from "bcryptjs";
 
 const schema = z.object({
-  tenantSlug: z.string().min(3).max(40).regex(/^[a-z0-9-]+$/i, 'Use letters, numbers or dashes'),
-  tenantName: z.string().min(3).max(80),
-  adminEmail: z.string().email(),
-  adminPassword: z.string().min(6).max(100),
-  websiteName: z.string().min(2).max(80),
-  serviceType: z.enum(['WEBSITE_ONLY', 'ECOMMERCE']).default('WEBSITE_ONLY'),
+  tenantData: z.object({
+    slug: z
+      .string()
+      .min(3)
+      .max(40)
+      .regex(/^[a-z0-9-]+$/i, "Use letters, numbers or dashes"),
+    name: z.string().min(3).max(80),
+    email: z.string().email(),
+    tenantType: z.string().min(3).max(80),
+    plan: z.string().min(3).max(80),
+    branding: z.object({
+      primaryColor: z.string().min(3).max(80),
+      secondaryColor: z.string().min(3).max(80),
+      tertiaryColor: z.string().min(3).max(80),
+      logo: z.string().nullish(),
+      typography: z.string().min(3).max(80),
+    }),
+  }),
+  userData: z.object({
+    email: z.string().email(),
+    password: z.string().min(6).max(100),
+    name: z.string().min(3).max(80),
+    role: z.string().min(3).max(80),
+  }),
+
+  websiteData: z.object({
+    name: z.string().min(2).max(80),
+    serviceType: z.enum(["WEBSITE_ONLY", "ECOMMERCE"]).default("WEBSITE_ONLY"),
+    primaryDomains: z.array(z.string()),
+  }),
 });
 
 export async function POST(req: Request) {
+  let tenantId: any = null;
+  let userId: any = null;
+  let websiteId: any = null;
+
   try {
     const json = await req.json();
     const parsed = schema.safeParse(json);
+
     if (!parsed.success) {
-      return NextResponse.json({ ok: false, error: 'Invalid payload', issues: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Invalid payload", issues: parsed.error.flatten() },
+        { status: 400 }
+      );
     }
 
-    const { tenantSlug, tenantName, adminEmail, adminPassword, websiteName, serviceType } = parsed.data;
+    const { tenantData, userData, websiteData } = parsed.data;
+    const db = await getDatabase();
 
-    // Create tenant
-    const tenant = await tenantService.createTenant({ slug: tenantSlug, name: tenantName, email: adminEmail, plan: 'trial' });
+    const tenantColl = db.collection("tenants");
+    const userColl = db.collection("users");
+    const websiteColl = db.collection("websites");
 
-    // Create owner user
-    await userService.createUser({ tenantId: tenant._id, email: adminEmail, password: adminPassword, name: tenantName + ' Owner', role: 'A' });
+    // 1️⃣ Insert tenant
+    const tenantRes = await tenantColl.insertOne({
+      ...tenantData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    tenantId = tenantRes.insertedId;
 
-    // Create default website for tenant
-    const website = await websiteService.create({ tenantId: tenant._id, tenantSlug: tenant.slug, name: websiteName, serviceType });
+    // 2️⃣ Insert user
+    const passwordHash = await bcrypt.hash(userData.password, 10);
+    const userRes = await userColl.insertOne({
+      ...userData,
+      password: passwordHash,
+      tenantId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    userId = userRes.insertedId;
 
-    // Do not auto sign-in here; return details to allow redirect to signin with tenant prefilled
-    return NextResponse.json({ ok: true, tenantId: String(tenant._id), tenantSlug: tenant.slug, websiteId: website.websiteId, systemSubdomain: website.systemSubdomain });
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : 'Internal Error';
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    // 3️⃣ Insert website
+    const websiteRes = await websiteColl.insertOne({
+      ...websiteData,
+      tenantId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    websiteId = websiteRes.insertedId;
+
+    return NextResponse.json({
+      ok: true,
+      tenantId,
+      userId,
+      websiteId,
+    });
+  } catch (e: any) {
+    // 🔥 ROLLBACK (reverse order)
+    const db = await getDatabase();
+
+    if (websiteId) {
+      await db.collection("websites").deleteOne({ _id: websiteId });
+    }
+
+    if (userId) {
+      await db.collection("users").deleteOne({ _id: userId });
+    }
+
+    if (tenantId) {
+      await db.collection("tenants").deleteOne({ _id: tenantId });
+    }
+
+    // Handle duplicate key error
+    if (e.code === 11000) {
+      return NextResponse.json(
+        { ok: false, error: "Email or domain already exists" },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(
+      { ok: false, error: e.message || "Internal error" },
+      { status: 500 }
+    );
   }
 }

@@ -10,7 +10,7 @@ import productReducer from "../hooks/slices/product/ProductSlice"
 import llmSettingReducer from "../hooks/slices/setting/llmSetting/LLMSettingSlice"
 import dataStorageReducer from "../hooks/slices/dataStorage/DataStorageSlice";
 import BlockReducer from "../hooks/slices/blocks/BlockSlice"
-
+import projectReducer from "../hooks/slices/project/ProjectSlice"
 
 
 export const store = configureStore({
@@ -25,7 +25,8 @@ export const store = configureStore({
     websites: websitesReducer,
     llmSetting:llmSettingReducer,
     dataStorage: dataStorageReducer,
-    block:BlockReducer
+    block:BlockReducer,
+    projects:projectReducer
   },
 });
 

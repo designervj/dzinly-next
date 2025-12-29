@@ -21,7 +21,7 @@ const initialState: ProjectState = {
 
 
 const projectSlice = createSlice({
-  name: 'project',
+  name: 'projects',
   initialState,
   reducers: {
    

@@ -3,8 +3,51 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Home, ImageIcon, Lightbulb, QrCode, Ruler } from 'lucide-react'
 import React from 'react'
 import { IoHomeOutline } from "react-icons/io5";
+import ImageUploader from './ImageUploader';
+import { convertToWebP } from './WebpCoversion';
+import { useRouter } from 'next/navigation';
+export type ViewType = 'front' | 'rear' | 'left' | 'right';
+const viewTypes = [
+  { key: 'front', label: 'Front' },
+//   { key: 'rear', label: 'Rear' },
+//   { key: 'left', label: 'Left' },
+//   { key: 'right', label: 'Right' },
+];
+
+type ViewKey = 'front' | 'rear' | 'left' | 'right';
+
 const PorjectForm = () => {
-      const [projectName, setProjectName] = React.useState<string>("New Project");
+    const router= useRouter()
+  const [projectName, setProjectName] = React.useState<string>("New Project");
+  const [viewFiles, setViewFiles] = React.useState<Record<ViewKey, File | null>>({
+    front: null,
+    rear: null,
+    left: null,
+    right: null,
+  });
+  const [uploadWebp, setUploadWeb] = React.useState<File | null>(null);
+
+  // Upload a file for a given view
+  const handleFileUpload = async (file: File, view: ViewKey) => {
+    const data: any = await convertToWebP(file);
+    setViewFiles((prev) => ({ ...prev, [view]: file }));
+    setUploadWeb(data);
+  };
+
+  const removeViewFile = (view: ViewKey) => {
+    setViewFiles((prev) => ({ ...prev, [view]: null }));
+  };
+
+  const handleFileRemove = (view: ViewKey) => {
+    removeViewFile(view);
+    setUploadWeb(null);
+  };
+
+  const hasAnyFiles = Object.values(viewFiles).some((file) => !!file);
+
+  const handleGoBack=()=>{
+    router.push("/admin/projects")
+  }
   return (
    <>
      <div className="min-h-screen bg-white">
@@ -13,7 +56,7 @@ const PorjectForm = () => {
             {/* Back Button */}
             <div className="absolute left-4 top-1/2 -translate-y-1/2">
               <Button
-              //  onClick={handleGoBack}
+               onClick={handleGoBack}
                 variant="ghost"
                 size="sm"
                 className="flex items-center gap-2 text-white hover:text-white hover:bg-blue-500 bg-primary border border-gray-100 shadow-sm">
@@ -105,18 +148,18 @@ const PorjectForm = () => {
 
               <div className=" rounded-xl p-3 shadow-sm border-none bg-blue-50">
                 <div className="grid grid-cols-1 gap-4">
-                  {/* {viewTypes.map((viewType) => (
-                    <ViewUploader
+                  {viewTypes.map((viewType) => (
+                    <ImageUploader
                       key={viewType.key}
-                      viewType={viewType.label}
-                      uploadedFile={viewFiles[viewType.key]}
+                      viewType={viewType.key}
+                      uploadedFile={viewFiles[viewType.key as ViewKey]}
                       onFileUpload={(file) =>
-                        handleFileUpload(file, viewType.key)
+                        handleFileUpload(file, viewType.key as ViewKey)
                       }
-                      onFileRemove={() => handleFileRemove(viewType.key)}
-                      disabled={hasAnyFiles && !viewFiles[viewType.key]}
+                      onFileRemove={() => handleFileRemove(viewType.key as ViewKey)}
+                      disabled={hasAnyFiles && !viewFiles[viewType.key as ViewKey]}
                     />
-                  ))} */}
+                  ))}
                 </div>
 
               

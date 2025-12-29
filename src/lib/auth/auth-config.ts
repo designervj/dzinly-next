@@ -19,20 +19,20 @@ export const authConfig: NextAuthConfig = {
        
           return null;
         }
-        const tenantSlug = credentials.tenantSlug as string;
+        const inputTenantSlug = credentials.tenantSlug as string;
        
     
         // Get tenant
-        const tenant = await tenantService.getTenantBySlug(tenantSlug);
+      const tenant = await tenantService.getTenantBySlug(inputTenantSlug);
     
-        if (!tenant || tenant.status !== 'active') {
-          return null;
-        }
+        // if (!tenant || tenant.status !== 'active') {
+        //   return null;
+        // }
 
      
         // Get user
         const user = await userService.getUserByEmail(
-          tenant._id,
+          // tenant._id,
           credentials.email as string
         );
 
@@ -50,14 +50,22 @@ export const authConfig: NextAuthConfig = {
         if (!isValid) {
           return null;
         }
+          console.log("user====", user)
         // Update last login
         await userService.updateLastLogin(user._id);
+        let resolvedTenantId = "";
+        let resolvedTenantSlug = "";
+        // UserRole 'C' is customer/client
+        if (user.role !== "C" && tenant) {
+          resolvedTenantId = tenant._id?.toString?.() || "";
+          resolvedTenantSlug = tenant.slug || "";
+        }
         return {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
-          tenantId: tenant._id.toString(),
-          tenantSlug: tenant.slug,
+          tenantId: resolvedTenantId,
+          tenantSlug: resolvedTenantSlug,
           role: user.role,
         };
       },
@@ -69,8 +77,8 @@ export const authConfig: NextAuthConfig = {
         token.userId = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.tenantId = user?.tenantId;
-        token.tenantSlug = user.tenantSlug;
+        token.tenantId = user?.tenantId??"";
+        token.tenantSlug = user.tenantSlug??"";
         token.role = user.role;
       }
       return token;

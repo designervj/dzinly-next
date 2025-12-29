@@ -5,7 +5,7 @@ export async function ensureIndexes() {
   await Promise.all([
     // Core
     db.collection('tenants').createIndex({ slug: 1 }, { unique: true, name: 'uniq_tenants_slug' }),
-    db.collection('users').createIndex({ tenantId: 1, email: 1 }, { unique: true, name: 'uniq_users_tenant_email' }),
+    db.collection('users').createIndex({ tenantId: 1, email: 1 }, { unique: false, name: 'uniq_users_tenant_email' }),
     db.collection('users').createIndex({ tenantId: 1, role: 1 }, { name: 'users_tenant_role' }),
     db.collection('custom_roles').createIndex({ tenantId: 1, name: 1 }, { unique: true, name: 'uniq_custom_roles_tenant_name' }),
 
@@ -41,7 +41,7 @@ export async function ensureIndexes() {
         // ignore conflicts with existing text index configuration
       }
     })(),
-    db.collection('product_categories').createIndex({ tenantId: 1, websiteId: 1, slug: 1 }, { unique: true, name: 'uniq_product_categories_tenant_website_slug' }),
+    db.collection('product_categories').createIndex({ tenantId: 1, websiteId: 1, slug: 1 }, { unique: false, name: 'uniq_product_categories_tenant_website_slug' }),
     db.collection('product_variants').createIndex({ tenantId: 1, websiteId: 1, productId: 1, name: 1 }, { unique: true, name: 'uniq_variants_tenant_website_product_name' }),
 
     db.collection('orders').createIndex({ tenantId: 1, orderNumber: 1 }, { unique: true, name: 'uniq_orders_tenant_number' }),

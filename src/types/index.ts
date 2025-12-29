@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 // Base document with multi-tenant support
 export interface BaseDocument {
   _id: ObjectId;
-  tenantId: ObjectId;
+  tenantId?: ObjectId;
   // Optional website scope for multi-website tenants
   websiteId?: ObjectId;
   createdAt: Date;

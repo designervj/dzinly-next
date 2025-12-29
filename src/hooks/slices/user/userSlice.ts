@@ -1,3 +1,27 @@
+// Thunk to create a customer
+export const createCustomer = createAsyncThunk<
+  IUser,
+  Partial<IUser>,
+  { rejectValue: any }
+>(
+  'user/createCustomer',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const payload = {
+        ...userData,
+        password: userData.passwordHash,
+      };
+      delete payload.passwordHash;
+      const response = await axios.post('/api/admin/customer', payload, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.data
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 import { IUser } from '@/models/user';
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -54,10 +78,21 @@ const userSlice = createSlice({
       })
       .addCase(getAllUser.fulfilled, (state, action: PayloadAction<IUser[]>) => {
         state.isLoading = false;
-        state.hasFetched=true
+        state.hasFetched = true;
         state.alluser = action.payload;
       })
       .addCase(getAllUser.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(createCustomer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createCustomer.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.isLoading = false;
+        // Optionally add the new user to alluser
+        state.alluser.unshift(action.payload);
+      })
+      .addCase(createCustomer.rejected, (state) => {
         state.isLoading = false;
       });
   },

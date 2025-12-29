@@ -3,13 +3,14 @@ import { AppDispatch, RootState } from '@/store/store';
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTableExt } from '@/components/admin/DataTableExt';
-import { removeAttribute } from '@/hooks/slices/attribute/AttributeSlice';
+import { addAttribute, removeAttribute } from '@/hooks/slices/attribute/AttributeSlice';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { MaterialAttributes } from '../types/attributeModel';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import AttributeForm from '../forms/AttributeForm';
+import { addCategory } from '@/hooks/slices/category/CategorySlice';
 
 const AttributeTable = () => {
 
@@ -18,6 +19,9 @@ const AttributeTable = () => {
   );
     const { listCategory,  } = useSelector(
     (state: RootState) => state.category
+  );
+      const { user } = useSelector(
+    (state: RootState) => state.user
   );
    const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +33,10 @@ const AttributeTable = () => {
   const [editingAttribute, setEditingAttribute] = useState<MaterialAttributes | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
+ const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [newAttribute, setNewAttribute] = useState<MaterialAttributes | null>(null);
+
+
 
   const product_attribute = useMemo(() => {
     if (
@@ -48,6 +56,18 @@ const AttributeTable = () => {
     }
     return [];
   }, [listCategory, listAttribute]);
+
+   
+   
+
+
+    const handleAdd = () => {
+    setNewAttribute({ name: '', category_id: null, type: '', possible_values: [], data_type: undefined ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
+    setFieldErrors({});
+    setIsAddDialogOpen(true);
+  };
+
+
 
   const handleDelete = async (row: any) => {
     const id = row?._id ?? row?.id;
@@ -125,6 +145,51 @@ const AttributeTable = () => {
     }
   };
 
+    const handleSaveAdd = async () => {
+    if (!newAttribute) return;
+    setFieldErrors({});
+    const errors: Record<string, string> = {};
+    if (!newAttribute.name?.trim()) {
+      errors.name = 'Name is required';
+    }
+    if (!newAttribute.category_id) {
+      errors.category_id = 'Category is required';
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const res = await fetch(`/api/admin/attribute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newAttribute),
+      });
+      const data = await res.json().catch(() => null);
+ if (!res.ok) {
+        const msg =
+          data?.error ??
+          data?.message ??
+          (typeof data === "string" ? data : undefined) ??
+          "Failed to create";
+        throw new Error(msg);
+      }
+         const created = data?.item ?? data;
+      toast({ title: 'Created', description: `Attribute ${newAttribute.name} created successfully` });
+      setIsAddDialogOpen(false);
+      setNewAttribute(null);
+       dispatch(addAttribute(created));
+      // window.location.reload();
+    } catch (err: any) {
+      console.error('Failed to create attribute', err);
+      toast({ title: 'Create failed', description: String(err?.message || err), variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+
   const initialColumns = [
     { key: '_id', label: 'ID', hidden: true },
     { key: 'id', label: 'ID', hidden: true },
@@ -142,11 +207,56 @@ const AttributeTable = () => {
       <DataTableExt
         title="Attributes"
         data={product_attribute ?? []}
-        createHref="/admin/attribute/create"
+            onCreate={handleAdd}
+        // createHref="/admin/attribute/create"
         initialColumns={initialColumns}
         onDelete={(row) => handleDelete(row)}
         onView={(row) => handleView(row)}
       />
+
+        {/* Add Attribute Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add Attribute</DialogTitle>
+          </DialogHeader>
+          {newAttribute && (
+            <div className="space-y-4">
+              <AttributeForm
+                attribute={newAttribute}
+                setAttribute={value => {
+                  if (typeof value === 'function') {
+                    setNewAttribute(prev => prev ? value(prev) : prev);
+                  } else {
+                    setNewAttribute(value);
+                  }
+                }}
+                fieldErrors={fieldErrors}
+                filterCategory={listCategory}
+              />
+              <div className="flex justify-end gap-2 pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsAddDialogOpen(false);
+                    setNewAttribute(null);
+                  }}
+                  disabled={isSaving}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSaveAdd}
+                  disabled={isSaving}
+                >
+                  {isSaving ? 'Saving...' : 'Add Attribute'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

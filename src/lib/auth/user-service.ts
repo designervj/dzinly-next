@@ -10,13 +10,13 @@ export class UserService {
   }
 
   async getUserByEmail(
-    tenantId: string | ObjectId,
+    // tenantId: string | ObjectId,
     email: string
   ): Promise<User | null> {
     const collection = await this.getCollection();
-    const tid = typeof tenantId === 'string' ? new ObjectId(tenantId) : tenantId;
+   // const tid = typeof tenantId === 'string' ? new ObjectId(tenantId) : tenantId;
     const response = await collection.findOne({
-      tenantId: tid,
+      // tenantId: tid,
       email: email.toLowerCase(),
     });
     console.log("respsne user---", response)
@@ -40,7 +40,7 @@ export class UserService {
     const tid = typeof data.tenantId === 'string' ? new ObjectId(data.tenantId) : data.tenantId;
 
     // Check if user already exists
-    const existing = await this.getUserByEmail(tid, data.email);
+    const existing = await this.getUserByEmail( data.email);
     if (existing) {
       throw new Error('User with this email already exists');
     }

@@ -124,7 +124,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { store } from "@/store/store"; // Uncomment if needed
 import { clearAttributes } from "@/hooks/slices/attribute/AttributeSlice";
 import { clearBrands } from "@/hooks/slices/brand/BrandSlice";
@@ -134,6 +134,9 @@ import { Input } from "../ui/input";
 import Dropdowns from "../../app/admin/Dropdowns";
 import { useState } from "react";
 import { AccountSetting } from "@/app/admin/AccountSetting";
+import { RootState } from "@/store/store";
+import { IUser } from "@/models/user";
+import CustomerSideBar from "./side-bar/CustomerSideBar";
 
 
 // ---------------------------------------------------------------------------
@@ -374,6 +377,7 @@ type SidebarProps = {
   websites: Website[];
   currentWebsite: Website | null;
   user: User | null;
+  currentUser:IUser;
   onWebsiteChange: (websiteId: string) => void;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
@@ -383,6 +387,7 @@ function Sidebar({
   websites,
   currentWebsite,
   user,
+  currentUser,
   onWebsiteChange,
   collapsed = false,
   onToggleCollapse,
@@ -539,7 +544,13 @@ function Sidebar({
                       Select website
                     </div>
                   ) : (
-                    filteredWebsiteSections.map((section) => {
+                   <>
+                       {currentUser 
+                    && currentUser.role &&
+                    currentUser.role=== "customer"?(
+                      <CustomerSideBar/>
+                    ):(
+                        filteredWebsiteSections.map((section) => {
                       const HeaderIcon =
                         sectionIconMap[section.id] || LayoutDashboard;
                       const isOpen = !!openGroups[section.id];
@@ -731,7 +742,15 @@ function Sidebar({
                         </div>
                       );
                     })
-                  )}
+                    )
+
+                   }
+                   </>
+               
+                  
+                  )
+                  
+                  }
                 </div>
               </ScrollArea>
 
@@ -1166,13 +1185,14 @@ export function AppShell({
 }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-
+  const {user:currentUser}= useSelector((state:RootState)=>state.user)
   return (
     <div className="flex h-[100vh] bg-background text-foreground overflow-hidden">
       <Sidebar
         websites={websites}
         currentWebsite={currentWebsite}
         user={user}
+        currentUser={currentUser??{}}
         onWebsiteChange={onWebsiteChange}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}

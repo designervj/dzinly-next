@@ -47,6 +47,7 @@ export type ColumnConfig = {
 export type DataTableExtProps = {
   title: string;
   data: any[];
+   onCreate?: () => void;
   createHref?: string;
   initialColumns?: ColumnConfig[];
   onDelete?: (row: any) => void;
@@ -84,6 +85,7 @@ export function DataTableExt({
   title,
   data,
   createHref,
+    onCreate,
   initialColumns,
   onDelete,
   onView,
@@ -357,11 +359,15 @@ export function DataTableExt({
       <div className="flex items-center justify-between">
         <div className="text-xl font-semibold">{title} </div>
         <div className="flex items-center gap-2">
-          {createHref && (
+           <div className="flex items-center gap-2">
+          {onCreate ? (
+            <Button size="sm" onClick={onCreate}>Create New</Button>
+          ) : createHref ? (
             <Link href={createHref} className="text-sm">
               <Button size="sm">Create New</Button>
             </Link>
-          )}
+          ) : null}
+        </div>
         </div>
       </div>
 

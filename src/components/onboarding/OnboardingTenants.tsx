@@ -99,7 +99,7 @@ export default function OnboardingTenants() {
     if (!websiteData.primaryDomains.includes(domainValue)) {
       setWebsiteData({
         ...websiteData,
-        primaryDomains: [...websiteData.primaryDomains, domainValue],
+        primaryDomains: [...websiteData?.primaryDomains, domainValue],
       });
       setCurrentDomain({ type: "subdomain", value: "" });
     }

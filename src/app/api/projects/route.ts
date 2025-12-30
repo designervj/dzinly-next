@@ -20,6 +20,17 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const db = await getDb();
   const body = await req.json();
+
+  // Get next project_id from counters collection
+//   const counter = await db.collection('counters').findOneAndUpdate(
+//  { _id:"_id" },
+//     { $inc: { seq: 1 } },
+//     { upsert: true, returnDocument: 'after' }
+//   );
+//   const project_id = counter.value?.seq || 1;
+
+//   // Add project_id to body
+//   const newProject = { ...body, project_id };
   const result = await db.collection(COLLECTION).insertOne(body);
   const project = await db.collection(COLLECTION).findOne({ _id: result.insertedId });
   return NextResponse.json(project);

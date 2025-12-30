@@ -11,8 +11,7 @@ import llmSettingReducer from "../hooks/slices/setting/llmSetting/LLMSettingSlic
 import dataStorageReducer from "../hooks/slices/dataStorage/DataStorageSlice";
 import BlockReducer from "../hooks/slices/blocks/BlockSlice"
 import projectReducer from "../hooks/slices/project/ProjectSlice"
-
-
+import rolePermissionReducer from "../hooks/slices/RolePermission/rolePermissionSlice"
 export const store = configureStore({
   reducer: {
     user:userSlice,
@@ -26,7 +25,8 @@ export const store = configureStore({
     llmSetting:llmSettingReducer,
     dataStorage: dataStorageReducer,
     block:BlockReducer,
-    projects:projectReducer
+    projects:projectReducer,
+    rolePermission:rolePermissionReducer
   },
 });
 

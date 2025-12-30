@@ -19,7 +19,7 @@ export class UserService {
       // tenantId: tid,
       email: email.toLowerCase(),
     });
-    console.log("respsne user---", response)
+  
     return response
   }
 
@@ -73,7 +73,9 @@ export class UserService {
   }
 
   async verifyPassword(user: User, password: string): Promise<boolean> {
-    return bcrypt.compare(password, user.passwordHash);
+    const data= await bcrypt.compare(password, user.passwordHash);
+     console.log("error passowrd", data)
+    return data
   }
 
   async updateLastLogin(userId: string | ObjectId): Promise<void> {

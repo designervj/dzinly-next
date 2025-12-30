@@ -29,16 +29,16 @@ export const authConfig: NextAuthConfig = {
         //   return null;
         // }
 
-     
+   
         // Get user
         const user = await userService.getUserByEmail(
           // tenant._id,
           credentials.email as string
         );
 
+  console.log("useruseruseruser",user)
 
-
-        if (!user || user.status !== 'active') {
+        if (!user ) {
           return null;
         }
         // Verify password
@@ -46,8 +46,9 @@ export const authConfig: NextAuthConfig = {
           user,
           credentials.password as string
         );
-       
+          console.log(" error password",isValid)
         if (!isValid) {
+          console.log(" error password",isValid)
           return null;
         }
           console.log("user====", user)

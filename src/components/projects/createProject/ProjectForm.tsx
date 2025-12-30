@@ -13,10 +13,10 @@ import { IoHomeOutline } from "react-icons/io5";
 import ImageUploader from "./ImageUploader";
 import { convertToWebP } from "./WebpCoversion";
 import { useRouter } from "next/navigation";
-import { ProjectModel } from "../projectModel";
+import { AnalyseImageModel, ProjectModel } from "../projectModel";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { createProject, ProjectResponse, updateProject } from "@/hooks/slices/project/projectThunks";
+import { createProject, fetchAnnotationApiResponse, ProjectResponse, updateProject, updateProjectAnalysis } from "@/hooks/slices/project/projectThunks";
 import { UploadService } from "@/components/admin/uploadImage/utilies/uploadService";
 import { UploadProgress, UploadResult } from "@/components/admin/uploadImage/utilies/DirectS3UploadService";
 import UploadImage from "@/components/admin/uploadImage/utilies/UploadImage";
@@ -110,19 +110,68 @@ const PorjectForm = () => {
 
   const handleUpdateProject=async(data:string)=>{
   
-    const projectUpdate:ProjectModel={
-      _id:currentProject?._id,
-  thumbnail:data
+    const projectId = typeof currentProject?._id === 'string' ? currentProject._id : '';
+    if (!projectId) return;
+    const projectUpdate: ProjectModel = {
+      _id: projectId,
+      thumbnail: data
+    };
+    const response = await dispatch(updateProject(projectUpdate)).unwrap();
+    if (response && response.success) {
+      dispatch(updateProjectList(response.data));
+      setCurrentProject(null);
+      // router.push("/admin/projects")
+      getAnalaysis(projectId, data);
     }
-   const response=await dispatch(updateProject(projectUpdate)).unwrap()
-   if(response && response.success){
-      dispatch(updateProjectList(response.data))
-     
-       setCurrentProject(null)
-        router.push("/admin/projects")
-    
    }
+  
+
+    const [isDetectingAnnotation, setIsDetectingAnnotation] =
+    useState<boolean>(false);
+
+  const getAnalaysis=async(projectId:string,imageUrl:string )=>{
+  setIsDetectingAnnotation(true);
+  try{
+    const response= await dispatch(updateProjectAnalysis({ url: imageUrl, id: projectId })).unwrap();
+    if(response){
+      const responseData = response.data as ProjectResponse;
+      console.log("resposne Analysys---", responseData)
+      if(responseData.success && responseData.data) {
+        console.log("Image analysis successful:", responseData.data);
+        // dispatch(setIsAnalyseFinish(true));
+        if (responseData.data.analysed_data) {
+          getAnnotationPoint(imageUrl, responseData.data.analysed_data,projectId);
+        }
+      }
+    }
+  }catch(err){
+    if(err instanceof Error)
+      console.log("Error on Analysiis")
+  } finally {
+    setIsDetectingAnnotation(false);
   }
+}
+
+  const getAnnotationPoint= async(imageUrl:string,analysed_data:AnalyseImageModel, projectId:string)=>{
+
+    try {
+  
+      const responce = await dispatch(
+        fetchAnnotationApiResponse({ imageUrl, project_id: projectId, analysis_summary:analysed_data})
+      ).unwrap();
+  
+      if (responce.status === "success") {
+          console.log("get all annotation-----", responce)
+        // dispatch(addJobId(jobId))
+        
+      }
+    } catch (error) {
+      if (error instanceof Error)
+        toast.error("Error in getting Annotation point");
+    }
+  }
+
+
   return (
     <>
       <div className="min-h-screen bg-white">

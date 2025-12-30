@@ -1,4 +1,5 @@
 // "use client";
+import GetAllRolePermission from "@/components/onboarding/GetAllRolePermission";
 import OnboardingTenants from "@/components/onboarding/OnboardingTenants";
 // import { useState } from "react";
 
@@ -47,6 +48,7 @@ export default async function OnboardingPage() {
   return (
     <div className="h-screen">
       <OnboardingTenants/>
+      <GetAllRolePermission/>
       {/* <h1 className="text-2xl font-semibold mb-4">Tenant Onboarding</h1>
       <form onSubmit={submit} className="space-y-4">
         <div>

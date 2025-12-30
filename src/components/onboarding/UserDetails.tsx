@@ -1,6 +1,9 @@
 import { Check } from "lucide-react";
 import React from "react";
 import { userData } from "./OnboardingTenants";
+import { useSelectedLayoutSegment } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export interface UserProps {
   userData: userData;
@@ -9,6 +12,9 @@ export interface UserProps {
 
 
 export const UserDetails = ({userData, setUserData}:UserProps) => {
+
+  const {rolesPermissions}= useSelector((state:RootState)=>state.rolePermission)
+   console.log("rolesPermissions--",rolesPermissions)
   return (
     <div className="space-y-6">
       <div>
@@ -68,7 +74,43 @@ export const UserDetails = ({userData, setUserData}:UserProps) => {
             Role *
           </label>
           <div className="space-y-3">
-            <label
+            {rolesPermissions && rolesPermissions.length > 0 &&
+              rolesPermissions.map((item) => {
+                return (
+                  <label
+                    key={item.name}
+                    className={`flex items-center gap-4 p-4 border-2 rounded-lg cursor-pointer transition ${
+                      userData.role === item.name
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="role"
+                      value={item.name}
+                      checked={userData.role === item.name}
+                      onChange={(e) =>
+                        setUserData({ ...userData, role: e.target.value })
+                      }
+                      className="hidden"
+                    />
+                    <div className="text-2xl">👑</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900">{item.name}</p>
+                      <p className="text-sm text-gray-600">
+                        Full access to all features and settings
+                      </p>
+                    </div>
+                    {userData.role === item.name && (
+                      <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+                  </label>
+                );
+              })}
+            {/* <label
               className={`flex items-center gap-4 p-4 border-2 rounded-lg cursor-pointer transition ${
                 userData.role === "owner"
                   ? "border-blue-500 bg-blue-50"
@@ -128,7 +170,7 @@ export const UserDetails = ({userData, setUserData}:UserProps) => {
                   <Check className="w-3 h-3 text-white" />
                 </div>
               )}
-            </label>
+            </label> */}
           </div>
         </div>
       </div>

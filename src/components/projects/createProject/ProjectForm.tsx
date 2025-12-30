@@ -120,8 +120,8 @@ const PorjectForm = () => {
     if (response && response.success) {
       dispatch(updateProjectList(response.data));
       setCurrentProject(null);
-      // router.push("/admin/projects")
-      getAnalaysis(projectId, data);
+       router.push("/admin/projects")
+      //getAnalaysis(projectId, data);
     }
    }
   
@@ -138,7 +138,7 @@ const PorjectForm = () => {
       console.log("resposne Analysys---", responseData)
       if(responseData.success && responseData.data) {
         console.log("Image analysis successful:", responseData.data);
-        // dispatch(setIsAnalyseFinish(true));
+       // dispatch(setIsAnalyseFinish(true));
         if (responseData.data.analysed_data) {
           getAnnotationPoint(imageUrl, responseData.data.analysed_data,projectId);
         }

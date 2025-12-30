@@ -74,8 +74,23 @@ function inferType(values: any[]): "string" | "number" | "date" | "boolean" {
   return "string";
 }
 
-function formatValue(v: any) {
+
+function formatValue(v: any, key?: string) {
   if (v == null) return "-";
+  // Custom date formatting for createdAt/updatedAt
+  if (key && (key.toLowerCase().includes("created") || key.toLowerCase().includes("updated"))) {
+    const date = new Date(v);
+    if (!isNaN(date.getTime())) {
+      const now = new Date();
+      const isToday = date.toDateString() === now.toDateString();
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+      const isYesterday = date.toDateString() === yesterday.toDateString();
+      if (isToday) return "Today";
+      if (isYesterday) return "Yesterday";
+      return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    }
+  }
   if (v instanceof Date) return v.toISOString();
   if (typeof v === "boolean") return v ? "Yes" : "No";
   return String(v);

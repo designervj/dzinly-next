@@ -8,6 +8,24 @@ import { DataTableExt } from '../admin/DataTableExt';
 import { ProjectModel } from './projectModel';
 
 const ProjectTable = () => {
+    // Helper to format date as 'today', 'yesterday', or '12 Dec 2025'
+    function formatDateDisplay(dateString: string) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const now = new Date();
+      const isToday = date.toDateString() === now.toDateString();
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+      const isYesterday = date.toDateString() === yesterday.toDateString();
+      if (isToday) return 'today';
+      if (isYesterday) return 'yesterday';
+      // Format as '12 Dec 2025'
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+    }
   const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
   const router = useRouter();
@@ -30,55 +48,38 @@ const ProjectTable = () => {
         
     }
 
-  // Define columns for DataTableExt based on ProjectModel
+  // Define columns for DataTableExt based on ProductTable style
   const initialColumns = [
+    { key: '_id', label: 'ID', hidden: true },
+    { key: 'id', label: 'ID', hidden: true },
+    { key: 'name', label: 'Name' },
     {
-      key: 'name',
-      accessorKey: 'name',
-      header: 'Name',
-      cell: (info: any) => info.getValue(),
+      key: 'thumbnail',
+      label: 'Thumbnail',
+      render: (value: any) =>
+        value ? (
+          <img
+            src={value}
+            alt="Project Thumbnail"
+            className="w-12 h-12 object-cover rounded border border-gray-200"
+          />
+        ) : (
+          <span className="text-gray-400 text-xs">No image</span>
+        ),
     },
-    {
-      key: 'description',
-      accessorKey: 'description',
-      header: 'Description',
-      cell: (info: any) => info.getValue(),
-    },
-    {
-      key: 'status',
-      accessorKey: 'status',
-      header: 'Status',
-      cell: (info: any) => info.getValue(),
-    },
-    {
-      key: 'visibility',
-      accessorKey: 'visibility',
-      header: 'Visibility',
-      cell: (info: any) => info.getValue(),
-    },
+    { key: 'description', label: 'Description' },
+    { key: 'status', label: 'Status' },
+    { key: 'visibility', label: 'Visibility' },
+    { key: 'progress', label: 'Progress' },
     {
       key: 'created_at',
-      accessorKey: 'created_at',
-      header: 'Created At',
-      cell: (info: any) => info.getValue(),
+      label: 'Created At',
+      render: (value: any) => formatDateDisplay(value),
     },
     {
       key: 'updated_at',
-      accessorKey: 'updated_at',
-      header: 'Updated At',
-      cell: (info: any) => info.getValue(),
-    },
-    {
-      key: 'progress',
-      accessorKey: 'progress',
-      header: 'Progress',
-      cell: (info: any) => info.getValue(),
-    },
-    {
-      key: 'thumbnail',
-      accessorKey: 'thumbnail',
-      header: 'Thumbnail',
-      cell: (info: any) => info.getValue() ? <img src={info.getValue()} alt="thumbnail" style={{width: 40, height: 40, objectFit: 'cover'}} /> : null,
+      label: 'Updated At',
+      render: (value: any) => formatDateDisplay(value),
     },
   ];
 
@@ -86,7 +87,7 @@ const ProjectTable = () => {
     <>
       <div>
             <DataTableExt
-              title="Categories"
+              title=""
               data={listPojects ?? []}
               onCreate={handleAdd}
               initialColumns={initialColumns}

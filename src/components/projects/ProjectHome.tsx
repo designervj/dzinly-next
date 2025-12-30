@@ -7,7 +7,7 @@ const ProjectHome = () => {
   return (
     <>
       <CreatePorjectButton/>
-  <GetAllProjects/>
+  
   <ProjectTable/>
     </>
 

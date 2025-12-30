@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface DistanceRefModal {
   distance_pixel?: number;
   distance_meter?: number;
@@ -95,14 +97,15 @@ export interface AnalyseImageModel {
 }
 
 export interface ProjectModel {
+    _id?:string |ObjectId
   id?: number;
   name?: string;
   description?: string;
   visibility?: "public" | "private";
   status?: string;
-  created_at?: string;
-  updated_at?: string;
-  user_id?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  user_id?: string|ObjectId;
   progress?: number;
   thumbnail?: string;
   jobData?: JobModel[];

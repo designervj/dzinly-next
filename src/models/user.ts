@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 
 export interface IUser  {
   _id?:string|Object
+    id?:string|Object
     tenantId?: string
   email?: string;
   passwordHash?: string;

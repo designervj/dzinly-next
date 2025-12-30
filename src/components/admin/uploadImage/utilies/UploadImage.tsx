@@ -1,14 +1,23 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Upload, X, CheckCircle, AlertCircle, Image as ImageIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import {
+  Upload,
+  X,
+  CheckCircle,
+  AlertCircle,
+  Image as ImageIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-import { useSelector } from 'react-redux';
-import { DirectS3UploadService, UploadProgress, UploadResult } from './DirectS3UploadService';
-import { convertImageFileToWebp } from './ConvertImageToWebp';
-import { RootState } from '@/store/store';
-
+import { useSelector } from "react-redux";
+import {
+  DirectS3UploadService,
+  UploadProgress,
+  UploadResult,
+} from "./DirectS3UploadService";
+import { convertImageFileToWebp } from "./ConvertImageToWebp";
+import { RootState } from "@/store/store";
 
 interface UploadImageProps {
   onUploadSuccess?: (fileUrl: string, key: string) => void;
@@ -18,8 +27,7 @@ interface UploadImageProps {
   className?: string;
   accept?: string;
   createdProjectId?: string | null;
-  jobImageUpload: (file: File ) => void;
-
+  jobImageUpload: (file: File) => void;
 }
 
 interface FileWithPreview extends File {
@@ -30,65 +38,98 @@ const UploadImage: React.FC<UploadImageProps> = ({
   onUploadSuccess,
   onUploadError,
   maxSize = 10 * 1024 * 1024, // 10MB default
-  allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  className = '',
-  accept = 'image/*',
+  allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"],
+  className = "",
+  accept = "image/*",
   createdProjectId,
-  jobImageUpload 
+  jobImageUpload,
 }) => {
-  const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(null);
+  const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
+    null
+  );
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(
+    null
+  );
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
   const [dragActive, setDragActive] = useState(false);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
- const {user }= useSelector((state:RootState)=>state.user)
-
+  const { user } = useSelector((state: RootState) => state.user);
+  const { currentProject } = useSelector((state: RootState) => state.projects);
+  
+ 
   useEffect(() => {
-     if( createdProjectId && createdProjectId!==null) {
-     handleUpload()
-     }
-  }, [createdProjectId]);
+
+    // if (createdProjectId && createdProjectId !== null) {
+    //   handleUpload();
+    // }
+    // create project image 
+    if (currentProject && currentProject._id && createdProjectId) {
+      // Check if createdProjectId contains currentProject._id
+      const currentProjectIdStr =
+        typeof currentProject._id === "string"
+          ? currentProject._id
+          : currentProject._id?.toString();
+      if (
+        typeof createdProjectId === "string" &&
+        typeof currentProjectIdStr === "string" &&
+        createdProjectId.includes(currentProjectIdStr)
+      ) {
+        // Do something if it contains
+        console.log(
+          "createdProjectId contains currentProject._id",
+          createdProjectId
+        );
+        handleUpload();
+      } 
+    }
+  }, [, currentProject]);
 
   // Handle file selection
 
+  const handleFileSelect = useCallback(
+    async (file: File) => {
+      // Validate file using direct S3 upload service
+      const validation = DirectS3UploadService.validateFile(
+        file,
+        maxSize,
+        allowedTypes
+      );
+      if (!validation.valid) {
+        setUploadResult({
+          success: false,
+          error: validation.error,
+        });
+        onUploadError?.(validation.error || "Invalid file");
+        return;
+      }
 
-const handleFileSelect = useCallback(async (file: File) => {
-  // Validate file using direct S3 upload service
-  const validation = DirectS3UploadService.validateFile(file, maxSize, allowedTypes);
-  if (!validation.valid) {
-    setUploadResult({
-      success: false,
-      error: validation.error,
-    });
-    onUploadError?.(validation.error || 'Invalid file');
-    return;
-  }
+      // Convert to WebP
+      let webpFile: File;
+      try {
+        webpFile = await convertImageFileToWebp(file);
+      } catch (err) {
+        setUploadResult({
+          success: false,
+          error: "Failed to convert image to WebP.",
+        });
+        onUploadError?.("Failed to convert image to WebP.");
+        return;
+      }
 
-  // Convert to WebP
-  let webpFile: File;
-  try {
-    webpFile = await convertImageFileToWebp(file);
-  } catch (err) {
-    setUploadResult({
-      success: false,
-      error: 'Failed to convert image to WebP.',
-    });
-    onUploadError?.('Failed to convert image to WebP.');
-    return;
-  }
+      // Create preview URL
+      const fileWithPreview = webpFile as FileWithPreview;
+      fileWithPreview.preview = URL.createObjectURL(webpFile);
 
-  // Create preview URL
-  const fileWithPreview = webpFile as FileWithPreview;
-  fileWithPreview.preview = URL.createObjectURL(webpFile);
-
-  setSelectedFile(fileWithPreview);
-  setUploadResult(null);
-  setUploadProgress(null);
-  jobImageUpload(webpFile);
-}, [maxSize, allowedTypes, onUploadError, jobImageUpload]);
+      setSelectedFile(fileWithPreview);
+      setUploadResult(null);
+      setUploadProgress(null);
+      jobImageUpload(webpFile);
+    },
+    [maxSize, allowedTypes, onUploadError, jobImageUpload]
+  );
   // const handleFileSelect = useCallback((file: File) => {
   //   // Validate file using direct S3 upload service
   //   const validation = DirectS3UploadService.validateFile(file, maxSize, allowedTypes);
@@ -104,7 +145,7 @@ const handleFileSelect = useCallback(async (file: File) => {
   //   // Create preview URL
   //   const fileWithPreview = file as FileWithPreview;
   //   fileWithPreview.preview = URL.createObjectURL(file);
-    
+
   //   setSelectedFile(fileWithPreview);
   //   setUploadResult(null);
   //   setUploadProgress(null);
@@ -115,9 +156,8 @@ const handleFileSelect = useCallback(async (file: File) => {
     const file = event.target.files?.[0];
     if (file) {
       handleFileSelect(file);
-       jobImageUpload(file);
+      jobImageUpload(file);
     }
-   
   };
 
   // Handle drag and drop
@@ -138,22 +178,25 @@ const handleFileSelect = useCallback(async (file: File) => {
     setDragActive(false);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      handleFileSelect(files[0]);
-    }
-  }, [handleFileSelect]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragActive(false);
+
+      const files = e.dataTransfer.files;
+      if (files && files[0]) {
+        handleFileSelect(files[0]);
+      }
+    },
+    [handleFileSelect]
+  );
 
   // Upload file directly to S3
   const handleUpload = async () => {
     // Check if file is selected
     if (!selectedFile) {
-      const noFileError = 'No file selected';
+      const noFileError = "No file selected";
       setUploadResult({
         success: false,
         error: noFileError,
@@ -164,7 +207,8 @@ const handleFileSelect = useCallback(async (file: File) => {
 
     // Check if AWS credentials are configured
     if (!DirectS3UploadService.isConfigured()) {
-      const configError = 'AWS credentials not configured. Please set your environment variables.';
+      const configError =
+        "AWS credentials not configured. Please set your environment variables.";
       setUploadResult({
         success: false,
         error: configError,
@@ -181,20 +225,20 @@ const handleFileSelect = useCallback(async (file: File) => {
       // Use direct S3 upload service
       const result = await DirectS3UploadService.uploadFile(
         selectedFile,
-       createdProjectId??"",
+        createdProjectId ?? "",
         (progress) => setUploadProgress(progress)
       );
 
-      
       setUploadResult(result);
-      
+
       if (result.success && result.fileUrl && result.key) {
         onUploadSuccess?.(result.fileUrl, result.key);
       } else {
-        onUploadError?.(result.error || 'Upload failed');
+        onUploadError?.(result.error || "Upload failed");
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      const errorMessage =
+        error instanceof Error ? error.message : "Upload failed";
       setUploadResult({
         success: false,
         error: errorMessage,
@@ -214,7 +258,7 @@ const handleFileSelect = useCallback(async (file: File) => {
     setUploadResult(null);
     setUploadProgress(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -238,8 +282,12 @@ const handleFileSelect = useCallback(async (file: File) => {
       <div
         className={`
           relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-          ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
-          ${selectedFile ? 'border-green-500 bg-green-50' : ''}
+          ${
+            dragActive
+              ? "border-blue-500 bg-blue-50"
+              : "border-gray-300 hover:border-gray-400"
+          }
+          ${selectedFile ? "border-green-500 bg-green-50" : ""}
         `}
         onClick={openFileDialog}
         onDragEnter={handleDragIn}
@@ -270,7 +318,7 @@ const handleFileSelect = useCallback(async (file: File) => {
                 </Button>
               </div>
             )}
-            
+
             {/* File Info */}
             <div className="text-sm text-gray-600">
               <p className="font-medium">{selectedFile.name}</p>
@@ -285,7 +333,7 @@ const handleFileSelect = useCallback(async (file: File) => {
                 Drop your image here, or click to select
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Supports: {allowedTypes.join(', ')}
+                Supports: {allowedTypes.join(", ")}
               </p>
               <p className="text-sm text-gray-500">
                 Max size: {Math.round(maxSize / (1024 * 1024))}MB
@@ -308,23 +356,29 @@ const handleFileSelect = useCallback(async (file: File) => {
 
       {/* Upload Result */}
       {uploadResult && (
-        <Alert className={`mt-4 ${uploadResult.success ? 'border-green-500' : 'border-red-500'}`}>
+        <Alert
+          className={`mt-4 ${
+            uploadResult.success ? "border-green-500" : "border-red-500"
+          }`}
+        >
           {uploadResult.success ? (
             <CheckCircle className="h-4 w-4 text-green-600" />
           ) : (
             <AlertCircle className="h-4 w-4 text-red-600" />
           )}
-          <AlertDescription className={uploadResult.success ? 'text-green-700' : 'text-red-700'}>
-            {uploadResult.success ? 'Upload successful!' : uploadResult.error}
+          <AlertDescription
+            className={uploadResult.success ? "text-green-700" : "text-red-700"}
+          >
+            {uploadResult.success ? "Upload successful!" : uploadResult.error}
           </AlertDescription>
         </Alert>
       )}
 
       {/* Action Buttons */}
       <div className="mt-4 flex gap-2">
-        {selectedFile && !uploadResult?.success && (
-          <Button 
-           // onClick={handleUpload} 
+        {/* {selectedFile && !uploadResult?.success && (
+          <Button
+            // onClick={handleUpload}
             disabled={uploading}
             className="flex-1"
           >
@@ -336,18 +390,13 @@ const handleFileSelect = useCallback(async (file: File) => {
             ) : (
               <>
                 <Upload className="h-4 w-4 mr-2" />
-              
               </>
             )}
           </Button>
-        )}
-        
+        )} */}
+
         {(selectedFile || uploadResult) && (
-          <Button 
-            variant="outline" 
-            onClick={handleClear}
-            disabled={uploading}
-          >
+          <Button variant="outline" onClick={handleClear} disabled={uploading}>
             Clear
           </Button>
         )}

@@ -33,6 +33,7 @@ function SignInForm() {
       });
 
       if (result && (result as any).error) {
+        console.log("resukt ", result)
         throw new Error((result as any).error || "Sign-in failed");
       }
 
@@ -48,6 +49,7 @@ function SignInForm() {
       router.push("/admin");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Sign-in failed";
+      console.log("mesagge---", err)
       setError(msg);
     } finally {
       setLoading(false);

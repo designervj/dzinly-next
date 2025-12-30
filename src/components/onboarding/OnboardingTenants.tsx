@@ -7,6 +7,7 @@ import { UserDetails } from "./UserDetails";
 import { WebsiteDetails } from "./WebsiteDetails";
 import { Review } from "./Review";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export interface websiteData {
   name: string;
@@ -34,7 +35,7 @@ export interface userData {
   email: string;
   password: string;
   role: string;
-  permission?:string[]
+  permissions?:string[]
 }
 
 export interface currentDomain {
@@ -46,7 +47,7 @@ export interface currentDomain {
 
 export default function OnboardingTenants() {
   const [currentStep, setCurrentStep] = useState(1);
-
+    const router= useRouter()
   // Form state
   const [tenantData, setTenantData] = useState<tenantData>({
     name: "",
@@ -68,6 +69,7 @@ export default function OnboardingTenants() {
     email: "",
     password: "",
     role: "owner",
+    permissions:[]
   });
 
   const [websiteData, setWebsiteData] = useState<websiteData>({
@@ -152,6 +154,7 @@ export default function OnboardingTenants() {
         });
         setCurrentStep(1);
         toast.success(`SuccessFully Onboarded ${result.userid}`);
+        router.push("/")
       }
     } catch (error: any) {
       toast.error(error.message);

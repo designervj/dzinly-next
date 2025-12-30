@@ -1,3 +1,4 @@
+
 import { ObjectId } from 'mongodb';
 import { getDb } from '@/lib/db/mongodb';
 import { User, UserRole, UIConfiguration, ActivityLog, FranchiseClient } from '@/types';
@@ -6,6 +7,12 @@ import { RoleManager, DEFAULT_USER_PERMISSIONS } from './roles';
 export class RBACService {
   private static db = getDb();
 
+
+    // Get all users from the 'users' collection
+  static async getAllUsers(): Promise<User[]> {
+    const db = await this.db;
+    return db.collection('users').find({}).toArray() as Promise<User[]>;
+  }
   // User role management
   static async updateUserRole(userId: ObjectId, newRole: UserRole, updatedBy: ObjectId): Promise<void> {
     const db = await this.db;

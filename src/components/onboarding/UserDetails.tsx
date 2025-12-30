@@ -91,7 +91,7 @@ export const UserDetails = ({userData, setUserData}:UserProps) => {
                       value={item.name}
                       checked={userData.role === item.name}
                       onChange={(e) =>
-                        setUserData({ ...userData, role: e.target.value , permission:item.permissions})
+                        setUserData({ ...userData, role: e.target.value , permissions:item.permissions})
                       }
                       className="hidden"
                     />

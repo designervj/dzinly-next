@@ -1,3 +1,7 @@
+// Utility to create slug from organization name
+function createSlug(name: string) {
+  return name.trim().toLowerCase().replace(/\s+/g, '-');
+}
 import { Check, Palette, Upload } from 'lucide-react';
 import React from 'react'
 import { tenantData } from './OnboardingTenants';
@@ -10,6 +14,14 @@ export interface TenantProps {
 
 
 export const TenantDetails = ({tenantData, setTenantData}: TenantProps) => {
+  React.useEffect(() => {
+    if (tenantData.name && tenantData.name.trim() !== "") {
+      const slug = createSlug(tenantData.name);
+      if (tenantData.slug !== slug) {
+        setTenantData({ ...tenantData, slug });
+      }
+    }
+  }, [tenantData.name]);
     const tenantTypes = [
     { value: "manufacturer", label: "Manufacturer", description: "Production and manufacturing businesses", icon: "🏭" },
     { value: "distributor", label: "Distributor", description: "Supply chain and distribution services", icon: "🚚" },

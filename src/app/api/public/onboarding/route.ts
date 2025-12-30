@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getDatabase } from "@/lib/db/mongodb";
 import bcrypt from "bcryptjs";
+import { permission } from "process";
 
 const schema = z.object({
   tenantData: z.object({
@@ -27,6 +28,8 @@ const schema = z.object({
     password: z.string().min(6).max(100),
     name: z.string().min(3).max(80),
     role: z.string().min(3).max(80),
+    permissions:z.array(z.string()),
+    status: z.string().min(3).max(80),
   }),
 
   websiteData: z.object({
@@ -71,7 +74,8 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(userData.password, 10);
     const userRes = await userColl.insertOne({
       ...userData,
-      password: passwordHash,
+      passwordHash: passwordHash,
+      status:"active",
       tenantId,
       createdAt: new Date(),
       updatedAt: new Date(),

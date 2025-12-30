@@ -2,6 +2,10 @@
 
 import React from "react";
 import { Search, Edit, Trash2, UserPlus } from "lucide-react";
+import GetAllUsers from "@/components/admin/users/GetAllUsers";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { IUser } from "@/models/user";
 
 export default function Page() {
   const users = [
@@ -28,8 +32,16 @@ export default function Page() {
     },
   ];
 
+   const { user, hasFetchedAllUsers, alluser } = useSelector(
+    (state: RootState) => state.user
+  );
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <>
+
+    {/* get all users */}
+    <GetAllUsers/>
+
+     <div className="min-h-screen bg-gray-50 p-8">
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -80,9 +92,11 @@ export default function Page() {
           </thead>
 
           <tbody>
-            {users.map((user) => (
+            {alluser &&
+            alluser.length>0 &&
+            alluser.map((user:IUser) => (
               <tr
-                key={user.id}
+                key={user?._id?.toString()}
                 className="border-t hover:bg-gray-50"
               >
                 <td className="p-4 font-medium">{user.name}</td>
@@ -113,5 +127,7 @@ export default function Page() {
         </table>
       </div>
     </div>
+    </>
+   
   );
 }

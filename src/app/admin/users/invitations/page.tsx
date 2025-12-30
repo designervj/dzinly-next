@@ -1,5 +1,6 @@
 "use client";
-import { createCustomer } from "@/hooks/slices/user/userSlice";
+
+import { createCustomer } from "@/hooks/slices/user/userThunks";
 import { useToast } from "@/hooks/use-toast";
 import { IUser } from "@/models/user";
 import { AppDispatch } from "@/store/store";

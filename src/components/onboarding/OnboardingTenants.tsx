@@ -34,6 +34,7 @@ export interface userData {
   email: string;
   password: string;
   role: string;
+  permission?:string[]
 }
 
 export interface currentDomain {

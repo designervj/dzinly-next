@@ -765,9 +765,9 @@ function Sidebar({
                         </Avatar>
 
                         <div className="flex flex-col flex-1 text-left leading-tight">
-                          <span className="text-sm font-medium truncate">shadcn</span>
+                          <span className="text-sm font-medium truncate">{currentUser.name}</span>
                           <span className="text-xs text-muted-foreground truncate">
-                            m@example.com
+                            {currentUser.email}
                           </span>
                         </div>
 
@@ -786,9 +786,9 @@ function Sidebar({
                           <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">shadcn</span>
+                          <span className="text-sm font-medium">{currentUser.name}</span>
                           <span className="text-xs text-muted-foreground">
-                            m@example.com
+                            {currentUser.email}
                           </span>
                         </div>
                       </DropdownMenuLabel>

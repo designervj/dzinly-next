@@ -17,8 +17,8 @@ export default async function PagesAdmin() {
    if(session?.expires &&session.user.role!=="superadmin"){
  if (!isSessionExpired(session?.expires )) {
 
-    // Ensure correct URL for server-side fetch
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:55803';
+
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:55803';
     const url = `${baseUrl.replace(/\/$/, '')}/api/projects?user_id=${session.user.id}`;
     const res = await fetch(url, {
       method: "GET",

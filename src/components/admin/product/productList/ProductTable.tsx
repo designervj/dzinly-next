@@ -181,7 +181,7 @@ const ProductTable = () => {
         <DataTableExt
           title="Products"
           data={products ?? []}
-          createHref="/admin/products/create"
+          createHref="/admin/products/createproduct"
           initialColumns={initialColumns}
           onDelete={(row) => handleDelete(row)}
           onView={(row) => handleView(row)}

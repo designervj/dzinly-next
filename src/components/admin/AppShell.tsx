@@ -1118,59 +1118,61 @@ function Sidebar({
                   </div>
 
                   {/* Website selector */}
-                  {currentUser && currentUser.role!=="customer" && websites.length > 0 && (
-                    <div className={cn("px-3 pt-2", collapsed && "px-2")}>
-                      <Select
-                        value={currentWebsite?._id || ""}
-                        onValueChange={onWebsiteChange}
-                      >
-                        <SelectTrigger
-                          className={cn(
-                            // UPDATED: Cleaner white/bg input look
-                            "h-10 w-full rounded-md bg-background shadow-sm border border-input",
-                            "flex items-center justify-between px-3",
-                            "[&>svg]:hidden",
-                            collapsed && "justify-center px-2"
-                          )}
+                  {currentUser &&
+                    currentUser.role !== "customer" &&
+                    websites.length > 0 && (
+                      <div className={cn("px-3 pt-2", collapsed && "px-2")}>
+                        <Select
+                          value={currentWebsite?._id || ""}
+                          onValueChange={onWebsiteChange}
                         >
-                          {!collapsed ? (
-                            <div className="flex items-center gap-2">
-                              <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
+                          <SelectTrigger
+                            className={cn(
+                              // UPDATED: Cleaner white/bg input look
+                              "h-10 w-full rounded-md bg-background shadow-sm border border-input",
+                              "flex items-center justify-between px-3",
+                              "[&>svg]:hidden",
+                              collapsed && "justify-center px-2"
+                            )}
+                          >
+                            {!collapsed ? (
+                              <div className="flex items-center gap-2">
+                                <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                            ) : (
+                              <Globe2 className="h-4 w-4 text-muted-foreground" />
+                            )}
+                          </SelectTrigger>
+
+                          <SelectContent className="w-[260px] rounded-lg border shadow-lg">
+                            <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
+                              Websites
                             </div>
-                          ) : (
-                            <Globe2 className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </SelectTrigger>
 
-                        <SelectContent className="w-[260px] rounded-lg border shadow-lg">
-                          <div className="px-3 py-2 text-xs font-semibold text-muted-foreground">
-                            Websites
-                          </div>
-
-                          {websites.map((site, index) => (
-                            <SelectItem key={site._id} value={site._id}>
-                              <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-2">
-                                  <div className="h-7 w-7 rounded-md border bg-muted flex items-center justify-center">
-                                    <Globe2 className="h-4 w-4 text-muted-foreground" />
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <span className="text-sm font-medium">
-                                      {site.name}
-                                    </span>
-                                    <span className="text-[11px] text-muted-foreground">
-                                      {site.primaryDomain ||
-                                        site.systemSubdomain}
-                                    </span>
+                            {websites.map((site, index) => (
+                              <SelectItem key={site._id} value={site._id}>
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center gap-2">
+                                    <div className="h-7 w-7 rounded-md border bg-muted flex items-center justify-center">
+                                      <Globe2 className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <span className="text-sm font-medium">
+                                        {site.name}
+                                      </span>
+                                      <span className="text-[11px] text-muted-foreground">
+                                        {site.primaryDomain ||
+                                          site.systemSubdomain}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                 </div>
 
                 {!collapsed && (
@@ -1178,11 +1180,13 @@ function Sidebar({
                     <span className="text-xs font-semibold text-foreground">
                       {currentUser?.name || "Select website"}
                     </span>
-                   { currentUser.role!="customer" && <span className="text-[11px] text-muted-foreground">
-                      {currentWebsite?.primaryDomain ||
-                        currentWebsite?.systemSubdomain ||
-                        ""}
-                    </span>}
+                    {currentUser.role != "customer" && (
+                      <span className="text-[11px] text-muted-foreground">
+                        {currentWebsite?.primaryDomain ||
+                          currentWebsite?.systemSubdomain ||
+                          ""}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>

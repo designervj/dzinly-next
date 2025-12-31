@@ -138,7 +138,7 @@ const CustomerSideBar = () => {
                         href={item.href}
                         className="flex items-center bg-gray-100 gap-3 px-3 py-2  rounded-lg text-sm text-gray-600 hover:bg-white transition hover:shadow-sm"
                       >
-                        <item.icon size={16} />
+                        <item.icon width={16} />
                         <span className="flex-1">{item.label}</span>
 
                         {item.badge && (

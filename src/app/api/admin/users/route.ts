@@ -1,3 +1,24 @@
+// Utility to flatten permissions object to string[]
+function flattenPermissions(permissionsObj: any, prefix = ""): string[] {
+  let result: string[] = [];
+  for (const key in permissionsObj) {
+    if (typeof permissionsObj[key] === "object" && !Array.isArray(permissionsObj[key])) {
+      // Nested object (e.g., franchise, client, business)
+      for (const subKey in permissionsObj[key]) {
+        if (permissionsObj[key][subKey]) {
+          result.push(`${key}:${subKey}`);
+        }
+      }
+    } else if (Array.isArray(permissionsObj[key])) {
+      for (const action of permissionsObj[key]) {
+        result.push(`${key}:${action}`);
+      }
+    } else if (typeof permissionsObj[key] === "boolean" && permissionsObj[key]) {
+      result.push(key);
+    }
+  }
+  return result;
+}
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { ObjectId } from "mongodb";
@@ -127,6 +148,9 @@ export async function POST(request: NextRequest) {
     // Get default permissions for the role
     const defaultPermissions = DEFAULT_USER_PERMISSIONS[role as UserRole];
 
+    // Flatten permissions object to string[]
+    const flattenedPermissions = flattenPermissions(defaultPermissions);
+
     // Create new user
     const newUser: Omit<User, "_id"> = {
       tenantId,
@@ -135,7 +159,7 @@ export async function POST(request: NextRequest) {
       role: role as UserRole,
       passwordHash,
       status: "active",
-      permissions: defaultPermissions,
+      permissions: flattenedPermissions,
       metadata: metadata || {},
       createdAt: new Date(),
       updatedAt: new Date(),

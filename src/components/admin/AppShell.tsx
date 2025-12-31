@@ -988,6 +988,9 @@ function useHasPermission(user: User | null) {
       if (!permission) return true;
       if (!user) return true;
 
+      // Superadmin has access to everything
+      if (user.role === "superadmin") return true;
+
       const required = Array.isArray(permission) ? permission : [permission];
       if (!user.permissions) return true;
 

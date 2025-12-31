@@ -225,6 +225,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.7)
+      '@types/react-lazy-load-image-component':
+        specifier: ^1.6.5
+        version: 1.6.5
       '@types/redux-thunk':
         specifier: ^2.1.0
         version: 2.1.0(redux@5.0.1)
@@ -1890,6 +1893,9 @@ packages:
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
       '@types/react': ^19.2.0
+
+  '@types/react-lazy-load-image-component@1.6.5':
+    resolution: {integrity: sha512-Pyhy/H3oFqHqiCfH/97y4YAc4du04qs54g+9oC08nbRSr2dq3wIqVOY/3VyKxWU1/f42BgjRgMAJ8TyB2mK92A==}
 
   '@types/react@19.2.7':
     resolution: {integrity: sha512-MWtvHrGZLFttgeEj28VXHxpmwYbor/ATPYbBfSFZEIRK0ecCFLl2Qo55z52Hss+UV9CRN7trSeq1zbgx7YDWWg==}
@@ -5991,6 +5997,11 @@ snapshots:
   '@types/react-dom@19.2.3(@types/react@19.2.7)':
     dependencies:
       '@types/react': 19.2.7
+
+  '@types/react-lazy-load-image-component@1.6.5':
+    dependencies:
+      '@types/react': 19.2.7
+      csstype: 3.2.3
 
   '@types/react@19.2.7':
     dependencies:

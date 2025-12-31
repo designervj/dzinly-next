@@ -1,6 +1,6 @@
+"use client";
 
-
-import React from 'react';
+import React from "react";
 import {
   Folder,
   Box,
@@ -11,11 +11,16 @@ import {
   Newspaper,
   Users,
   Settings,
-} from 'lucide-react';
+  ChevronDown,
+} from "lucide-react";
 
 const Logo = () => (
-  <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-    <img src="/dzinly-favicon.svg" className="w-6 h-6 invert brightness-0" alt="Dzinly logo" />
+  <div className="h-10 w-10 rounded-lg bg-purple-700 flex items-center justify-center">
+    <img
+      src="/dzinly-favicon.svg"
+      className="w-6 h-6 invert brightness-0"
+      alt="Dzinly logo"
+    />
   </div>
 );
 
@@ -34,94 +39,130 @@ type NavSection = {
   permission?: string;
 };
 
-
 const navSections: NavSection[] = [
   {
-    id: 'workspace',
-    label: 'Workspace',
+    id: "workspace",
+    label: "Workspace",
     items: [
-      { label: 'Projects', href: '/admin/projects', icon: Folder },
-      { label: 'Assets', href: '', icon: Box, badge: '4' },
-      { label: 'Boards', href: '', icon: LayoutGrid },
+      { label: "Projects", href: "/admin/projects", icon: Folder },
+      { label: "Assets", href: "", icon: Box, badge: "4" },
+      { label: "Boards", href: "", icon: LayoutGrid },
     ],
   },
   {
-    id: 'materials',
-    label: 'Materials Library',
+    id: "materials",
+    label: "Materials Library",
+    items: [{ label: "Materials Library", href: "/materials", icon: BookOpen }],
+  },
+  {
+    id: "tools",
+    label: "Tools & Features",
     items: [
-      { label: 'Materials Library', href: '/materials', icon: BookOpen },
+      { label: "Design Tools", href: "/tools", icon: Wrench },
+      { label: "Share Project", href: "/share", icon: Share2 },
     ],
   },
   {
-    id: 'tools',
-    label: 'Tools & Features',
+    id: "community",
+    label: "Community",
     items: [
-      { label: 'Design Tools', href: '/tools', icon: Wrench },
-      { label: 'Share Project', href: '/share', icon: Share2 },
+      { label: "Blogs", href: "/blogs", icon: Newspaper },
+      { label: "Affiliate Program", href: "/affiliate", icon: Users },
     ],
   },
-  {
-    id: 'community',
-    label: 'Community',
+
+   {
+    id: "settings",
+    label: "Settings",
     items: [
-      { label: 'Blogs', href: '/blogs', icon: Newspaper },
-      { label: 'Affiliate Program', href: '/affiliate', icon: Users },
+      { label: "User Management", href: "/admin/users", icon: Users },
+      { label: "System Settings", href: "/admin/settings", icon: Settings },
     ],
   },
+
 ];
 
-
-
-
 const CustomerSideBar = () => {
-  // Example website selector (replace with real data/logic as needed)
-  const [selectedWebsite, setSelectedWebsite] = React.useState('Demo Website');
-  const websites = [
-    { name: 'Demo Website', value: 'demo' },
-    // Add more websites as needed
-  ];
+  // 🔹 dropdown state (per section)
+  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>(
+    {
+      workspace: true, // default open
+    }
+  );
+
+  const toggleSection = (id: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
-    <aside className="w-[320px] min-h-screen bg-[#fafbfc] border-r flex flex-col justify-between shadow-none">
-      <div>
-   
+    <aside className="min-h-screen  flex flex-col justify-between">
+      {/* Brand */}
+      
 
-        {/* Section cards */}
-        <nav className="flex flex-col gap-3 mt-4 px-2">
-          {navSections.map(section => (
-            <div key={section.id} className="rounded-xl border bg-white shadow-sm mb-1">
-              <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-                {/* Section icon placeholder */}
-                <span className="inline-block w-5 h-5 text-muted-foreground">
-                  {/* <section.items[0].icon width={20} height={20} /> */}
-                </span>
-                <span className="text-[15px] font-semibold text-foreground">{section.label.replace(/_/g, ' ')}</span>
-              </div>
-              <ul className="mt-1">
-                {section.items.map(item => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="flex items-center w-full px-6 py-2 text-left rounded-lg transition-colors hover:bg-muted/40 text-[15px]"
-                    >
-                      <span className="mr-3 text-lg"><item.icon width={20} height={20} /></span>
-                      <span className="flex-1">{item.label}</span>
-                      {item.badge && <span className="ml-2 text-xs bg-blue-100 text-blue-700 rounded px-2 py-0.5">{item.badge}</span>}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+      {/* User Card */}
+     
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-3 px-2 ">
+        {navSections.map((section) => {
+          const isOpen = openSections[section.id];
+
+          return (
+            <div
+              key={section.id}
+              className="rounded-xl  overflow-hidden"
+            >
+              {/* Section Header (clickable) */}
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full flex items-center px-4 py-3 text-sm font-semibold shadow-sm  text-gray-800 hover:bg-gray-50  bg-white rounded-lg"
+              >
+                {section.label}
+                <ChevronDown
+                  size={16}
+                  className={`ml-auto transition-transform ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Section Items */}
+              {isOpen && (
+                <ul className="px-2 pb-2 space-y-1 mt-2">
+                  {section.items.map((item) => (
+                    <li key={item.label}>
+                      <a
+                        href={item.href}
+                        className="flex items-center bg-gray-100 gap-3 px-3 py-2  rounded-lg text-sm text-gray-600 hover:bg-white transition hover:shadow-sm"
+                      >
+                        <item.icon size={16} />
+                        <span className="flex-1">{item.label}</span>
+
+                        {item.badge && (
+                          <span className="text-xs bg-blue-100 text-blue-700 rounded-full px-2 py-0.5">
+                            {item.badge}
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          ))}
-        </nav>
-      </div>
-      {/* Settings/account area at bottom */}
-      <div className="px-4 py-4 border-t bg-white">
-        <button className="flex items-center gap-2 w-full text-gray-600 hover:text-black text-sm font-medium">
-          <Settings width={20} height={20} />
+          );
+        })}
+      </nav>
+
+      {/* Bottom Settings */}
+      {/* <div className="px-4 py-4 border-t bg-white">
+        <button className="flex items-center gap-2 w-full text-gray-600 hover:text-gray-900 text-sm font-medium">
+          <Settings size={18} />
           Settings
         </button>
-      </div>
+      </div> */}
     </aside>
   );
 };

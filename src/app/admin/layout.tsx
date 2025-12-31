@@ -19,6 +19,7 @@ export default async function AdminLayout({
     redirect("/auth/signin");
   }
 
+
   // Fetch websites for the tenant
   const websites = session.user.tenantId
     ? await websiteService.listByTenant(session.user.tenantId)
@@ -43,6 +44,7 @@ export default async function AdminLayout({
     tenantSlug: session.user.tenantSlug || "",
     role: session.user.role || "user",
     image: null,
+    permissions: session.user.permissions || []
   };
 
   // Serialize websites (convert ObjectId to string)

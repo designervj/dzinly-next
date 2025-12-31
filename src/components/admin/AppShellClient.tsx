@@ -34,7 +34,7 @@ export function AppShellClient({
   const dispatch = useDispatch<AppDispatch>();
 
 
-    const resetRedux = () => {
+  const resetRedux = () => {
     dispatch(clearAttributes());
     dispatch(clearBrands());
     dispatch(clearSegments());
@@ -42,32 +42,32 @@ export function AppShellClient({
     dispatch(clearProducts());
   };
   const handleWebsiteChange = async (websiteId: string) => {
-      const newWebsite = websites.find((w) => w._id === websiteId) || null;
+    const newWebsite = websites.find((w) => w._id === websiteId) || null;
     console.log("newWebsite", newWebsite);
     setCurrentWebsite(newWebsite);
     try {
       // Call API to update the current website cookie
-       const response = await fetch("/api/session/website", {
+      const response = await fetch("/api/session/website", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ websiteId }),
       });
-           if (response.ok) {
-          // Clear Redux state first to prevent old data from being used
-          resetRedux();
-          // Navigate to /admin (which will load fresh data for new website)
-           window.location.href = "/admin";
-          // router.push("/admin")
-        } else {
-          console.error("Failed to update website context");
-          // Revert the optimistic update
-          setCurrentWebsite(initialCurrentWebsite);
-        }
+      if (response.ok) {
+        // Clear Redux state first to prevent old data from being used
+        resetRedux();
+        // Navigate to /admin (which will load fresh data for new website)
+        window.location.href = "/admin";
+        // router.push("/admin")
+      } else {
+        console.error("Failed to update website context");
+        // Revert the optimistic update
+        setCurrentWebsite(initialCurrentWebsite);
+      }
     } catch (error) {
       console.error("Error updating website context:", error);
-        setCurrentWebsite(initialCurrentWebsite);
+      setCurrentWebsite(initialCurrentWebsite);
     }
   };
 
@@ -76,8 +76,6 @@ export function AppShellClient({
   //     handleWebsiteChange(initialCurrentWebsite._id);
   //   }
   // }, []);
-
-  
 
   // When client receives server-provided websites, save them to Redux
   useEffect(() => {
@@ -89,8 +87,6 @@ export function AppShellClient({
       dispatch(setCurrentWebsiteAction(initialCurrentWebsite));
     }
   }, [dispatch, websites, initialCurrentWebsite]);
-
-
 
   return (
     <AppShell

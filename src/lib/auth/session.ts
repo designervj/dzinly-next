@@ -24,6 +24,7 @@ export async function requireAuth() {
     tenantId: string;
     tenantSlug: string;
     role: string;
+    permissions: string[]
   };
 }
 

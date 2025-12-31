@@ -1,44 +1,39 @@
-import { NextAuthConfig } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { userService } from './user-service';
-import { tenantService } from '../tenant/tenant-service';
+import { NextAuthConfig } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { userService } from "./user-service";
+import { tenantService } from "../tenant/tenant-service";
 
 export const authConfig: NextAuthConfig = {
   // Dynamically set the base URL based on environment
   trustHost: true,
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-        tenantSlug: { label: 'Tenant', type: 'hidden' },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+        tenantSlug: { label: "Tenant", type: "hidden" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-       
           return null;
         }
         const inputTenantSlug = credentials.tenantSlug as string;
-       
-    
+
         // Get tenant
-      const tenant = await tenantService.getTenantBySlug(inputTenantSlug);
-    
+        const tenant = await tenantService.getTenantBySlug(inputTenantSlug);
+
         // if (!tenant || tenant.status !== 'active') {
         //   return null;
         // }
 
-   
         // Get user
         const user = await userService.getUserByEmail(
           // tenant._id,
           credentials.email as string
         );
 
-  console.log("useruseruseruser",user)
-
-        if (!user ) {
+        if (!user) {
           return null;
         }
         // Verify password
@@ -46,12 +41,12 @@ export const authConfig: NextAuthConfig = {
           user,
           credentials.password as string
         );
-          console.log(" error password",isValid)
+        console.log(" error password", isValid);
         if (!isValid) {
-          console.log(" error password",isValid)
+          console.log(" error password", isValid);
           return null;
         }
-          console.log("user====", user)
+
         // Update last login
         await userService.updateLastLogin(user._id);
         let resolvedTenantId = "";
@@ -68,6 +63,7 @@ export const authConfig: NextAuthConfig = {
           tenantId: resolvedTenantId,
           tenantSlug: resolvedTenantSlug,
           role: user.role,
+          permissions: user.permissions
         };
       },
     }),
@@ -78,9 +74,10 @@ export const authConfig: NextAuthConfig = {
         token.userId = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.tenantId = user?.tenantId??"";
-        token.tenantSlug = user.tenantSlug??"";
+        token.tenantId = user?.tenantId ?? "";
+        token.tenantSlug = user.tenantSlug ?? "";
         token.role = user.role;
+        token.permissions = user.permissions
       }
       return token;
     },
@@ -92,14 +89,15 @@ export const authConfig: NextAuthConfig = {
         session.user.tenantId = token.tenantId as string;
         session.user.tenantSlug = token.tenantSlug as string;
         session.user.role = token.role as string;
+        session.user.permissions = token.permissions as string[]
       }
       return session;
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
 };

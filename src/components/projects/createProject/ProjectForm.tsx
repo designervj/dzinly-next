@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { AnalyseImageModel, ProjectModel } from "../projectModel";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { createProject, fetchAnnotationApiResponse, ProjectResponse, updateProject, updateProjectAnalysis } from "@/hooks/slices/project/projectThunks";
+import { AnalysisResponse, createProject, fetchAnnotationApiResponse, ProjectResponse, updateProject, updateProjectAnalysis } from "@/hooks/slices/project/projectThunks";
 import { UploadService } from "@/components/admin/uploadImage/utilies/uploadService";
 import { UploadProgress, UploadResult } from "@/components/admin/uploadImage/utilies/DirectS3UploadService";
 import UploadImage from "@/components/admin/uploadImage/utilies/UploadImage";
@@ -125,38 +125,49 @@ const PorjectForm = () => {
     if (response && response.success) {
       dispatch(updateProjectList(response.data));
       setCurrentProject(null);
-    router.push("/projects")
-    //  getAnalaysis(projectId, data);
+   // router.push("/projects")
+     getAnalaysis(projectId, data);
     }
   } 
   
 
   const getAnalaysis=async(projectId:string,imageUrl:string )=>{
   setIsDetectingAnnotation(true);
+  const toastId = toast.loading("Segment Analysis");
   try{
     const response= await dispatch(updateProjectAnalysis({ url: imageUrl, id: projectId })).unwrap();
     console.log("analysisis 0---" , response)
-    if(response){
-      const responseData = response.data as ProjectResponse;
-      console.log("resposne Analysys---", responseData)
-      if(responseData.success && responseData.data) {
-        console.log("Image analysis successful:", responseData.data);
-       // dispatch(setIsAnalyseFinish(true));
-        if (responseData.data.analysed_data) {
-          getAnnotationPoint(imageUrl, responseData.data.analysed_data,projectId);
-        }
-      }
+    if(response && response.success && response.data){
+   
+      console.log("Image analysis successful:", response.data);
+      // dispatch(setIsAnalyseFinish(true));
+       const responseUpdate = await dispatch(updateProject(
+          {
+            _id:projectId,
+            analysed_data:response.data  
+          }
+        )).unwrap();
+         if(responseUpdate && responseUpdate.success){
+           setIsProjectUpload(true);
+           toast.dismiss(toastId);
+           toast.success("Analysis completed successfully");
+          router.push("/projects")
+         }
+      //getAnnotationPoint(imageUrl, response.data, projectId);
     }
   }catch(err){
-    if(err instanceof Error)
+    toast.dismiss(toastId);
+    if(err instanceof Error) {
       console.log("Error on Analysiis")
+      toast.error("Error during analysis");
+    }
   } finally {
     setIsDetectingAnnotation(false);
   }
 }
 
   const getAnnotationPoint= async(imageUrl:string,analysed_data:AnalyseImageModel, projectId:string)=>{
-
+   console.log("analysed_data",analysed_data)
     try {
   
       const responce = await dispatch(

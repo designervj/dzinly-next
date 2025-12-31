@@ -1,9 +1,9 @@
+import { Rightsection } from '@/components/studio'
 import React from 'react'
 
-const page = () => {
+
+export default async function StudioPage() {
   return (
-    <div>page</div>
+  <Rightsection/>
   )
 }
-
-export default page

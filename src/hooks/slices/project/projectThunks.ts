@@ -11,6 +11,10 @@ export interface ProjectResponse{
   data:ProjectModel,
   success:boolean
 }
+export interface AnalysisResponse{
+  data:AnalyseImageModel,
+  success:boolean
+}
 
 
 export interface SegmentStats {
@@ -103,13 +107,13 @@ export const deleteProject = createAsyncThunk<
   }
 );
 
-export const updateProjectAnalysis = createAsyncThunk<ProjectResponse, { url: string; id: string }>(
+export const updateProjectAnalysis = createAsyncThunk<AnalysisResponse, { url: string; id: string }>(
   "projects/updateProjectAnalysis",
   async ({ url, id }: { url: string; id: string }, { rejectWithValue }) => {
     try {
      const responseAnalysis = await axios.post(
         `https://nexus.dzinly.org/api/v1/ai/ai/analyse-house`,
-        { url },
+        { image_url:url },
         {
           headers: {
             Accept: "application/json",

@@ -44,9 +44,9 @@ const navSections: NavSection[] = [
     id: "workspace",
     label: "Workspace",
     items: [
-      { label: 'Projects', href: '/projects', icon: Folder },
-      { label: 'Assets', href: '', icon: Box, badge: '4' },
-      { label: 'Boards', href: '', icon: LayoutGrid },
+      { label: "Projects", href: "/projects", icon: Folder },
+      { label: "Assets", href: "", icon: Box, badge: "4" },
+      { label: "Boards", href: "", icon: LayoutGrid },
     ],
   },
   {
@@ -71,7 +71,7 @@ const navSections: NavSection[] = [
     ],
   },
 
-   {
+  {
     id: "settings",
     label: "Settings",
     items: [
@@ -79,16 +79,15 @@ const navSections: NavSection[] = [
       { label: "System Settings", href: "/admin/settings", icon: Settings },
     ],
   },
-
 ];
 
 const CustomerSideBar = () => {
   // 🔹 dropdown state (per section)
-  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>(
-    {
-      workspace: true, // default open
-    }
-  );
+  const [openSections, setOpenSections] = React.useState<
+    Record<string, boolean>
+  >({
+    workspace: true, // default open
+  });
 
   const toggleSection = (id: string) => {
     setOpenSections((prev) => ({
@@ -100,10 +99,8 @@ const CustomerSideBar = () => {
   return (
     <aside className="min-h-screen  flex flex-col justify-between">
       {/* Brand */}
-      
 
       {/* User Card */}
-     
 
       {/* Navigation */}
       <nav className="flex-1 space-y-3 px-2 ">
@@ -111,10 +108,7 @@ const CustomerSideBar = () => {
           const isOpen = openSections[section.id];
 
           return (
-            <div
-              key={section.id}
-              className="rounded-xl  overflow-hidden"
-            >
+            <div key={section.id} className="rounded-xl  overflow-hidden">
               {/* Section Header (clickable) */}
               <button
                 onClick={() => toggleSection(section.id)}

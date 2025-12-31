@@ -105,31 +105,11 @@ setIsDeleteModalOpen(false)
   }
 
   const handleProjectClick=(data:ProjectModel)=>{
-
+  router.push("/studio")
   }
   return (
    <>
        {(
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

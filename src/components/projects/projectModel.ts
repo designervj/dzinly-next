@@ -77,23 +77,14 @@ export interface StyleSuggestions {
 }
 
 export interface AnalyseImageModel {
-  structure: {
-    stories: number;
-    roof_type: string;
-    architectural_style: string;
-  };
-  segments_detected: {
-    walls?: SegmentDetail<WallVariant>;
-    windows?: SegmentDetail<WindowVariant>;
-    roof?: SegmentDetail<RoofVariant>;
-    gutters?: SegmentDetail<GutterVariant>;
-    trim?: SegmentDetail<TrimVariant>;
-    shutters?: SegmentDetail<ShutterVariant>;
-    columns?: SegmentDetail<TrimVariant>;
-    railing?: SegmentDetail<TrimVariant>;
-  };
-  summary: string;
-  style_suggestions: StyleSuggestions[];
+  Wall?: string[];
+  Door?: string[];
+  Garage?: string[];
+  Roof?: string[];
+  Trim?: string[];
+  Column?: string[];
+  Railing?: string[];
+  Landscape?: string[];
 }
 
 export interface ProjectModel {

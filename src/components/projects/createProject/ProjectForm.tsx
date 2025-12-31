@@ -174,8 +174,8 @@ const PorjectForm = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-white">
-        <header className="sticky top-0 z-40 w-full bg-gray-50 backdrop-blur-md border-b border-border shadow-sm">
+      <div className="min-h-screen ">
+        <header className=" top-0 z-40 w-full bg-trans backdrop-blur-md border-b border-border ">
           <div className="max-w-6xl mx-auto flex flex-col items-center justify-center px-4 py-5 md:py-6">
             {/* Back Button */}
             <div className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -212,7 +212,7 @@ const PorjectForm = () => {
           {/* <Separator className="bg-border" /> */}
         </header>
 
-        <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="max-w-6xl mx-auto px-6 py-12 bg-white">
           <div className="grid md:grid-cols-2 gap-12 mb-12">
             <div>
               <div className="flex items-center mb-6">

@@ -57,15 +57,7 @@ export class UserService {
       status: 'active',
       createdAt: new Date(),
       updatedAt: new Date(),
-      permissions: {
-        dashboard: true,
-        users: [],
-        tenants: [],
-        products: [],
-        orders: [],
-        content: [],
-        settings: [],
-      },
+      permissions: []
     };
 
     const result = await collection.insertOne(user as User);

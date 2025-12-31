@@ -138,7 +138,6 @@ import { RootState } from "@/store/store";
 import { IUser } from "@/models/user";
 import CustomerSideBar from "./side-bar/CustomerSideBar";
 
-
 // ---------------------------------------------------------------------------
 // Types & interfaces
 // ---------------------------------------------------------------------------
@@ -196,138 +195,783 @@ const currentWebsiteSections: NavSection[] = [
     label: "Overview",
     items: [
       { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-      { label: "Analytics", href: "/admin/analytics", icon: BarChart3, permission: "websites:update" },
-      { label: "Activity Log", href: "/admin/activity-log", icon: Activity, permission: "analytics:view" },
-      { label: "Notifications", href: "/admin/notifications", icon: Bell, permission: "security:read" },
-      { label: "System Health", href: "/admin/system-health", icon: HeartPulse, permission: "security:read" },
-      { label: "Quick Actions", href: "/admin/quick-actions", icon: Zap, permission: "security:read" },
+      {
+        label: "Analytics",
+        href: "/admin/analytics",
+        icon: BarChart3,
+        permission: ["dashboard:update, dashboard:create", "dashboard:read"],
+      },
+      {
+        label: "Activity Log",
+        href: "/admin/activity-log",
+        icon: Activity,
+        permission: ["analytics:read"],
+      },
+      {
+        label: "Notifications",
+        href: "/admin/notifications",
+        icon: Bell,
+        permission: ["security:read", "security:create", "security:update"],
+      },
+      {
+        label: "System Health",
+        href: "/admin/system-health",
+        icon: HeartPulse,
+        permission: ["security:read"],
+      },
+      {
+        label: "Quick Actions",
+        href: "/admin/quick-actions",
+        icon: Zap,
+        permission: ["security:read"],
+      },
     ],
   },
   {
     id: "websites",
     label: "Websites",
     items: [
-      { label: "Pages", href: "/admin/websites/pages", icon: FileCode2 },
-      { label: "Posts", href: "/admin/websites/posts", icon: Newspaper, permission: "websites:update", },
-      { label: "Media", href: "/admin/websites/edia", icon: ImageIcon, permission: "analytics:view", },
-      { label: "Header", href: "/admin/websites/header", icon: PanelTop, permission: "security:read", },
-      { label: "Footer", href: "/admin/websites/footer", icon: PanelBottom, permission: "security:read", },
-      { label: "Navigation", href: "/admin/websites/navigation", icon: Compass, permission: "security:read", },
-      { label: "Forms", href: "/admin/websites/forms", icon: ClipboardList, permission: "security:read", },
-      { label: "Redirects", href: "/admin/websites/redirects", icon: ArrowLeftRight, permission: "security:read", },
-      { label: "Domain Settings", href: "/admin/websites/domains", icon: Globe2, permission: "security:read", },
+      {
+        label: "Pages",
+        href: "/admin/websites/pages",
+        icon: FileCode2,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Posts",
+        href: "/admin/websites/posts",
+        icon: Newspaper,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Media",
+        href: "/admin/websites/edia",
+        icon: ImageIcon,
+        permission: ["media:read", "media:create", "media:update"],
+      },
+      {
+        label: "Header",
+        href: "/admin/websites/header",
+        icon: PanelTop,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Footer",
+        href: "/admin/websites/footer",
+        icon: PanelBottom,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Navigation",
+        href: "/admin/websites/navigation",
+        icon: Compass,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Forms",
+        href: "/admin/websites/forms",
+        icon: ClipboardList,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Redirects",
+        href: "/admin/websites/redirects",
+        icon: ArrowLeftRight,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+      {
+        label: "Domain Settings",
+        href: "/admin/websites/domains",
+        icon: Globe2,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
     ],
   },
   {
     id: "branding",
     label: "Branding & Design",
     items: [
-      { label: "Brand Profile", href: "/admin/branding/brand-profile", icon: LayoutGrid, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Logo", href: "/admin/branding/logo", icon: Image, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Colors", href: "/admin/branding/colors", icon: Palette, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Typography", href: "/admin/branding/typography", icon: Type, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Layout Settings", href: "/admin/branding/layout-settings", icon: LayoutTemplate, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Theme Presets", href: "/admin/branding/theme-presets", icon: SwatchBook, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "Brand Profile",
+        href: "/admin/branding/brand-profile",
+        icon: LayoutGrid,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Logo",
+        href: "/admin/branding/logo",
+        icon: Image,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Colors",
+        href: "/admin/branding/colors",
+        icon: Palette,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Typography",
+        href: "/admin/branding/typography",
+        icon: Type,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Layout Settings",
+        href: "/admin/branding/layout-settings",
+        icon: LayoutTemplate,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Theme Presets",
+        href: "/admin/branding/theme-presets",
+        icon: SwatchBook,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
     ],
   },
   {
     id: "products",
     label: "Products",
     items: [
-      { label: "Products", href: "/admin/products", icon: Package, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Category", href: "/admin/category", icon: LayoutGrid, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Brand", href: "/admin/brand", icon: Award, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Segment", href: "/admin/segment", icon: Layers, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Attribute", href: "/admin/attribute", icon: ListTree, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Styles", href: "/admin/styles", icon: Palette, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Tags", href: "/admin/tags", icon: Hash, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Attributes", href: "/admin/attributes-list", icon: Component, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Variants", href: "/admin/variants", icon: Boxes, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Pricing Rules", href: "/admin/pricing-rules", icon: CircleDollarSign, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "Products",
+        href: "/admin/products",
+        icon: Package,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Category",
+        href: "/admin/category",
+        icon: LayoutGrid,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Brand",
+        href: "/admin/brand",
+        icon: Award,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Segment",
+        href: "/admin/segment",
+        icon: Layers,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Attribute",
+        href: "/admin/attribute",
+        icon: ListTree,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Styles",
+        href: "/admin/styles",
+        icon: Palette,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Tags",
+        href: "/admin/tags",
+        icon: Hash,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Attributes",
+        href: "/admin/attributes-list",
+        icon: Component,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Variants",
+        href: "/admin/variants",
+        icon: Boxes,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Pricing Rules",
+        href: "/admin/pricing-rules",
+        icon: CircleDollarSign,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
     ],
   },
   {
     id: "ecommerce",
     label: "E-Commerce",
     items: [
-      { label: "Orders", href: "/admin/ecommerce/orders", icon: ShoppingBag, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Customers", href: "/admin/ecommerce/customers", icon: Users, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Reports", href: "/admin/ecommerce/reports", icon: BarChart4, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Abandoned Carts", href: "/admin/ecommerce/abandoned-carts", icon: ShoppingCart, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Subscriptions", href: "/admin/ecommerce/subscriptions", icon: RefreshCcw, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Taxes", href: "/admin/ecommerce/taxes", icon: ReceiptIndianRupee, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Shipping", href: "/admin/ecommerce/shipping", icon: Truck, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Payments", href: "/admin/ecommerce/payments", icon: CreditCard, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Invoices", href: "/admin/ecommerce/invoices", icon: FileText, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Settings", href: "/admin/ecommerce/settings", icon: Settings, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "Orders",
+        href: "/admin/ecommerce/orders",
+        icon: ShoppingBag,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Customers",
+        href: "/admin/ecommerce/customers",
+        icon: Users,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Reports",
+        href: "/admin/ecommerce/reports",
+        icon: BarChart4,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Abandoned Carts",
+        href: "/admin/ecommerce/abandoned-carts",
+        icon: ShoppingCart,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Subscriptions",
+        href: "/admin/ecommerce/subscriptions",
+        icon: RefreshCcw,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Taxes",
+        href: "/admin/ecommerce/taxes",
+        icon: ReceiptIndianRupee,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Shipping",
+        href: "/admin/ecommerce/shipping",
+        icon: Truck,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Payments",
+        href: "/admin/ecommerce/payments",
+        icon: CreditCard,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Invoices",
+        href: "/admin/ecommerce/invoices",
+        icon: FileText,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
+      {
+        label: "Settings",
+        href: "/admin/ecommerce/settings",
+        icon: Settings,
+        permission: [
+          "product:read",
+          "product:update",
+          "product:delete",
+          "product:create",
+        ],
+      },
     ],
   },
   {
     id: "marketing",
     label: "Marketing",
     items: [
-      { label: "Banners", href: "/admin/marketing/banners", icon: ImageIcon, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Campaigns", href: "/admin/marketing/campaigns", icon: Megaphone, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Catalog Generation", href: "/admin/marketing/catalog-generation", icon: BookOpen, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Quotations", href: "/admin/marketing/quotations", icon: FileText, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Coupons", href: "/admin/marketing/coupons", icon: TicketPercent, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Email Templates", href: "/admin/marketing/email-templates", icon: MailPlus, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Integrations", href: "/admin/marketing/integrations", icon: Share2, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Automation Rules", href: "/admin/marketing/automation-rules", icon: Zap, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "Banners",
+        href: "/admin/marketing/banners",
+        icon: ImageIcon,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Campaigns",
+        href: "/admin/marketing/campaigns",
+        icon: Megaphone,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Catalog Generation",
+        href: "/admin/marketing/catalog-generation",
+        icon: BookOpen,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Quotations",
+        href: "/admin/marketing/quotations",
+        icon: FileText,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Coupons",
+        href: "/admin/marketing/coupons",
+        icon: TicketPercent,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Email Templates",
+        href: "/admin/marketing/email-templates",
+        icon: MailPlus,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Integrations",
+        href: "/admin/marketing/integrations",
+        icon: Share2,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Automation Rules",
+        href: "/admin/marketing/automation-rules",
+        icon: Zap,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
     ],
   },
   {
     id: "ai-studio",
     label: "AI Studio",
     items: [
-      { label: "Image Uploads", href: "/admin/ai-studio/image-uploads", icon: ImagePlus, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Segment Detection", href: "/admin/ai-studio/segment-detection", icon: ScanSearch, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Material Application", href: "/admin/ai-studio/material-application", icon: Paintbrush, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Prompt Library", href: "/admin/ai-studio/prompt-library", icon: Terminal, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Render History", href: "/admin/ai-studio/render-history", icon: History, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Saved Designs", href: "/admin/ai-studio/saved-designs", icon: Heart, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Reference Images", href: "/admin/ai-studio/reference-images", icon: GalleryVerticalEnd, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "AI Settings", href: "/admin/ai-studio/ai-settings", icon: Cpu, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "Image Uploads",
+        href: "/admin/ai-studio/image-uploads",
+        icon: ImagePlus,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Segment Detection",
+        href: "/admin/ai-studio/segment-detection",
+        icon: ScanSearch,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Material Application",
+        href: "/admin/ai-studio/material-application",
+        icon: Paintbrush,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Prompt Library",
+        href: "/admin/ai-studio/prompt-library",
+        icon: Terminal,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Render History",
+        href: "/admin/ai-studio/render-history",
+        icon: History,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Saved Designs",
+        href: "/admin/ai-studio/saved-designs",
+        icon: Heart,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "Reference Images",
+        href: "/admin/ai-studio/reference-images",
+        icon: GalleryVerticalEnd,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
+      {
+        label: "AI Settings",
+        href: "/admin/ai-studio/ai-settings",
+        icon: Cpu,
+        permission: ["ai:read", "ai:update", "ai:delete", "ai:create"],
+      },
     ],
   },
   {
     id: "users",
     label: "Users",
     items: [
-      { label: "All Users", href: "/admin/users/all-users", icon: Users, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Roles & Permissions", href: "/admin/users/roles-permissions", icon: Fingerprint, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Teams", href: "/admin/users/teams", icon: UsersRound, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Invitations", href: "/admin/users/invitations", icon: UserPlus, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "Activity Logs", href: "/admin/users/activity-logs", icon: History, permission: ["content:read", "content:update", "content:delete"] },
-      { label: "API Access", href: "/admin/users/api-access", icon: KeyRound, permission: ["content:read", "content:update", "content:delete"] },
+      {
+        label: "All Users",
+        href: "/admin/users/all-users",
+        icon: Users,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Roles & Permissions",
+        href: "/admin/users/roles-permissions",
+        icon: Fingerprint,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Teams",
+        href: "/admin/users/teams",
+        icon: UsersRound,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Invitations",
+        href: "/admin/users/invitations",
+        icon: UserPlus,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Activity Logs",
+        href: "/admin/users/activity-logs",
+        icon: History,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "API Access",
+        href: "/admin/users/api-access",
+        icon: KeyRound,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
     ],
   },
   {
     id: "settings",
     label: "Settings",
     items: [
-      { label: "General", href: "/admin/setting/general", icon: Settings2, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Domain & DNS", href: "/admin/setting/domain-dns", icon: Globe, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Billing & Plans", href: "/admin/setting/billing-plans", icon: CreditCard, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Usage & Limits", href: "/admin/setting/usage-limits", icon: Activity, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Integrations", href: "/admin/setting/integrations", icon: Blocks, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Webhooks", href: "/admin/setting/webhooks", icon: Webhook, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Data Export", href: "/admin/setting/data-export", icon: Download, permission: ["content:read", "content:update", "content:delete"], },
-      { label: "Security", href: "/admin/setting/security", icon: ShieldCheck, permission: ["content:read", "content:update", "content:delete"], },
+      {
+        label: "General",
+        href: "/admin/setting/general",
+        icon: Settings2,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Domain & DNS",
+        href: "/admin/setting/domain-dns",
+        icon: Globe,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Billing & Plans",
+        href: "/admin/setting/billing-plans",
+        icon: CreditCard,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Usage & Limits",
+        href: "/admin/setting/usage-limits",
+        icon: Activity,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Integrations",
+        href: "/admin/setting/integrations",
+        icon: Blocks,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Webhooks",
+        href: "/admin/setting/webhooks",
+        icon: Webhook,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Data Export",
+        href: "/admin/setting/data-export",
+        icon: Download,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+      {
+        label: "Security",
+        href: "/admin/setting/security",
+        icon: ShieldCheck,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
     ],
   },
   {
-     id: "block-manager",
+    id: "block-manager",
     label: "Block Manager",
     items: [
-          { label: "Blocks", href: "/admin/block-manager/blocks", icon: Blocks, permission: ["content:read", "content:update", "content:delete"], },
-    ]
+      {
+        label: "Blocks",
+        href: "/admin/block-manager/blocks",
+        icon: Blocks,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
+    ],
   },
   {
     id: "domains",
     label: "Domain & Hosting",
     items: [
-      { label: "Domains", href: "/admin/domain", icon: Globe, permission: "content:read", },
+      {
+        label: "Domains",
+        href: "/admin/domain",
+        icon: Globe,
+        permission: "content:read",
+      },
     ],
   },
 ];
@@ -377,7 +1021,7 @@ type SidebarProps = {
   websites: Website[];
   currentWebsite: Website | null;
   user: User | null;
-  currentUser:IUser;
+  currentUser: IUser;
   onWebsiteChange: (websiteId: string) => void;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
@@ -440,7 +1084,7 @@ function Sidebar({
           <div
             className={cn(
               // UPDATED: Used semantic theme colors instead of hardcoded hex
-              "h-full border-r border-border bg-muted/20 text-foreground", 
+              "h-full border-r border-border bg-muted/20 text-foreground",
               "shadow-none"
             )}
           >
@@ -451,13 +1095,20 @@ function Sidebar({
                   <div className={cn("px-4 pt-4 pb-0", collapsed && "px-3")}>
                     <div className="flex items-center gap-3">
                       <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-                         {/* Inverted the logo for contrast or keep original */}
-                        <img src="../dzinly-favicon.svg" className="w-6 h-6 invert brightness-0"></img>
+                        {/* Inverted the logo for contrast or keep original */}
+                        <img
+                          src="../dzinly-favicon.svg"
+                          className="w-6 h-6 invert brightness-0"
+                        ></img>
                       </div>
                       {!collapsed && (
                         <div className="leading-tight">
-                          <div className="text-sm font-bold tracking-tight">Dzinly</div>
-                          <div className="text-[11px] text-muted-foreground">Admin panel</div>
+                          <div className="text-sm font-bold tracking-tight">
+                            Dzinly
+                          </div>
+                          <div className="text-[11px] text-muted-foreground">
+                            Admin panel
+                          </div>
                         </div>
                       )}
                     </div>
@@ -501,9 +1152,12 @@ function Sidebar({
                                     <Globe2 className="h-4 w-4 text-muted-foreground" />
                                   </div>
                                   <div className="flex flex-col">
-                                    <span className="text-sm font-medium">{site.name}</span>
+                                    <span className="text-sm font-medium">
+                                      {site.name}
+                                    </span>
                                     <span className="text-[11px] text-muted-foreground">
-                                      {site.primaryDomain || site.systemSubdomain}
+                                      {site.primaryDomain ||
+                                        site.systemSubdomain}
                                     </span>
                                   </div>
                                 </div>
@@ -544,213 +1198,218 @@ function Sidebar({
                       Select website
                     </div>
                   ) : (
-                   <>
-                       {currentUser 
-                    && currentUser.role &&
-                    currentUser.role=== "customer"?(
-                      <CustomerSideBar/>
-                    ):(
+                    <>
+                      {currentUser &&
+                      currentUser.role &&
+                      currentUser.role === "customer" ? (
+                        <CustomerSideBar />
+                      ) : (
                         filteredWebsiteSections.map((section) => {
-                      const HeaderIcon =
-                        sectionIconMap[section.id] || LayoutDashboard;
-                      const isOpen = !!openGroups[section.id];
+                          const HeaderIcon =
+                            sectionIconMap[section.id] || LayoutDashboard;
+                          const isOpen = !!openGroups[section.id];
 
-                      // Collapsed View
-                      if (collapsed) {
-                        return (
-                          <div
-                            key={section.id}
-                            className="relative"
-                            onMouseEnter={() => setHoverGroupId(section.id)}
-                            onMouseLeave={() => setHoverGroupId(null)}
-                          >
-                            <Tooltip delayDuration={150}>
-                              <TooltipTrigger asChild>
-                                <button
-                                  type="button"
-                                  className={cn(
-                                    "w-full flex items-center justify-center",
-                                    "h-11 rounded-md transition-all duration-200",
-                                    "text-muted-foreground hover:bg-background hover:text-foreground hover:shadow-sm border border-transparent hover:border-border/50"
-                                  )}
-                                >
-                                  <HeaderIcon className="h-5 w-5" />
-                                </button>
-                              </TooltipTrigger>
-                              <TooltipContent side="right">
-                                {section.label}
-                              </TooltipContent>
-                            </Tooltip>
-
-                            <AnimatePresence>
-                              {hoverGroupId === section.id && (
-                                <motion.div
-                                  initial={{ opacity: 0, x: 10, y: 0 }}
-                                  animate={{
-                                    opacity: 1,
-                                    x: 0,
-                                    transition: { duration: 0.18, ease },
-                                  }}
-                                  exit={{
-                                    opacity: 0,
-                                    x: 10,
-                                    transition: { duration: 0.14, ease },
-                                  }}
-                                  className="absolute left-[84px] top-0 z-50 w-[240px]"
-                                >
-                                  <div className="rounded-lg bg-popover border text-popover-foreground shadow-xl p-3">
-                                    <div className="flex items-center justify-between px-2 pb-2">
-                                      <div className="text-sm font-semibold">
-                                        {section.label}
-                                      </div>
-                                      <FiCloseHint />
-                                    </div>
-
-                                    <div className="space-y-1">
-                                      {section.items.map((item) => {
-                                        const Icon = item.icon;
-                                        const active =
-                                          pathname === item.href ||
-                                          pathname?.startsWith(item.href + "/");
-
-                                        return (
-                                          <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className="block"
-                                          >
-                                            <div
-                                              className={cn(
-                                                "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                                                active
-                                                  ? "bg-primary/10 text-primary font-medium"
-                                                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                                              )}
-                                            >
-                                              <Icon className="h-4 w-4" />
-                                              <span className="truncate flex-1">
-                                                {item.label}
-                                              </span>
-                                            </div>
-                                          </Link>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      }
-
-                      // Normal Expanded View
-                      return (
-                        <div key={section.id} className="rounded-md">
-                          {/* Group header row */}
-                          <button
-                            type="button"
-                            onClick={() => toggleGroup(section.id)}
-                            className={cn(
-                              "w-full flex items-center gap-3 rounded-md px-3 py-2.5 ",
-                              "text-left transition-all duration-200",
-                              // UPDATED: Cleaner header style
-                              "bg-background hover:bg-background hover:shadow-sm border border-transparent hover:border-border/40 shadow-sm",
-                              "group"
-                            )}
-                          >
-                            <div className="grid h-8 w-8 place-items-center rounded-md bg-background border shadow-sm group-hover:border-primary/20">
-                              <HeaderIcon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                            </div>
-
-                            <div className="flex-1">
-                              <div className="text-[13px] font-semibold text-foreground ">
-                                {section.label}
-                              </div>
-                            </div>
-
-                            <div className="text-muted-foreground/50 group-hover:text-muted-foreground">
-                              {isOpen ? (
-                                <ChevronDown className="h-4 w-4" />
-                              ) : (
-                                <ChevronRight className="h-4 w-4" />
-                              )}
-                            </div>
-                          </button>
-
-                          {/* Items (nested) */}
-                          <AnimatePresence initial={false}>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{
-                                  height: "auto",
-                                  opacity: 1,
-                                  transition: { duration: 0.22, ease },
-                                }}
-                                exit={{
-                                  height: 0,
-                                  opacity: 0,
-                                  transition: { duration: 0.16, ease },
-                                }}
-                                className="overflow-hidden"
+                          // Collapsed View
+                          if (collapsed) {
+                            return (
+                              <div
+                                key={section.id}
+                                className="relative"
+                                onMouseEnter={() => setHoverGroupId(section.id)}
+                                onMouseLeave={() => setHoverGroupId(null)}
                               >
-                                <div className="pl-[22px] pr-1 pt-1 pb-2">
-                                  <div className="relative pl-4 border-l border-border/60 ml-2">
-                                    <div className="space-y-0.5">
-                                      {section.items.map((item) => {
-                                        const Icon = item.icon;
-                                        const active =
-                                          pathname === item.href ||
-                                          pathname?.startsWith(item.href + "/");
+                                <Tooltip delayDuration={150}>
+                                  <TooltipTrigger asChild>
+                                    <button
+                                      type="button"
+                                      className={cn(
+                                        "w-full flex items-center justify-center",
+                                        "h-11 rounded-md transition-all duration-200",
+                                        "text-muted-foreground hover:bg-background hover:text-foreground hover:shadow-sm border border-transparent hover:border-border/50"
+                                      )}
+                                    >
+                                      <HeaderIcon className="h-5 w-5" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="right">
+                                    {section.label}
+                                  </TooltipContent>
+                                </Tooltip>
 
-                                        return (
-                                          <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className="block"
-                                          >
-                                            <div
-                                              className={cn(
-                                                "group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
-                                                // UPDATED: Active state pops out white with shadow
-                                                active
-                                                  ? "bg-background text-primary shadow-sm font-medium border border-border/50"
-                                                  : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
-                                              )}
-                                            >
-                                              <Icon className={cn("h-4 w-4 transition-colors", active ? "text-primary" : "opacity-70 group-hover:opacity-100")} />
-                                              <span className="text-[13px] truncate flex-1">
-                                                {item.label}
-                                              </span>
+                                <AnimatePresence>
+                                  {hoverGroupId === section.id && (
+                                    <motion.div
+                                      initial={{ opacity: 0, x: 10, y: 0 }}
+                                      animate={{
+                                        opacity: 1,
+                                        x: 0,
+                                        transition: { duration: 0.18, ease },
+                                      }}
+                                      exit={{
+                                        opacity: 0,
+                                        x: 10,
+                                        transition: { duration: 0.14, ease },
+                                      }}
+                                      className="absolute left-[84px] top-0 z-50 w-[240px]"
+                                    >
+                                      <div className="rounded-lg bg-popover border text-popover-foreground shadow-xl p-3">
+                                        <div className="flex items-center justify-between px-2 pb-2">
+                                          <div className="text-sm font-semibold">
+                                            {section.label}
+                                          </div>
+                                          <FiCloseHint />
+                                        </div>
 
-                                              {item.badge && (
-                                                <span className="text-[10px] rounded-full bg-primary/10 text-primary px-2 py-0.5 font-bold">
-                                                  {item.badge}
-                                                </span>
-                                              )}
-                                            </div>
-                                          </Link>
-                                        );
-                                      })}
-                                    </div>
+                                        <div className="space-y-1">
+                                          {section.items.map((item) => {
+                                            const Icon = item.icon;
+                                            const active =
+                                              pathname === item.href ||
+                                              pathname?.startsWith(
+                                                item.href + "/"
+                                              );
+
+                                            return (
+                                              <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className="block"
+                                              >
+                                                <div
+                                                  className={cn(
+                                                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+                                                    active
+                                                      ? "bg-primary/10 text-primary font-medium"
+                                                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                                  )}
+                                                >
+                                                  <Icon className="h-4 w-4" />
+                                                  <span className="truncate flex-1">
+                                                    {item.label}
+                                                  </span>
+                                                </div>
+                                              </Link>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </div>
+                            );
+                          }
+
+                          // Normal Expanded View
+                          return (
+                            <div key={section.id} className="rounded-md">
+                              {/* Group header row */}
+                              <button
+                                type="button"
+                                onClick={() => toggleGroup(section.id)}
+                                className={cn(
+                                  "w-full flex items-center gap-3 rounded-md px-3 py-2.5 ",
+                                  "text-left transition-all duration-200",
+                                  // UPDATED: Cleaner header style
+                                  "bg-background hover:bg-background hover:shadow-sm border border-transparent hover:border-border/40 shadow-sm",
+                                  "group"
+                                )}
+                              >
+                                <div className="grid h-8 w-8 place-items-center rounded-md bg-background border shadow-sm group-hover:border-primary/20">
+                                  <HeaderIcon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                </div>
+
+                                <div className="flex-1">
+                                  <div className="text-[13px] font-semibold text-foreground ">
+                                    {section.label}
                                   </div>
                                 </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    })
-                    )
 
-                   }
-                   </>
-               
-                  
-                  )
-                  
-                  }
+                                <div className="text-muted-foreground/50 group-hover:text-muted-foreground">
+                                  {isOpen ? (
+                                    <ChevronDown className="h-4 w-4" />
+                                  ) : (
+                                    <ChevronRight className="h-4 w-4" />
+                                  )}
+                                </div>
+                              </button>
+
+                              {/* Items (nested) */}
+                              <AnimatePresence initial={false}>
+                                {isOpen && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{
+                                      height: "auto",
+                                      opacity: 1,
+                                      transition: { duration: 0.22, ease },
+                                    }}
+                                    exit={{
+                                      height: 0,
+                                      opacity: 0,
+                                      transition: { duration: 0.16, ease },
+                                    }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="pl-[22px] pr-1 pt-1 pb-2">
+                                      <div className="relative pl-4 border-l border-border/60 ml-2">
+                                        <div className="space-y-0.5">
+                                          {section.items.map((item) => {
+                                            const Icon = item.icon;
+                                            const active =
+                                              pathname === item.href ||
+                                              pathname?.startsWith(
+                                                item.href + "/"
+                                              );
+
+                                            return (
+                                              <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className="block"
+                                              >
+                                                <div
+                                                  className={cn(
+                                                    "group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200",
+                                                    // UPDATED: Active state pops out white with shadow
+                                                    active
+                                                      ? "bg-background text-primary shadow-sm font-medium border border-border/50"
+                                                      : "text-muted-foreground hover:bg-background/60 hover:text-foreground"
+                                                  )}
+                                                >
+                                                  <Icon
+                                                    className={cn(
+                                                      "h-4 w-4 transition-colors",
+                                                      active
+                                                        ? "text-primary"
+                                                        : "opacity-70 group-hover:opacity-100"
+                                                    )}
+                                                  />
+                                                  <span className="text-[13px] truncate flex-1">
+                                                    {item.label}
+                                                  </span>
+
+                                                  {item.badge && (
+                                                    <span className="text-[10px] rounded-full bg-primary/10 text-primary px-2 py-0.5 font-bold">
+                                                      {item.badge}
+                                                    </span>
+                                                  )}
+                                                </div>
+                                              </Link>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        })
+                      )}
+                    </>
+                  )}
                 </div>
               </ScrollArea>
 
@@ -761,11 +1420,15 @@ function Sidebar({
                     <DropdownMenuTrigger asChild>
                       <button className="flex w-full items-center rounded-full gap-3  px-3 py-2 hover:bg-background hover:shadow-sm border border-transparent hover:border-border transition-all">
                         <Avatar className=" border p-0 rounded-full">
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold w-8 h-8 rounded-full flex justify-center items-center">SC</AvatarFallback>
+                          <AvatarFallback className="bg-primary/10 text-primary font-bold w-8 h-8 rounded-full flex justify-center items-center">
+                            SC
+                          </AvatarFallback>
                         </Avatar>
 
                         <div className="flex flex-col flex-1 text-left leading-tight">
-                          <span className="text-sm font-medium truncate">{currentUser.name}</span>
+                          <span className="text-sm font-medium truncate">
+                            {currentUser.name}
+                          </span>
                           <span className="text-xs text-muted-foreground truncate">
                             {currentUser.email}
                           </span>
@@ -786,7 +1449,9 @@ function Sidebar({
                           <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">{currentUser.name}</span>
+                          <span className="text-sm font-medium">
+                            {currentUser.name}
+                          </span>
                           <span className="text-xs text-muted-foreground">
                             {currentUser.email}
                           </span>
@@ -803,7 +1468,10 @@ function Sidebar({
                       <DropdownMenuSeparator />
 
                       <DropdownMenuItem asChild>
-                        <Link href="/admin/themes" className="flex items-center w-full cursor-pointer">
+                        <Link
+                          href="/admin/themes"
+                          className="flex items-center w-full cursor-pointer"
+                        >
                           <Palette className="mr-2 h-4 w-4" />
                           Themes
                         </Link>
@@ -1025,7 +1693,9 @@ type TopbarProps = {
   user: User | null;
   onToggleMobileSidebar: () => void;
   collapsed: boolean;
-  onToggleCollapse: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onToggleCollapse: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 };
 
 function Topbar({
@@ -1074,12 +1744,12 @@ function Topbar({
 
         {/* Mobile Toggle */}
         <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden mr-2"
-            onClick={onToggleMobileSidebar}
+          variant="ghost"
+          size="icon"
+          className="md:hidden mr-2"
+          onClick={onToggleMobileSidebar}
         >
-             <Menu className="h-5 w-5" />
+          <Menu className="h-5 w-5" />
         </Button>
 
         <div className="hidden text-sm font-medium text-foreground md:inline">
@@ -1091,7 +1761,9 @@ function Topbar({
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
               {currentWebsite.name.charAt(0).toUpperCase()}
             </span>
-            <span className="hidden md:inline font-medium text-foreground">{currentWebsite.name}</span>
+            <span className="hidden md:inline font-medium text-foreground">
+              {currentWebsite.name}
+            </span>
             <span className="hidden text-[11px] text-muted-foreground/60 sm:inline">
               {currentWebsite.primaryDomain || currentWebsite.systemSubdomain}
             </span>
@@ -1109,13 +1781,20 @@ function Topbar({
           />
         </div>
 
-        <Button variant="outline" size="icon" className="h-9 w-9 rounded-full border-dashed border-border">
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 rounded-full border-dashed border-border"
+        >
           <Bell className="h-4 w-4 text-muted-foreground" />
         </Button>
 
-        <Button size="sm" className="hidden md:flex text-xs h-9 bg-primary text-primary-foreground shadow hover:bg-primary/90">
+        <Button
+          size="sm"
+          className="hidden md:flex text-xs h-9 bg-primary text-primary-foreground shadow hover:bg-primary/90"
+        >
           <Sparkles className="h-3 w-3 " />
-          Ai Assistant  
+          Ai Assistant
         </Button>
 
         <DropdownMenu>
@@ -1143,14 +1822,16 @@ function Topbar({
             <DropdownMenuSeparator />
             <DropdownMenuItem>Profile</DropdownMenuItem>
 
-          <DropdownMenuItem 
-            onSelect={(e: Event) => {
-              e.preventDefault(); 
-              setIsSettingsOpen(true);
-            }}
-          >    Account settings
-          </DropdownMenuItem>
-            
+            <DropdownMenuItem
+              onSelect={(e: Event) => {
+                e.preventDefault();
+                setIsSettingsOpen(true);
+              }}
+            >
+              {" "}
+              Account settings
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleSignOut}
@@ -1161,10 +1842,10 @@ function Topbar({
           </DropdownMenuContent>
         </DropdownMenu>
 
-      <AccountSetting
-        open={isSettingsOpen} 
-        onOpenChange={setIsSettingsOpen} 
-      />
+        <AccountSetting
+          open={isSettingsOpen}
+          onOpenChange={setIsSettingsOpen}
+        />
 
         {/* <Dropdowns/> */}
       </div>
@@ -1185,14 +1866,14 @@ export function AppShell({
 }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-  const {user:currentUser}= useSelector((state:RootState)=>state.user)
+  const { user: currentUser } = useSelector((state: RootState) => state.user);
   return (
     <div className="flex h-[100vh] bg-background text-foreground overflow-hidden">
       <Sidebar
         websites={websites}
         currentWebsite={currentWebsite}
         user={user}
-        currentUser={currentUser??{}}
+        currentUser={currentUser ?? {}}
         onWebsiteChange={onWebsiteChange}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -1207,9 +1888,7 @@ export function AppShell({
           onToggleCollapse={(event) => setSidebarCollapsed((prev) => !prev)}
         />
         <main className="flex-1 overflow-auto bg-muted/10 p-4 md:p-6">
-          <div className="mx-auto max-w-7xl h-full ">
-            {children}
-          </div>
+          <div className="mx-auto max-w-7xl h-full ">{children}</div>
         </main>
       </div>
 
@@ -1217,10 +1896,13 @@ export function AppShell({
         <SheetContent side="left" className="p-0 w-72">
           <SheetHeader className="border-b px-4 py-3 bg-muted/10">
             <SheetTitle className="text-sm font-semibold flex items-center gap-2">
-               <div className="h-6 w-6 bg-primary rounded-md flex items-center justify-center text-primary-foreground">
-                   <img src="../dzinly-favicon.svg" className="w-4 h-4 invert brightness-0"></img>
-               </div>
-               Navigation
+              <div className="h-6 w-6 bg-primary rounded-md flex items-center justify-center text-primary-foreground">
+                <img
+                  src="../dzinly-favicon.svg"
+                  className="w-4 h-4 invert brightness-0"
+                ></img>
+              </div>
+              Navigation
             </SheetTitle>
           </SheetHeader>
           <MobileSidebar

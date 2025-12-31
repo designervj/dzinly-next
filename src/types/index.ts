@@ -129,39 +129,43 @@ export interface User extends BaseDocument {
   status: 'active' | 'invited' | 'suspended';
   lastLoginAt?: Date;
   
+  permissions: string[]
+  
+
+
   // Enhanced permissions with granular control
-  permissions: {
-    // Core permissions
-    dashboard: boolean;
-    users: string[]; // ['create', 'read', 'update', 'delete']
-    tenants: string[];
-    products: string[];
-    orders: string[];
-    content: string[];
-    settings: string[];
+  // permissions: {
+  //   // Core permissions
+  //   dashboard: boolean;
+  //   users: string[]; // ['create', 'read', 'update', 'delete']
+  //   tenants: string[];
+  //   products: string[];
+  //   orders: string[];
+  //   content: string[];
+  //   settings: string[];
     
-    // Franchise-specific permissions
-    franchise?: {
-      createClients: boolean;
-      manageClients: boolean;
-      whiteLabel: boolean;
-      viewAnalytics: boolean;
-    };
+  //   // Franchise-specific permissions
+  //   franchise?: {
+  //     createClients: boolean;
+  //     manageClients: boolean;
+  //     whiteLabel: boolean;
+  //     viewAnalytics: boolean;
+  //   };
     
-    // Business-specific permissions
-    business?: {
-      manageInventory: boolean;
-      processOrders: boolean;
-      viewReports: boolean;
-    };
+  //   // Business-specific permissions
+  //   business?: {
+  //     manageInventory: boolean;
+  //     processOrders: boolean;
+  //     viewReports: boolean;
+  //   };
     
-    // Client-specific permissions
-    client?: {
-      viewOwnData: boolean;
-      editProfile: boolean;
-      placeOrders: boolean;
-    };
-  };
+  //   // Client-specific permissions
+  //   client?: {
+  //     viewOwnData: boolean;
+  //     editProfile: boolean;
+  //     placeOrders: boolean;
+  //   };
+  // };
   
   // User metadata
   metadata?: {

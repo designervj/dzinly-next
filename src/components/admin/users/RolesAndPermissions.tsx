@@ -1,89 +1,3 @@
-// "use client"
-
-// import { Plus } from "lucide-react";
-// import React, { useState } from "react";
-
-// interface Roles {
-//   _id: string;
-//   code: string;
-//   name: string;
-//   permissions: string[];
-// }
-
-// interface RolesProps {
-//   totalroles: Roles[];
-// }
-
-// export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
-//   const [roles, setRoles] = useState(totalroles);
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <div className="max-w-7xl mx-auto">
-//         <div className="flex justify-between items-start mb-8">
-//           <div>
-//             <h1 className="text-2xl font-semibold text-gray-900">
-//               Roles & Permissions
-//             </h1>
-//             <p className="text-sm text-gray-500 mt-1">
-//               Review your members roles and allocate permissions
-//             </p>
-//           </div>
-//           <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-//             Manage Roles
-//           </button>
-//         </div>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//           {roles.map((role, index) => (
-//             <div
-//               key={index}
-//               className="bg-white rounded-lg border border-gray-200 p-6"
-//             >
-//               <div className="flex justify-between items-start mb-3">
-//                 <div>
-//                   <h3 className="text-base font-semibold text-gray-900">
-//                     {role.name}
-//                   </h3>
-//                   <p className="text-xs text-gray-500 mt-0.5">{role.code}</p>
-//                 </div>
-//                 {/* <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
-//                   {role.members} Members
-//                 </span> */}
-//               </div>
-
-//               <div className="mb-4">
-//                 <p className="text-xs text-gray-500 mb-1">
-//                   {role.permissions.length} Permissions
-//                 </p>
-//                 {/* <p className="text-sm text-gray-600">{role.description}</p> */}
-//               </div>
-
-//               <div className="flex gap-2">
-//                 <button className="flex-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-4 py-1.5 rounded-md text-sm font-medium">
-//                   View Permissions
-//                 </button>
-//                 <button className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-md text-sm font-medium">
-//                   Edit Permissions
-//                 </button>
-//               </div>
-//             </div>
-//           ))}
-
-//           <div className="bg-white rounded-lg border border-gray-200 border-dashed p-6 flex flex-col items-center justify-center min-h-[200px]">
-//             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-//               <Plus className="w-6 h-6 text-gray-400" />
-//             </div>
-//             <button className="text-sm font-medium text-gray-900 hover:text-gray-700">
-//               Create New Role
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
 "use client";
 
 import { addRoles, updateRolePermissions } from "@/hooks/slices/RolePermission/rolePermissionSlice";
@@ -133,18 +47,52 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   }, [rolesPermissions, hasFetched]);
 
   // All available permissions - can be fetched from API
-  const allPermissions = [
-    "product:create",
-    "product:read",
-    "product:update",
-    "product:delete",
-    "inventory:create",
-    "inventory:read",
-    "inventory:update",
-    "order:read",
-    "order:update",
-    "user:read",
-  ];
+
+
+ const allPermissions = [
+  // Dashboard
+  "dashboard:read",
+  "dashboard:create",
+  "dashboard:update",
+
+  // Analytics
+  "analytics:read",
+
+  // Security
+  "security:read",
+  "security:create",
+  "security:update",
+
+  // Websites
+  "websites:read",
+  "websites:create",
+  "websites:update",
+  "website:delete",
+
+  // Media
+  "media:read",
+  "media:create",
+  "media:update",
+
+  // Content (CMS / Branding / Marketing / Users / Settings / Blocks)
+  "content:read",
+  "content:create",
+  "content:update",
+  "content:delete",
+
+  // Products
+  "product:read",
+  "product:create",
+  "product:update",
+  "product:delete",
+
+  // AI Studio
+  "ai:read",
+  "ai:create",
+  "ai:update",
+  "ai:delete",
+];
+
 
   // Categorize permissions
   const categorizePermissions = (permissions: string[]) => {

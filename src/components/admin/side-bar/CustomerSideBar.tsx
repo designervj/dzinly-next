@@ -40,7 +40,7 @@ const navSections: NavSection[] = [
     id: 'workspace',
     label: 'Workspace',
     items: [
-      { label: 'Projects', href: '/admin/projects', icon: Folder },
+      { label: 'Projects', href: '/projects', icon: Folder },
       { label: 'Assets', href: '', icon: Box, badge: '4' },
       { label: 'Boards', href: '', icon: LayoutGrid },
     ],

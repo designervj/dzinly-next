@@ -13,7 +13,10 @@ export async function GET(req: NextRequest) {
   if (userId) {
     query = { user_id: userId };
   }
-  const projects = await db.collection(COLLECTION).find(query).toArray();
+  const projects = await db.collection(COLLECTION)
+    .find(query)
+    .sort({ _id: -1 }) // Sort by latest added
+    .toArray();
   return NextResponse.json(projects);
 }
 

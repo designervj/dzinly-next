@@ -36,6 +36,9 @@ const PorjectForm = () => {
   const [viewFiles, setViewFiles] = React.useState<File | null>(null);
   const [uploadWebp, setUploadWeb] = React.useState<File | null>(null);
 
+    const [isDetectingAnnotation, setIsDetectingAnnotation] =
+    useState<boolean>(false);
+
   const { user } = useSelector((state: RootState) => state.user);
   const [isProjectUpload, setIsProjectUpload] = React.useState(true);
 
@@ -58,7 +61,7 @@ const PorjectForm = () => {
 
 
   const handleGoBack = () => {
-    router.push("/admin/projects");
+    router.push("/projects");
   };
 
 
@@ -108,9 +111,11 @@ const PorjectForm = () => {
   };
 
 
-  const handleUpdateProject=async(data:string)=>{
-  
-    const projectId = typeof currentProject?._id === 'string' ? currentProject._id : '';
+  const handleUpdateProject = async (data: string) => {
+    if (!currentProject) return;
+    const projectId = typeof currentProject._id === 'string'
+      ? currentProject._id
+      : currentProject._id?.toString();
     if (!projectId) return;
     const projectUpdate: ProjectModel = {
       _id: projectId,
@@ -120,19 +125,17 @@ const PorjectForm = () => {
     if (response && response.success) {
       dispatch(updateProjectList(response.data));
       setCurrentProject(null);
-       router.push("/admin/projects")
-      //getAnalaysis(projectId, data);
+    router.push("/projects")
+    //  getAnalaysis(projectId, data);
     }
-   }
+  } 
   
-
-    const [isDetectingAnnotation, setIsDetectingAnnotation] =
-    useState<boolean>(false);
 
   const getAnalaysis=async(projectId:string,imageUrl:string )=>{
   setIsDetectingAnnotation(true);
   try{
     const response= await dispatch(updateProjectAnalysis({ url: imageUrl, id: projectId })).unwrap();
+    console.log("analysisis 0---" , response)
     if(response){
       const responseData = response.data as ProjectResponse;
       console.log("resposne Analysys---", responseData)

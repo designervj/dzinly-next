@@ -6,26 +6,13 @@ import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { DataTableExt } from '../admin/DataTableExt';
 import { ProjectModel } from './projectModel';
+import { deleteProject } from '@/hooks/slices/project/projectThunks';
+import { formatDateDisplay } from './FunctionDisplayDate';
+import GridHome from './gridProjects/GridHome';
 
 const ProjectTable = () => {
     // Helper to format date as 'today', 'yesterday', or '12 Dec 2025'
-    function formatDateDisplay(dateString: string) {
-      if (!dateString) return '';
-      const date = new Date(dateString);
-      const now = new Date();
-      const isToday = date.toDateString() === now.toDateString();
-      const yesterday = new Date(now);
-      yesterday.setDate(now.getDate() - 1);
-      const isYesterday = date.toDateString() === yesterday.toDateString();
-      if (isToday) return 'today';
-      if (isYesterday) return 'yesterday';
-      // Format as '12 Dec 2025'
-      return date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
-    }
+   
   const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
   const router = useRouter();
@@ -40,10 +27,15 @@ const ProjectTable = () => {
         router.push("/admin/projects/create")
     }
 
-    const handleDelete=(data:ProjectModel)=>{
-
+    const handleDelete=async(data:ProjectModel)=>{
+      if(data && data._id ){
+     const response= await  dispatch(deleteProject(typeof data._id === 'string' ? data._id : data._id.toString())).unwrap()
+       
+      if(response){
+        alert("project delete")
+      }
     }
-
+  }
     const handleView=(data:ProjectModel)=>{
         
     }
@@ -86,14 +78,15 @@ const ProjectTable = () => {
   return (
     <>
       <div>
-            <DataTableExt
+            {/* <DataTableExt
               title=""
               data={listPojects ?? []}
               onCreate={handleAdd}
               initialColumns={initialColumns}
               onDelete={(row) => handleDelete(row)}
               onView={(row) => handleView(row)}
-            />
+            /> */}
+           < GridHome/>
           </div>
     </>
   )

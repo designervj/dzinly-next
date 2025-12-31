@@ -464,7 +464,7 @@ function Sidebar({
                   </div>
 
                   {/* Website selector */}
-                  {websites.length > 0 && (
+                  {currentUser && currentUser.role!=="customer" && websites.length > 0 && (
                     <div className={cn("px-3 pt-2", collapsed && "px-2")}>
                       <Select
                         value={currentWebsite?._id || ""}
@@ -519,13 +519,13 @@ function Sidebar({
                 {!collapsed && (
                   <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-background border border-border/50 shadow-sm rounded-md px-3 py-2 mt-4">
                     <span className="text-xs font-semibold text-foreground">
-                      {currentWebsite?.name || "Select website"}
+                      {currentUser?.name || "Select website"}
                     </span>
-                    <span className="text-[11px] text-muted-foreground">
+                   { currentUser.role!="customer" && <span className="text-[11px] text-muted-foreground">
                       {currentWebsite?.primaryDomain ||
                         currentWebsite?.systemSubdomain ||
                         ""}
-                    </span>
+                    </span>}
                   </div>
                 )}
               </div>

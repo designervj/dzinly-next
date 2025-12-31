@@ -8,7 +8,7 @@ import React from 'react'
 const CreatePorjectButton = () => {
     const router= useRouter()
       const handleCreateProject = () => {
-        router.push("/admin/projects/create")
+        router.push("/projects/create")
    // createProject();
   };
   return (

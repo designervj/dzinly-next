@@ -50,11 +50,11 @@ export default function AdminIndex() {
         <h2 className="text-xl font-semibold">Dashboard</h2>
         <p className="text-sm text-muted-foreground">Quick overview</p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+   { user && user.role==="superadmin" &&  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link href={"/onboarding"} className="flex items-center justify-center w-40 rounded-lg bg-green-500 text-white hover:bg-white hover:text-green-500 p-2 border border-green-500">
           Onboard Tenant
         </Link>
-      </div>
+      </div>}
     </div>
   );
 }

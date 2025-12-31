@@ -1,7 +1,10 @@
+// Thunk to delete a project by _id
+
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AnalyseImageModel, ProjectModel } from '@/components/projects/projectModel';
 import axios from 'axios';
+import { ObjectId } from 'mongodb';
 
 
 export interface ProjectResponse{
@@ -78,6 +81,24 @@ export const updateProject = createAsyncThunk<ProjectResponse, Partial<ProjectMo
       };
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const deleteProject = createAsyncThunk<
+  { _id: ObjectId| String },
+  string,
+  { rejectValue: any }
+>(
+  'project/deleteProject',
+  async (_id, { rejectWithValue }) => {
+    try {
+      await fetch(`/api/projects?id=${_id}`, {
+        method: 'DELETE',
+      });
+      return { _id 
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
   }
 );

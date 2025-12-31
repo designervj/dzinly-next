@@ -1,6 +1,6 @@
 import { ProjectModel } from '@/components/projects/projectModel';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAllProjects, createProject, ProjectResponse } from './projectThunks';
+import { getAllProjects, createProject, ProjectResponse, deleteProject } from './projectThunks';
 
 
 interface ProjectState {
@@ -75,20 +75,12 @@ const projectSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string || 'Failed to fetch projects';
       })
-      // createProject
-      // .addCase(createProject.pending, (state) => {
-      //   state.isLoading = true;
-      //   state.error = null;
-      // })
-      // .addCase(createProject.fulfilled, (state, action: PayloadAction<ProjectResponse>) => {
-      //   state.isLoading = false;
-      //   state.projects.push(action.payload.data);
-      //   state.error = null;
-      // })
-      // .addCase(createProject.rejected, (state, action) => {
-      //   state.isLoading = false;
-      //   state.error = action.payload as string || 'Failed to create project';
-      // });
+      // deleteProject
+      .addCase(deleteProject.fulfilled, (state, action) => {
+        state.projects = state.projects.filter(
+          (project) => project._id !== action.payload._id
+        );
+      });
   },
 });
 

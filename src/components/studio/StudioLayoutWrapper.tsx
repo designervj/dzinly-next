@@ -11,8 +11,8 @@ interface StudioLayoutWrapperProps {
 const StudioLayoutWrapper = ({ children }: StudioLayoutWrapperProps) => {
   return (
     <div className={styles.studioLayout}>
-      <div className={styles.studioLeftSection}>
-        <SideBarHome />
+      <div  className="w-[360px]">
+        <SideBarHome /> 
       </div>
       <div className={styles.studioRightSection}>
         {children}

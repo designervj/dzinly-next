@@ -26,7 +26,7 @@ const StudioCanvasHome = () => {
   };
      return (
    <>
-    <div className="w-full md:w-3/4  flex flex-col bg-gray-100 h-[calc(100vh-3px)] overflow-auto relative">
+    <div className="w-full h-full object-cover">
       <AnimatePresence mode="wait">
         {canvasImage ? (
           <>
@@ -34,7 +34,7 @@ const StudioCanvasHome = () => {
               <>
            
                   <>
-                    <CanvasHeaderHome />
+                    {/* <CanvasHeaderHome /> */}
                   
                     <CanavasImage
                         imageUrl={canvasImage}

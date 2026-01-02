@@ -21,6 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { IoArrowBackOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 /**
  * PIXEL‑ALIGNED RIGHT SIDEBAR (Matched to screenshot)
@@ -29,16 +31,30 @@ import {
 
 export default function RightSidebar() {
   const [activeTop, setActiveTop] = useState("materials");
+  const router = useRouter();
+  const handleBack = () => {
+    router.push("/projects")
+  };
 
   return (
+   
     <aside className="w-[360px] h-screen border-r bg-white flex flex-col">
+         
+         <div className="flex items-center justify-between px-4 py-2 border-b">
+          <img src="../dzinlylogo.svg" className="w-48"></img>
+
+          <button className="border rounded-sm px-3 py-1 font-semibold bg-primary text-white flex items-center gap-1"
+          onClick={handleBack}
+          > <IoArrowBackOutline />Back</button>
+         </div>
+
       {/* Top Tabs */}
       <div className="flex gap-2 p-3 border-b">
         <TopTab icon={Home} />
         <TopTab icon={Share2} active={activeTop === "materials"} onClick={() => setActiveTop("materials")} />
         <TopTab icon={Calculator} active={activeTop === "measure"} onClick={() => setActiveTop("measure")} />
         <TopTab icon={Layers} />
-        <TopTab icon={Plus} />
+        {/* <TopTab icon={Plus} /> */}
       </div>
 
       <div className="flex flex-1 overflow-hidden">
@@ -62,6 +78,7 @@ export default function RightSidebar() {
         <Button className="w-full bg-[#7A2E63] hover:bg-[#6a2857]">Pricing PDF</Button>
       </div>
     </aside>
+ 
   );
 }
 

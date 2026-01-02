@@ -2,53 +2,85 @@
 import { Card, CardContent } from '@/components/ui/card';
 import React, { useState } from 'react'
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
-import DrawHeader from './DrawHeader';
-import Toggleheader from './ToggleHeader';
-import ZoomHeader from './ZoomHeader';
+
+
 import { useDispatch } from 'react-redux';
 import { setIsResetZoom } from '@/hooks/slices/canvas/canvasSlice';
-const CanvasHeaderHome = () => {
+import {
+  FiGrid,
+  FiSlash,
+  FiHome,
+  FiSearch,
+  FiRotateCcw,
+  FiChevronUp,
+} from "react-icons/fi";
+const  CanvasHeaderHome= () => {
       const [isOpen, setIsOpen] = useState(true);
+        const [hideHeader, setHideHeader] = useState(false);
  const dispatch = useDispatch();
- const handleResetZoom = () => {
-    dispatch(setIsResetZoom(true));
-  };
+ 
   return (
    <>   
-      <div className="absolute items-center gap-2 z-[9] inset-x-10 transition-all duration-300">
-        {/* Toolbar Card with smooth animation */}
         <div
-          className={`transition-all duration-300 ease-in-out ${
-            isOpen
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-5 pointer-events-none"
-          }`}>
-          <Card className="flex flex-row absolute items-center gap-2 bg-white/60 rounded-b-lg z-[9] top-0 inset-x-10 px-2 py-0">
-            <CardContent className="py-2 pt-1.5 px-4 flex items-center w-full pe-14">
-              {/* <BreadcrumbHeader/> */}
-              <DrawHeader />
-              <div className="flex-1" />
-              <div className="flex gap-4 items-center">
-                <Toggleheader />
-                <ZoomHeader resetCanvas={handleResetZoom} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        className={`absolute top-0 left-0 w-full z-20 transition-all duration-300
+        ${hideHeader ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"}`}
+      >
+        {/* Blue strip */}
+        <div className="h-16 bg-white/90 opacity-90" />
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="absolute right-14 top-2.5 flex items-center justify-center bg-blue-500 hover:bg-blue-600  border border-blue-500 rounded-md p-1.5 shadow-sm  transition-all">
-          {isOpen ? (
-            // <LuChevronLast className="text-lg text-gray-700" />
-            <LuChevronUp className="text-lg text-white" />
-          ) : (
-            <LuChevronDown className="text-lg text-white" />
-          )}
-        </button>
+        {/* Floating toolbar */}
+        <div className="absolute top-1 left-1/2 -translate-x-1/2">
+          <div className="flex items-center gap-2 bg-white/10 rounded-none shadow-none px-3 py-2">
+
+            <Icon icon={<FiGrid />} />
+            <Icon icon={<FiSlash />} active />
+            <Icon icon={<FiHome />} />
+
+            <Divider />
+
+            <div className="text-sm font-medium text-gray-700 flex items-center gap-4">
+              <div>X: 1236</div>
+              <div>Y: 375</div>
+            </div>
+
+            <Divider />
+
+            <Icon icon={<FiSearch />} />
+            <span className="text-sm font-medium">100%</span>
+            <Icon icon={<FiRotateCcw />} />
+          </div>
+        </div>
       </div>
+
+      {/* ===== TOGGLE BUTTON (RIGHT) ===== */}
+      <button
+        onClick={() => setHideHeader(!hideHeader)}
+        className="absolute top-2 right-4 z-30 w-11 h-11 rounded-lg
+                   bg-blue-600 text-white flex items-center justify-center shadow"
+      >
+        <FiChevronUp
+          size={22}
+          className={`transition-transform duration-300
+            ${hideHeader ? "rotate-180" : "rotate-0"}`}
+        />
+      </button>
    </>
   )
 }
 
 export default CanvasHeaderHome
+
+function Icon({ icon, active = false }: any) {
+  return (
+    <div
+      className={`w-10 h-10 flex items-center justify-center rounded-lg border   bg-white
+      ${active ? "border-blue-500 bg-blue-50 text-blue-600" : "border-gray-200 text-gray-600 hover:shadow"}`}
+    >
+      {icon}
+    </div>
+  );
+}
+
+function Divider() {
+  return <div className="w-px h-8 bg-gray-200 mx-1" />;
+}

@@ -1,8 +1,13 @@
 import React from 'react'
+import CanvasHeaderHome from './canvasHeader/CanvasHeaderHome'
+import StudioCanvasHome from './studioCanvas/StudioCanvasHome'
 
 const Rightsection = () => {
   return (
-    <div>Rightsection</div>
+    <div>
+      <CanvasHeaderHome/>
+      <StudioCanvasHome/>
+    </div>
   )
 }
 

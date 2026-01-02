@@ -18,6 +18,7 @@ import ProjectAction from './ProjectAction';
 import { formatDateDisplay } from '../FunctionDisplayDate';
 import DeleteModal from '../deleteProject/DeleteProjectModal';
 import { deleteProject } from '@/hooks/slices/project/projectThunks';
+import { setCurrentProject } from '@/hooks/slices/project/ProjectSlice';
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "—";
@@ -105,6 +106,7 @@ setIsDeleteModalOpen(false)
   }
 
   const handleProjectClick=(data:ProjectModel)=>{
+    dispatch(setCurrentProject(data))
   router.push("/studio")
   }
   return (

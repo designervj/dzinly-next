@@ -12,6 +12,8 @@ import dataStorageReducer from "../hooks/slices/dataStorage/DataStorageSlice";
 import BlockReducer from "../hooks/slices/blocks/BlockSlice"
 import projectReducer from "../hooks/slices/project/ProjectSlice"
 import rolePermissionReducer from "../hooks/slices/RolePermission/rolePermissionSlice"
+import canvasReducer from "../hooks/slices/canvas/canvasSlice"
+
 export const store = configureStore({
   reducer: {
     user:userSlice,
@@ -26,7 +28,9 @@ export const store = configureStore({
     dataStorage: dataStorageReducer,
     block:BlockReducer,
     projects:projectReducer,
-    rolePermission:rolePermissionReducer
+    rolePermission:rolePermissionReducer,
+    canvas:canvasReducer,
+ 
   },
 });
 

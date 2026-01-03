@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import TabsHome from "./TabsHome";
 
 /**
  * PIXEL‑ALIGNED RIGHT SIDEBAR (Matched to screenshot)
@@ -30,7 +31,7 @@ import { useRouter } from "next/navigation";
  */
 
 export default function RightSidebar() {
-  const [activeTop, setActiveTop] = useState("materials");
+  const [activeTop, setActiveTop] = useState("home");
   const router = useRouter();
   const handleBack = () => {
     router.push("/projects")
@@ -50,27 +51,30 @@ export default function RightSidebar() {
 
       {/* Top Tabs */}
       <div className="flex gap-2 p-3 border-b">
-        <TopTab icon={Home} />
+    
+        {/* <TopTab icon={Home} active={activeTop === "home"} onClick={() => setActiveTop("home")} />
         <TopTab icon={Share2} active={activeTop === "materials"} onClick={() => setActiveTop("materials")} />
         <TopTab icon={Calculator} active={activeTop === "measure"} onClick={() => setActiveTop("measure")} />
         <TopTab icon={Layers} />
-        {/* <TopTab icon={Plus} /> */}
+        <TopTab icon={Plus} /> */}
       </div>
 
       <div className="flex flex-1 overflow-hidden">
+            <TabsHome/>
         {/* Left Vertical Icons */}
-        <div className="w-[56px] border-r flex flex-col items-center gap-3 pt-4">
+        {/* <div className="w-[56px] border-r flex flex-col items-center gap-3 pt-4">
           <SideIcon icon={Grid} active />
           <SideIcon icon={DoorOpen} />
           <SideIcon icon={Warehouse} />
           <SideIcon icon={Square} />
-        </div>
+        </div> */}
 
         {/* Main */}
-        <div className="flex-1 overflow-y-auto px-4 pt-4 pb-20">
+        {/* <div className="flex-1 overflow-y-auto px-4 pt-4 pb-20">
+          {activeTop === "home" && <Materials />}
           {activeTop === "materials" && <Materials />}
           {activeTop === "measure" && <Measurements />}
-        </div>
+        </div> */}
       </div>
 
       {/* Bottom Fixed Button */}

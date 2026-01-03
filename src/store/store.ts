@@ -13,6 +13,7 @@ import BlockReducer from "../hooks/slices/blocks/BlockSlice"
 import projectReducer from "../hooks/slices/project/ProjectSlice"
 import rolePermissionReducer from "../hooks/slices/RolePermission/rolePermissionSlice"
 import canvasReducer from "../hooks/slices/canvas/canvasSlice"
+import tabContentReducer from "../hooks/slices/canvas/tabSlice"
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     projects:projectReducer,
     rolePermission:rolePermissionReducer,
     canvas:canvasReducer,
+    tabContent:tabContentReducer,
  
   },
 });

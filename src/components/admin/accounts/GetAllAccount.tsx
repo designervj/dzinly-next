@@ -14,7 +14,8 @@ const GetAllAccount = ({allaccounts}:Props) => {
     const dispatch=useDispatch<AppDispatch>()
     useEffect(()=>{
         if(allAccounts &&
-            allaccounts.length==0          
+            allAccounts.length==0 &&
+            allaccounts.length>0       
                 &&!hasFetched){
     dispatch(setAccounts(allaccounts))
         }

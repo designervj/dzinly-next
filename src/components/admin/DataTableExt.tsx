@@ -376,10 +376,10 @@ export function DataTableExt({
         <div className="flex items-center gap-2">
            <div className="flex items-center gap-2">
           {onCreate ? (
-            <Button size="sm" onClick={onCreate}>Create New</Button>
+            <Button size="sm" className="py-2 rounded-sm px-4 py-2" onClick={onCreate}>Create New</Button>
           ) : createHref ? (
             <Link href={createHref} className="text-sm">
-              <Button size="sm">Create New</Button>
+              <Button size="sm" className="py-2 rounded-sm px-4 py-2">Create New</Button>
             </Link>
           ) : null}
         </div>
@@ -581,7 +581,7 @@ export function DataTableExt({
         </DropdownMenu>
       </div>
 
-      <div className="border rounded-md bg-white p-4 border-gray-300">
+      <div className="border rounded-md bg-white p-4 border-gray-300 1">
         <Table>
           <TableHeader>
             <TableRow>

@@ -194,7 +194,7 @@ export default function DashboardPage() {
                 ].map((order, i) => (
                   <div key={i} className="flex items-center justify-between group">
                     <div className="flex items-center gap-4">
-                      <Avatar className="h-9 w-9 border">
+                      <Avatar className="h-9 w-9 border rounded-full flex items-center justify-center bg-slate-50">
                         <AvatarFallback className="text-xs font-medium text-slate-600 bg-slate-50">{order.img}</AvatarFallback>
                       </Avatar>
                       <div className="grid gap-1">

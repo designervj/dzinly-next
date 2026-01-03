@@ -58,8 +58,8 @@ export default function ActivityLogPage() {
                      <tr key={log.id} className="bg-white hover:bg-gray-50">
                         <td className="px-6 py-4">
                            <div className="flex items-center gap-3">
-                              <Avatar className="h-8 w-8">
-                                 <AvatarFallback className="bg-primary/10 text-primary text-xs">{log.user.charAt(0)}</AvatarFallback>
+                              <Avatar className="h-8 w-8  text-black text-xs">
+                                 <AvatarFallback className="text-black h-8 w-8  text-white text-xs bg-primary flex justify-center items-center rounded-full ">{log.user.charAt(0)}</AvatarFallback>
                               </Avatar>
                               <span className="font-medium text-gray-900">{log.user}</span>
                            </div>

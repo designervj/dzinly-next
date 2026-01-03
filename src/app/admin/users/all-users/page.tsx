@@ -6,6 +6,7 @@ import GetAllUsers from "@/components/admin/users/GetAllUsers";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { IUser } from "@/models/user";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const users = [
@@ -51,10 +52,10 @@ export default function Page() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        <Button >
           <UserPlus size={18} />
           Add User
-        </button>
+        </Button>
       </div>
 
       {/* SEARCH + FILTER */}

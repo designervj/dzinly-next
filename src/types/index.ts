@@ -124,7 +124,7 @@ export interface User extends BaseDocument {
   email: string;
   passwordHash: string;
   name: string;
-  role: UserRole;
+  role: string;
   avatar?: string;
   status: 'active' | 'invited' | 'suspended';
   lastLoginAt?: Date;

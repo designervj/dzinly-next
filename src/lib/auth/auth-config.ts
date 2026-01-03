@@ -19,10 +19,9 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
         const inputTenantSlug = credentials.tenantSlug as string;
-
+        let tenantdata;
         // Get tenant
-        const tenant = await tenantService.getTenantBySlug(inputTenantSlug);
-
+     
         // if (!tenant || tenant.status !== 'active') {
         //   return null;
         // }
@@ -33,8 +32,15 @@ export const authConfig: NextAuthConfig = {
           credentials.email as string
         );
 
-        if (!user) {
+        if (!user || !user.role) {
           return null;
+        }
+          
+         console.log(" user----", user);
+             if(user.role=="superadmin"){
+          tenantdata = await tenantService.getTenantBySlug(inputTenantSlug);
+        }else{
+          tenantdata = await tenantService.getTenantByEmail(credentials.email as string);
         }
         // Verify password
         const isValid = await userService.verifyPassword(
@@ -52,9 +58,9 @@ export const authConfig: NextAuthConfig = {
         let resolvedTenantId = "";
         let resolvedTenantSlug = "";
         // UserRole 'C' is customer/client
-        if (user.role !== "C" && tenant) {
-          resolvedTenantId = tenant._id?.toString?.() || "";
-          resolvedTenantSlug = tenant.slug || "";
+        if (user.role !== "C" && tenantdata) {
+          resolvedTenantId = tenantdata._id?.toString?.() || "";
+          resolvedTenantSlug = tenantdata.slug || "";
         }
         return {
           id: user._id.toString(),

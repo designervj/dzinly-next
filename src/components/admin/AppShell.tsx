@@ -783,6 +783,17 @@ const currentWebsiteSections: NavSection[] = [
     id: "users",
     label: "Users",
     items: [
+       {
+        label: "Accounts",
+        href: "/admin/users/accounts",
+        icon: Users,
+        permission: [
+          "content:read",
+          "content:update",
+          "content:delete",
+          "content:create",
+        ],
+      },
       {
         label: "All Users",
         href: "/admin/users/all-users",

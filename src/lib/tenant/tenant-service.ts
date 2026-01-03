@@ -28,6 +28,11 @@ export class TenantService {
     });
   }
 
+  async getTenantByEmail(email: string): Promise<Tenant | null> {
+    const collection = await this.getCollection();
+    return collection.findOne({ email: email.toLowerCase() });
+  }
+
   async createTenant(data: {
     slug: string;
     name: string;

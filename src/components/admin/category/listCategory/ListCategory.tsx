@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataTableExt } from "@/components/admin/DataTableExt";
 import { addCategory, removeCategory, setCategories } from "@/hooks/slices/category/CategorySlice";
-import { useToast } from "@/hooks/use-toast";
+
 import { useRouter } from "next/navigation";
 import { MaterialCategory } from "../types/CategoryModel";
 import {
@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import CategoryForm from "../forms/CategoryForm";
 import { Button } from "@/components/ui/button";
+import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
+import { toast } from "sonner";
 
 const ListCategory = () => {
   const { listCategory, isCategoryLoading } = useSelector(
@@ -23,7 +25,7 @@ const ListCategory = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
-  const { toast } = useToast();
+ 
   const router = useRouter();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -52,9 +54,14 @@ const ListCategory = () => {
   }, [currentWebsite, listCategory]);
 
     const handleAdd = () => {
-    setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
-    setFieldErrors({});
-    setIsAddDialogOpen(true);
+      if(user?.role !== "superadmin" && !user?.permissions?.includes("category:create")){
+        toast.error("You don't have permission to create category");
+        return;
+      }
+      router.push(`/admin/category/create`);
+    // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
+    // setFieldErrors({});
+    // setIsAddDialogOpen(true);
   };
 
       const handleSaveAdd = async () => {
@@ -86,23 +93,27 @@ const ListCategory = () => {
           throw new Error(msg);
         }
            const created = data?.item ?? data;
-        toast({ title: 'Created', description: `Category ${newCategory.name} created successfully` });
+        toast.success(`Category ${newCategory.name} created successfully`);
         setIsAddDialogOpen(false);
         setNewCategory(null);
          dispatch(addCategory(created));
         // window.location.reload();
       } catch (err: any) {
         console.error('Failed to create category', err);
-        toast({ title: 'Create failed', description: String(err?.message || err), variant: 'destructive' });
+        toast.error(String(err?.message || err));
       } finally {
         setIsSaving(false);
       }
     };
   
   const handleDelete = async (row: any) => {
+    if(user?.role !== "superadmin" && !user?.permissions?.includes("category:delete")){
+      toast.error("You don't have permission to delete category");
+      return;
+    }
     const id = row?._id ?? row?.id;
     if (!id) {
-      toast({ title: "Delete failed", description: "Missing id" });
+      toast.error("Delete failed: Missing id");
       return;
     }
 
@@ -118,20 +129,18 @@ const ListCategory = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       dispatch(removeCategory(id));
-      toast({
-        title: "Deleted",
-        description: `Category ${row?.name ?? id} removed`,
-      });
+      toast.success(`Category ${row?.name ?? id} removed`);
     } catch (err: any) {
       console.error("Failed to delete category", err);
-      toast({
-        title: "Delete failed",
-        description: String(err?.message || err),
-      });
+      toast.error(String(err?.message || err));
     }
   };
 
   const handleView = (row: any) => {
+       if(user?.role !== "superadmin" && !user?.permissions?.includes("category:update")){
+      toast.error("You don't have permission to update category");
+      return;
+    }
     const id = row?._id ?? row?.id;
     if (!id) return;
     setEditingCategory(row);
@@ -170,20 +179,13 @@ const ListCategory = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       
-      toast({ 
-        title: 'Updated', 
-        description: `Category ${editingCategory.name} updated successfully` 
-      });
+      toast.success(`Category ${editingCategory.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingCategory(null);
       window.location.reload();
     } catch (err: any) {
       console.error('Failed to update category', err);
-      toast({ 
-        title: 'Update failed', 
-        description: String(err?.message || err),
-        variant: 'destructive'
-      });
+      toast.error(String(err?.message || err));
     } finally {
       setIsSaving(false);
     }
@@ -197,7 +199,16 @@ const ListCategory = () => {
     { key: "name", label: "Name" },
     { key: "icon", label: "Icon" },
     { key: "sort_order", label: "Sort Order" },
-    { key: "createdAt", label: "Created" },
+     {
+          key: 'createdAt',
+          label: 'Created At',
+          render: (value: any) => formatDateDisplay(value),
+        },
+        {
+          key: 'updatedAt',
+          label: 'Updated At',
+          render: (value: any) => formatDateDisplay(value),
+        },
   ];
 
   return (

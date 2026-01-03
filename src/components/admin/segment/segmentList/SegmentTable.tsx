@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DataTableExt } from "@/components/admin/DataTableExt";
 import { removeSegment } from "@/hooks/slices/segment/SegmentSlice";
-import { useToast } from "@/hooks/use-toast";
+
 import { useRouter } from "next/navigation";
 import { MaterialSegmentModel } from "../types/SegmentModel";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import SegmentForm from "../forms/SegmentForm";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const SegmentTable = () => {
   const { listSegment, isSegmentLoading } = useSelector(
@@ -23,7 +24,7 @@ const SegmentTable = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
-  const { toast } = useToast();
+
   const router = useRouter();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -47,10 +48,24 @@ const SegmentTable = () => {
     return [];
   }, [currentWebsite, listSegment]);
 
+   const handleAdd = () => {
+        if(user?.role !== "superadmin" && !user?.permissions?.includes("category:create")){
+          toast.error("You don't have permission to create category");
+          return;
+        }
+        router.push(`/admin/segment/create`);
+      // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
+      // setFieldErrors({});
+      // setIsAddDialogOpen(true);
+    };
   const handleDelete = async (row: any) => {
+    if(user?.role !== "superadmin" && !user?.permissions?.includes("segment:delete")){
+      toast.error("You don't have permission to delete segment");
+      return;
+    }
     const id = row?._id ?? row?.id;
     if (!id) {
-      toast({ title: "Delete failed", description: "Missing id" });
+      toast.error("Delete failed: Missing id");
       return;
     }
 
@@ -58,7 +73,7 @@ const SegmentTable = () => {
     if (!ok) return;
 
     try {
-      const res = await fetch(`/api/admin/segment/${id}`, {
+      const res = await fetch(`/api/admin/segment?id=${id}`, {
         method: "DELETE",
       });
       if (!res.ok) {
@@ -66,20 +81,18 @@ const SegmentTable = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       dispatch(removeSegment(id));
-      toast({
-        title: "Deleted",
-        description: `Segment ${row?.name ?? id} removed`,
-      });
+      toast.success(`Segment ${row?.name ?? id} removed`);
     } catch (err: any) {
       console.error("Failed to delete segment", err);
-      toast({
-        title: "Delete failed",
-        description: String(err?.message || err),
-      });
+      toast.error(String(err?.message || err));
     }
   };
 
   const handleView = (row: any) => {
+    if(user?.role !== "superadmin" && !user?.permissions?.includes("segment:update")){
+      toast.error("You don't have permission to update segment");
+      return;
+    }
     const id = row?._id ?? row?.id;
     if (!id) return;
     setEditingSegment(row);
@@ -118,20 +131,13 @@ const SegmentTable = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       
-      toast({ 
-        title: 'Updated', 
-        description: `Segment ${editingSegment.name} updated successfully` 
-      });
+      toast.success(`Segment ${editingSegment.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingSegment(null);
       window.location.reload();
     } catch (err: any) {
       console.error('Failed to update segment', err);
-      toast({ 
-        title: 'Update failed', 
-        description: String(err?.message || err),
-        variant: 'destructive'
-      });
+      toast.error(String(err?.message || err));
     } finally {
       setIsSaving(false);
     }
@@ -207,7 +213,7 @@ const SegmentTable = () => {
         <DataTableExt
           title="Segments"
           data={segments ?? []}
-          createHref="/admin/segment/create"
+         onCreate={handleAdd}
           initialColumns={initialColumns}
           onDelete={(row) => handleDelete(row)}
           onView={(row) => handleView(row)}

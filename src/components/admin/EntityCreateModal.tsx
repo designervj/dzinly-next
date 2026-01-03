@@ -14,6 +14,7 @@ import BrandForm from "./brand/forms/BrandForm";
 import SegmentForm from "./segment/forms/SegmentForm";
 import AttributeForm from "./attribute/forms/AttributeForm";
 import ProductForm from "./product/forms/ProductForm";
+import { ObjectId } from "mongodb";
 
 type Props = { entity: string };
 
@@ -61,8 +62,9 @@ export default function EntityCreateModal({ entity }: Props) {
     is_visible: false,
     description: "",
     short_code: "",
-    categories: "",
+    categories: [],
     gallery: "",
+    userId: currentUser?.id as  string| ObjectId,
   });
   // Brand-specific state derived from MaterialBrandModel
   const [brand, setBrand] = useState<MaterialBrandModel>({
@@ -111,8 +113,9 @@ export default function EntityCreateModal({ entity }: Props) {
       is_visible: false,
       description: "",
       short_code: "",
-      categories: "",
+      categories: [],
       gallery: "",
+      userId: currentUser?.id as  string| ObjectId,
     });
     setBrand({ name: "", url: "", description: "", logo: "" });
     setAttribute({
@@ -153,8 +156,9 @@ export default function EntityCreateModal({ entity }: Props) {
       is_visible: false,
       description: "",
       short_code: "",
-      categories: "",
+      categories: [],
       gallery: "",
+      userId: currentUser?.id as  string| ObjectId,
     });
     setAttribute({
       name: "",

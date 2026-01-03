@@ -32,13 +32,13 @@ export default function CategoryForm({
 
       <div>
         <label className="block text-sm font-medium">Icon</label>
-        <div className="mt-1 flex gap-2">
-          {["tag", "star", "folder", "bookmark", "grid"].map((ic) => (
+        <div className="mt-1 flex gap-2 flex-wrap">
+          {["Paint","Roofing", "Door", "Siding", "Garage Doors", "Brick", "Lighting", "EIFS", "Windows", "Stone", "Stain", "Shutters", "My Upload", "Gutters", "Paver", "Tile", "House Number", "Flower Boxes", "Most Popular", "Decking", "Railing", "Gable", "Header", "Driveway", "Pediment", "Gate", "Columns", "Wall Panels"].map((ic) => (
             <button
               key={ic}
               type="button"
               onClick={() => setCategory({ ...category, icon: ic })}
-              className={`px-2 py-1 rounded border ${
+              className={`px-3 py-1.5 rounded border text-sm ${
                 category.icon === ic ? "bg-accent text-white" : ""
               }`}
             >

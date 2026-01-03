@@ -419,10 +419,10 @@ const currentWebsiteSections: NavSection[] = [
         href: "/admin/category",
         icon: LayoutGrid,
         permission: [
-          "product:read",
-          "product:update",
-          "product:delete",
-          "product:create",
+          "category:read",
+          "category:update",
+          "category:delete",
+          "category:create",
         ],
       },
       {
@@ -441,10 +441,10 @@ const currentWebsiteSections: NavSection[] = [
         href: "/admin/segment",
         icon: Layers,
         permission: [
-          "product:read",
-          "product:update",
-          "product:delete",
-          "product:create",
+          "segment:read",
+          "segment:update",
+          "segment:delete",
+          "segment:create",
         ],
       },
       {
@@ -452,10 +452,10 @@ const currentWebsiteSections: NavSection[] = [
         href: "/admin/attribute",
         icon: ListTree,
         permission: [
-          "product:read",
-          "product:update",
-          "product:delete",
-          "product:create",
+          "attribute:read",
+          "attribute:update",
+          "attribute:delete",
+          "attribute:create",
         ],
       },
       {

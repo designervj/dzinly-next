@@ -8,6 +8,7 @@ export interface MaterialAttributes {
   id?: number | string | ObjectId;
   websiteId?: string | ObjectId;
   tenantId?: string | ObjectId;
+  userId?: string | ObjectId;
   name?: string;
   data_type?: Data_Type;
   unit?: string;

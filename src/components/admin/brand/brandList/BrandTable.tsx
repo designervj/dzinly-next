@@ -4,7 +4,6 @@ import React, { useMemo, useState } from 'react'
 import { DataTableExt } from '../../DataTableExt';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import {
   Dialog,
@@ -15,13 +14,15 @@ import {
 import BrandForm from '../forms/BrandForm';
 import { MaterialBrandModel } from '../types/brandModel';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const BrandTable = () => {
     const { listBrand, isBrandLoading } = useSelector(
     (state: RootState) => state.brand
   );
+   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
-    const { toast } = useToast();
+
   const router = useRouter();
  const { currentWebsite } = useSelector((state: RootState) => state.websites);
   
@@ -49,7 +50,7 @@ const BrandTable = () => {
   const handleDelete = async (row: any) => {
     const id = row?._id ?? row?.id;
     if (!id) {
-      toast({ title: 'Delete failed', description: 'Missing id' });
+      toast.error('Delete failed: Missing id');
       return;
     }
 
@@ -65,10 +66,10 @@ const BrandTable = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
      // dispatch(removeCategory(id));
-      toast({ title: 'Deleted', description: `Brand ${row?.name ?? id} removed` });
+      toast.success(`Brand ${row?.name ?? id} removed`);
     } catch (err: any) {
       console.error('Failed to delete category', err);
-      toast({ title: 'Delete failed', description: String(err?.message || err) });
+      toast.error(String(err?.message || err));
     }
   };
 
@@ -115,10 +116,7 @@ const BrandTable = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       
-      toast({ 
-        title: 'Updated', 
-        description: `Brand ${editingBrand.name} updated successfully` 
-      });
+      toast.success(`Brand ${editingBrand.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingBrand(null);
       
@@ -126,11 +124,7 @@ const BrandTable = () => {
       window.location.reload();
     } catch (err: any) {
       console.error('Failed to update brand', err);
-      toast({ 
-        title: 'Update failed', 
-        description: String(err?.message || err),
-        variant: 'destructive'
-      });
+      toast.error(String(err?.message || err));
     } finally {
       setIsSaving(false);
     }
@@ -140,6 +134,16 @@ const BrandTable = () => {
     // Handle logo file upload if needed
   };
 
+   const handleAdd = () => {
+      if(user?.role !== "superadmin" && !user?.permissions?.includes("product:create")){
+        toast.error("You don't have permission to create category");
+        return;
+      }
+      router.push(`/admin/brand/create`);
+    // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
+    // setFieldErrors({});
+    // setIsAddDialogOpen(true);
+  };
   const initialColumns = [
     { key: '_id', label: 'ID', hidden: true },
     { key: 'id', label: 'ID', hidden: true },
@@ -168,7 +172,7 @@ const BrandTable = () => {
         <DataTableExt
           title="Brands"
           data={product_brand ?? []}
-          createHref="/admin/brand/create"
+          onCreate={handleAdd}
           initialColumns={initialColumns}
           onDelete={(row) => handleDelete(row)}
           onView={(row) => handleEdit(row)}

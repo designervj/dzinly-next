@@ -86,6 +86,23 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   "product:update",
   "product:delete",
 
+  // categories
+  "category:read",
+  "category:create",
+  "category:update",
+  "category:delete",
+  //attributes
+  "attribute:read",
+  "attribute:create",
+  "attribute:update",
+  "attribute:delete",
+
+  //segments
+  "segment:read",
+  "segment:create",
+  "segment:update",
+  "segment:delete",
+
   // AI Studio
   "ai:read",
   "ai:create",

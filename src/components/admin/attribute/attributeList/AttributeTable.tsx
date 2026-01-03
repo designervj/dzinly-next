@@ -4,13 +4,15 @@ import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTableExt } from '@/components/admin/DataTableExt';
 import { addAttribute, removeAttribute } from '@/hooks/slices/attribute/AttributeSlice';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { MaterialAttributes } from '../types/attributeModel';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import AttributeForm from '../forms/AttributeForm';
 import { addCategory } from '@/hooks/slices/category/CategorySlice';
+import { useToast } from '@/hooks/use-toast';
+import { formatDateDisplay } from '@/components/projects/FunctionDisplayDate';
 
 const AttributeTable = () => {
 
@@ -25,9 +27,8 @@ const AttributeTable = () => {
   );
    const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
-  const { toast } = useToast();
   const router = useRouter();
-
+  
   // Edit modal state
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingAttribute, setEditingAttribute] = useState<MaterialAttributes | null>(null);
@@ -62,17 +63,26 @@ const AttributeTable = () => {
 
 
     const handleAdd = () => {
-    setNewAttribute({ name: '', category_id: null, type: '', possible_values: [], data_type: undefined ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
-    setFieldErrors({});
-    setIsAddDialogOpen(true);
+       if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:create")){
+              toast.error("You don't have permission to create attribute");
+              return;
+            }
+            router.push(`/admin/attribute/create`);
+    // setNewAttribute({ name: '', category_id: null, type: '', possible_values: [], data_type: undefined ,websiteId:currentWebsite?._id,tenantId:user?.tenantId, userId:user?.id as string | undefined});
+    // setFieldErrors({});
+    // setIsAddDialogOpen(true);
   };
 
 
 
   const handleDelete = async (row: any) => {
+    if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:delete")){
+      toast.error("You don't have permission to delete attribute");
+      return;
+    }
     const id = row?._id ?? row?.id;
     if (!id) {
-      toast({ title: 'Delete failed', description: 'Missing id' });
+      toast.error('Delete failed: Missing id');
       return;
     }
 
@@ -80,7 +90,7 @@ const AttributeTable = () => {
     if (!ok) return;
 
     try {
-      const res = await fetch(`/api/admin/attribute/${id}`, {
+      const res = await fetch(`/api/admin/attribute?id=${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) {
@@ -88,10 +98,10 @@ const AttributeTable = () => {
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
       dispatch(removeAttribute(id));
-      toast({ title: 'Deleted', description: `Attribute ${row?.name ?? id} removed` });
+      toast.success(`Attribute ${row?.name ?? id} removed`);
     } catch (err: any) {
       console.error('Failed to delete attribute', err);
-      toast({ title: 'Delete failed', description: String(err?.message || err) });
+      toast.error(`Delete failed: ${String(err?.message || err)}`);
     }
   };
 
@@ -104,10 +114,14 @@ const AttributeTable = () => {
   };
 
   const handleSaveEdit = async () => {
+    if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:update")){
+      toast.error("You don't have permission to update attribute");
+      return;
+    }
     if (!editingAttribute) return;
     const id = (editingAttribute as any)._id ?? editingAttribute.id;
     if (!id) {
-      toast({ title: 'Save failed', description: 'Missing ID' });
+      toast.error('Save failed: Missing ID');
       return;
     }
 
@@ -130,7 +144,7 @@ const AttributeTable = () => {
       }
 
       const updated = await res.json();
-      toast({ title: 'Saved', description: 'Attribute updated successfully' });
+      toast.success('Attribute updated successfully');
       setIsEditDialogOpen(false);
       setEditingAttribute(null);
       setFieldErrors({});
@@ -139,13 +153,14 @@ const AttributeTable = () => {
       window.location.reload();
     } catch (err: any) {
       console.error('Failed to save attribute', err);
-      toast({ title: 'Save failed', description: String(err?.message || err) });
+      toast.error(`Save failed: ${String(err?.message || err)}`);
     } finally {
       setIsSaving(false);
     }
   };
 
     const handleSaveAdd = async () => {
+      console.log(" new Attribute ", newAttribute)
     if (!newAttribute) return;
     setFieldErrors({});
     const errors: Record<string, string> = {};
@@ -176,14 +191,14 @@ const AttributeTable = () => {
         throw new Error(msg);
       }
          const created = data?.item ?? data;
-      toast({ title: 'Created', description: `Attribute ${newAttribute.name} created successfully` });
+      toast.success(`Attribute ${newAttribute.name} created successfully`);
       setIsAddDialogOpen(false);
       setNewAttribute(null);
        dispatch(addAttribute(created));
       // window.location.reload();
     } catch (err: any) {
       console.error('Failed to create attribute', err);
-      toast({ title: 'Create failed', description: String(err?.message || err), variant: 'destructive' });
+      toast.error(`Create failed: ${String(err?.message || err)}`);
     } finally {
       setIsSaving(false);
     }
@@ -199,7 +214,16 @@ const AttributeTable = () => {
       label: 'Category',
       render: (value: any, row: any) => value?.name || '-'
     },
-    { key: 'createdAt', label: 'Created' },
+   {
+             key: 'createdAt',
+             label: 'Created At',
+             render: (value: any) => formatDateDisplay(value),
+           },
+           {
+             key: 'updatedAt',
+             label: 'Updated At',
+             render: (value: any) => formatDateDisplay(value),
+           },
   ];
 
   return (

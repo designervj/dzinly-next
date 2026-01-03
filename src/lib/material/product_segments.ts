@@ -15,7 +15,7 @@ export async function getSegmentById(
 ): Promise<MaterialSegmentModel | null> {
   const db = await getDatabase();
   const col = db.collection<MaterialSegmentModel>(COLLECTION);
-
+ 
   return col.findOne({ _id: toObjectId(id) } as any);
 }
 
@@ -49,11 +49,18 @@ export async function createSegment(
   const db = await getDatabase();
   const col = db.collection<MaterialSegmentModel>(COLLECTION);
 
-  // prevent duplicate name (case-insensitive)
-  const exists = await col.findOne({
+  // prevent duplicate name for the same userId (case-insensitive)
+  const filter: any = {
     name: { $regex: `^${escapeRegExp(data.name)}$`, $options: "i" },
-  } as any);
-  if (exists) throw new Error("Segment with same name already exists");
+  };
+  
+  // Add userId to the filter if it exists
+  if (data.userId) {
+    filter.userId = typeof data.userId === 'string' ? data.userId : data.userId.toString();
+  }
+  
+  const exists = await col.findOne(filter);
+  if (exists) throw new Error("Segment with same name already exists for this user");
 
   const now = new Date();
 
@@ -87,8 +94,11 @@ export async function listSegments(websiteId:string): Promise<MaterialSegmentMod
   const col = db.collection<MaterialSegmentModel>(COLLECTION);
   const filter: any = {};
   if (websiteId) {
-    // websiteId is stored as string in the database, not ObjectId
-    filter.websiteId = websiteId;
+    // Use $or to match either websiteId OR userId
+    filter.$or = [
+      { websiteId: websiteId },
+      { userId: "6941349ebc8a14e00bbc100d" }
+    ];
   }
   return col.find(filter).sort({ name: 1 }).toArray();
 }

@@ -49,11 +49,18 @@ export async function createAttribute(
   const db = await getDatabase();
   const col = db.collection<MaterialAttributes>(COLLECTION);
 
-  // prevent duplicate name (case-insensitive)
-  const exists = await col.findOne({
+  // prevent duplicate name within the same tenantId (case-insensitive)
+  const query: any = {
     name: { $regex: `^${escapeRegExp(data.name)}$`, $options: "i" },
-  } as any);
-  if (exists) throw new Error("Attribute with same name already exists");
+  };
+  
+  // Add tenantId to the query if it exists
+  if (data.userId) {
+    query.userId = data.userId;
+  }
+  
+  const exists = await col.findOne(query);
+  if (exists) throw new Error("Attribute with same name already exists for this tenant");
 
   const now = new Date();
 

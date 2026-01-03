@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 export interface MaterialSegmentModel {
   id?: number | null;
   name?: string;
+  userId?: string|ObjectId;
   color?: string;
   color_code?: string;
   icon?: string;
@@ -12,7 +13,8 @@ export interface MaterialSegmentModel {
   is_visible?: boolean;
   description?: string;
   short_code?: string;
-  categories?: string;
+  categories?: string[];
+  option_type?: string;
   gallery?: string;
   websiteId?: string | ObjectId;
   tenantId?: string | ObjectId;

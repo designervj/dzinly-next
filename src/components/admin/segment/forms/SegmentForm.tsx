@@ -3,6 +3,8 @@
 import React from "react";
 import { MaterialSegmentModel } from "../types/SegmentModel";
 import { IconImg, IconSVG } from "@/components/ui/icon-display";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 type SegmentFormProps = {
   segment: MaterialSegmentModel;
@@ -15,6 +17,27 @@ export default function SegmentForm({
   setSegment,
   fieldErrors,
 }: SegmentFormProps) {
+
+  const {listCategory}= useSelector((state: RootState) => state.category);
+
+  // Handle category selection
+  const handleCategoryChange = (categoryId: string) => {
+    const currentCategories = segment.categories || [];
+    const isSelected = currentCategories.includes(categoryId);
+    
+    if (isSelected) {
+      setSegment({
+        ...segment,
+        categories: currentCategories.filter(id => id !== categoryId)
+      });
+    } else {
+      setSegment({
+        ...segment,
+        categories: [...currentCategories, categoryId]
+      });
+    }
+  };
+
   return (
     <>
       <div>
@@ -30,6 +53,59 @@ export default function SegmentForm({
           </div>
         )}
       </div>
+
+      <div>
+        <label className="block text-sm font-medium mb-2">Categories</label>
+        <span className="text-gray-400 text-xs font-normal">Select multiple categories</span>
+        <div className="mt-2 border rounded-md p-3 max-h-48 overflow-y-auto">
+          {listCategory && listCategory.length > 0 ? (
+            <div className="space-y-2">
+              {listCategory.map((category) => {
+                const categoryId = String(category._id || category.id || '');
+                return (
+                  <label
+                    key={categoryId}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={(segment.categories || []).includes(categoryId)}
+                      onChange={() => handleCategoryChange(categoryId)}
+                      className="w-4 h-4 rounded border-gray-300"
+                    />
+                    <span className="text-sm">{category.name}</span>
+                  </label>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500">No categories available</p>
+          )}
+        </div>
+        {fieldErrors.categories && (
+          <div className="text-sm text-destructive mt-1">
+            {fieldErrors.categories}
+          </div>
+        )}
+      </div>
+
+      {/* <div>
+        <label className="block text-sm font-medium">Option Type</label>
+        <span className="text-gray-400 text-xs font-normal">Single or Multiple selection</span>
+        <select
+          value={segment.option_type || "single"}
+          onChange={(e) => setSegment({ ...segment, option_type: e.target.value })}
+          className="mt-1 block w-full rounded-md border p-2 bg-white"
+        >
+          <option value="single">Single Selection</option>
+          <option value="multiple">Multiple Selection</option>
+        </select>
+        {fieldErrors.option_type && (
+          <div className="text-sm text-destructive mt-1">
+            {fieldErrors.option_type}
+          </div>
+        )}
+      </div> */}
 
       <div>
         <label className="block text-sm font-medium">Description</label>

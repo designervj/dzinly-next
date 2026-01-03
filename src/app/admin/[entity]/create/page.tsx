@@ -229,7 +229,7 @@ export default function EntityCreatePage() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
+    <div className="container-xl mx-auto py-8 px-4 max-w-4xl">
       {/* Header */}
       <div className="mb-6">
         <Button

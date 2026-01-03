@@ -226,7 +226,7 @@ export default function OnboardingTenants() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-6">
+    <div className="min-h-screen bg-white p-0">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">
@@ -247,7 +247,7 @@ export default function OnboardingTenants() {
                   )}
                   <button
                     onClick={handleNext}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition shadow-lg"
+                    className="flex-1 bg-primary text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition shadow-lg"
                   >
                     {currentStep === 3 ? "Review" : "Continue"}
                   </button>

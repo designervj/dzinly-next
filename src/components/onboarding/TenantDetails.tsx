@@ -24,7 +24,7 @@ export const TenantDetails = ({tenantData, setTenantData}: TenantProps) => {
   }, [tenantData.name]);
     const tenantTypes = [
     { value: "manufacturer", label: "Manufacturer", description: "Production and manufacturing businesses", icon: "🏭" },
-    { value: "distributor", label: "Distributor", description: "Supply chain and distribution services", icon: "🚚" },
+    { value: "contractor", label: "Contractor", description: "Supply chain and distribution services", icon: "🚚" },
     { value: "architect", label: "Architect", description: "Design and architectural firms", icon: "📐" },
     { value: "home_owner", label: "Home Owner", description: "Individual property owners", icon: "🏠" }
   ];

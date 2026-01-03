@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { addRoles, updateRolePermissions } from "@/hooks/slices/RolePermission/rolePermissionSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { Plus, X, Eye, Edit2 } from "lucide-react";
@@ -195,6 +196,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
     <>
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-7xl mx-auto">
+        
           <div className="flex justify-between items-start mb-8">
             <div>
               <h1 className="text-2xl font-semibold text-gray-900">
@@ -204,9 +206,27 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                 Review your members roles and allocate permissions
               </p>
             </div>
+
+       
+              {/* <a href="admin/users/roles-permissions/createnew"><Button >Create New Role</Button></a> */}
+           
+           <Button onClick={() => openModal("create")}>Create New Role</Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               
+              {/* <div
+            
+              className="bg-white rounded-lg border border-gray-200 border-dashed p-6 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-gray-50"
+            >
+              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                <Plus className="w-6 h-6 text-gray-400" />
+              </div>
+              <button className="text-sm font-medium text-gray-900 hover:text-gray-700">
+                Create New Role
+              </button>
+            </div>
+           */}
             {roles.map((role) => (
               <div
                 key={role._id}
@@ -246,17 +266,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
               </div>
             ))}
 
-            <div
-              onClick={() => openModal("create")}
-              className="bg-white rounded-lg border border-gray-200 border-dashed p-6 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-gray-50"
-            >
-              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                <Plus className="w-6 h-6 text-gray-400" />
-              </div>
-              <button className="text-sm font-medium text-gray-900 hover:text-gray-700">
-                Create New Role
-              </button>
-            </div>
+          
           </div>
         </div>
 

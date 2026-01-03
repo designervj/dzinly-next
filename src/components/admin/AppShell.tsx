@@ -862,6 +862,35 @@ const currentWebsiteSections: NavSection[] = [
       },
     ],
   },
+   {
+    id: "Packages",
+    label: "Packages",
+    items: [
+       {
+        label: "Packages",
+        href: "/admin/users/packages",
+        icon: Package,
+        permission: [
+          "packages:read",
+          "packages:update",
+          "packages:delete",
+          "packages:create",
+        ],
+      },
+      {
+        label: "Package Add-on",
+        href: "/admin/users/package-addon",
+        icon: Boxes,
+        permission: [
+          "packageaddon:read",
+          "packageaddon:update",
+          "packageaddon:delete",
+          "packageaddon:create",
+        ],
+      },
+   
+    ],
+  },
   {
     id: "settings",
     label: "Settings",

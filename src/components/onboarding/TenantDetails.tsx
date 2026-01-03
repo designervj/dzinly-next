@@ -42,7 +42,7 @@ export const TenantDetails = ({tenantData, setTenantData}: TenantProps) => {
     return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Tenant Information</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Account Information</h2>
               <p className="text-gray-600">Let's start with the basic details of your organization</p>
             </div>
 
@@ -88,7 +88,7 @@ export const TenantDetails = ({tenantData, setTenantData}: TenantProps) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Tenant Type *
+                  Account Type *
                 </label>
                 <div className="space-y-3">
                   {tenantTypes.map((type) => (

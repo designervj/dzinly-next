@@ -56,7 +56,7 @@ export async function listCategories(websiteId:string): Promise<MaterialCategory
   const filter: any = {};
   if (websiteId) {
     // websiteId is stored as string in the database, not ObjectId
-    filter.websiteId = websiteId;
+   // filter.websiteId = websiteId;
   }
 
   const data = await col.find(filter).sort({ name: 1 }).toArray();

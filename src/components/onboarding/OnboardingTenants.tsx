@@ -165,7 +165,7 @@ export default function OnboardingTenants() {
   const steps = [
     {
       id: 1,
-      label: "Tenant Details",
+      label: "Account Details",
       description: "Basic information & branding",
     },
     {
@@ -259,7 +259,7 @@ export default function OnboardingTenants() {
             <div className="lg:w-80 bg-gradient-to-br from-gray-900 to-gray-800 p-8 lg:p-12">
               <div className="mb-8">
                 <h1 className="text-2xl font-bold text-white mb-2">
-                  Tenant Setup
+                  Account Setup
                 </h1>
                 <p className="text-gray-400 text-sm">
                   Complete all steps to get started

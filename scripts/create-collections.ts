@@ -17,13 +17,11 @@ async function createCollections() {
   const client = new MongoClient(MONGODB_URI!);
   
   try {
-    console.log('🔌 Connecting to MongoDB...');
     await client.connect();
-    console.log('✅ Connected to MongoDB');
+ 
     
     // Use 'dzinly' database explicitly
     const db = client.db('dzinly');
-    console.log('📂 Using database: dzinly');
     
     // List of all collections to create
     const collections = [
@@ -72,7 +70,6 @@ async function createCollections() {
       'plugin_installations',
     ];
     
-    console.log('\n📦 Creating collections...\n');
     
     // Get existing collections
     const existingCollections = await db.listCollections().toArray();
@@ -83,22 +80,16 @@ async function createCollections() {
     
     for (const collectionName of collections) {
       if (existingNames.includes(collectionName)) {
-        console.log(`⏭️  ${collectionName} - Already exists`);
         skipped++;
       } else {
         await db.createCollection(collectionName);
-        console.log(`✅ ${collectionName} - Created`);
         created++;
       }
     }
     
-    console.log('\n📊 Summary:');
-    console.log(`   Created: ${created}`);
-    console.log(`   Skipped: ${skipped}`);
-    console.log(`   Total: ${collections.length}`);
+    
     
     // Create indexes
-    console.log('\n🔧 Creating indexes...\n');
     
     const indexes: Array<{ collection: string; index: any; options: any }> = [
       // Core
@@ -164,11 +155,9 @@ async function createCollections() {
     for (const { collection, index, options } of indexes) {
       try {
         await db.collection(collection).createIndex(index, options);
-        console.log(`✅ ${collection}.${options.name}`);
         indexCreated++;
       } catch (error: any) {
         if (error.code === 85 || error.codeName === 'IndexOptionsConflict' || error.code === 86) {
-          console.log(`⏭️  ${collection}.${options.name} - Already exists`);
           indexSkipped++;
         } else {
           console.log(`⚠️  ${collection}.${options.name} - Error: ${error.message}`);
@@ -176,14 +165,10 @@ async function createCollections() {
       }
     }
     
-    console.log(`\n📊 Index Summary:`);
-    console.log(`   Created: ${indexCreated}`);
-    console.log(`   Skipped: ${indexSkipped}`);
     
     // Create text index for products separately (only one text index allowed per collection)
     try {
       await db.collection('products').createIndex({ name: 'text', description: 'text', tags: 'text' }, { name: 'text_index_products' });
-      console.log('\n✅ Text index created for products');
     } catch (error: any) {
       if (error.code === 85 || error.codeName === 'IndexOptionsConflict') {
         console.log('\n⏭️  Text index for products already exists');
@@ -192,10 +177,9 @@ async function createCollections() {
       }
     }
     
-    console.log('\n✅ All indexes processed successfully\n');
+    
     
     // Show final collection list
-    console.log('📋 Final collection list:');
     const finalCollections = await db.listCollections().toArray();
     finalCollections.forEach(col => {
       if (collections.includes(col.name)) {
@@ -203,14 +187,13 @@ async function createCollections() {
       }
     });
     
-    console.log('\n✨ Database setup complete!');
+    
     
   } catch (error) {
     console.error('❌ Error:', error);
     process.exit(1);
   } finally {
     await client.close();
-    console.log('🔌 Disconnected from MongoDB');
   }
 }
 

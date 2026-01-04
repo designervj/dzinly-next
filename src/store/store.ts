@@ -15,6 +15,8 @@ import rolePermissionReducer from "../hooks/slices/RolePermission/rolePermission
 import canvasReducer from "../hooks/slices/canvas/canvasSlice"
 import tabContentReducer from "../hooks/slices/canvas/tabSlice"
 import accountReducer from "../hooks/slices/user/accountSlice"
+import packageReducer from "../hooks/slices/package/packageSlice"
+
 export const store = configureStore({
   reducer: {
     user:userSlice,
@@ -33,6 +35,7 @@ export const store = configureStore({
     canvas:canvasReducer,
     tabContent:tabContentReducer,
     account:accountReducer,
+    package:packageReducer,
  
   },
 });

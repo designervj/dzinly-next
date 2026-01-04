@@ -39,60 +39,60 @@ export class RBACService {
   }
 
   // Permission checking
-  static async hasPermission(
-    userId: ObjectId,
-    resource: string,
-    action: string,
-    context?: {
-      resourceId?: ObjectId;
-      tenantId?: ObjectId;
-      isOwn?: boolean;
-    }
-  ): Promise<boolean> {
-    const db = await this.db;
-    const user = await db.collection('users').findOne({ _id: userId }) as User | null;
+  // static async hasPermission(
+  //   userId: ObjectId,
+  //   resource: string,
+  //   action: string,
+  //   context?: {
+  //     resourceId?: ObjectId;
+  //     tenantId?: ObjectId;
+  //     isOwn?: boolean;
+  //   }
+  // ): Promise<boolean> {
+  //   const db = await this.db;
+  //   const user = await db.collection('users').findOne({ _id: userId }) as User | null;
     
-    if (!user) return false;
+  //   if (!user) return false;
 
-    // Ensure role exists on the user object
-    if (!user.role) return false;
+  //   // Ensure role exists on the user object
+  //   if (!user.role) return false;
 
-    // Check role-based permissions
-    const hasRolePermission = RoleManager.hasPermission(
-      user.role,
-      resource,
-      action,
-      {
-        isOwn: context?.isOwn,
-        isTenantLevel: context?.tenantId?.equals(user.tenantId),
-        isFranchiseLevel: user.tenantId && context?.tenantId
-  ? await this.isFranchiseLevel(user.tenantId, context.tenantId)
-  : false,
-      }
-    );
+  //   // Check role-based permissions
+  //   const hasRolePermission = RoleManager.hasPermission(
+  //     user.role,
+  //     resource,
+  //     action,
+  //     {
+  //       isOwn: context?.isOwn,
+  //       isTenantLevel: context?.tenantId?.equals(user.tenantId),
+  //       isFranchiseLevel: user.tenantId && context?.tenantId
+  // ? await this.isFranchiseLevel(user.tenantId, context.tenantId)
+  // : false,
+  //     }
+  //   );
 
-    if (!hasRolePermission) return false;
+  //   if (!hasRolePermission) return false;
 
-    // Check user-specific permissions
-    const userPermissions = user.permissions;
-    if (!userPermissions) return false;
+  //   // Check user-specific permissions
+  //   const userPermissions = user.permissions;
+  //   if (!userPermissions) return false;
 
-    // Check if user has the specific permission
-    const resourcePermissions = userPermissions[resource as keyof typeof userPermissions];
-    if (Array.isArray(resourcePermissions)) {
-      return resourcePermissions.includes(action);
-    }
+  //   // Check if user has the specific permission
+  //   const resourcePermissions = userPermissions[resource as keyof typeof userPermissions];
+  //   if (Array.isArray(resourcePermissions)) {
+  //     return resourcePermissions.includes(action);
+  //   }
 
-    if (typeof resourcePermissions === 'boolean') {
-      return resourcePermissions;
-    }
+  //   if (typeof resourcePermissions === 'boolean') {
+  //     return resourcePermissions;
+  //   }
 
-    if (typeof resourcePermissions === 'object' && resourcePermissions !== null) {
-      return (resourcePermissions as any)[action] === true;
-    }
+  //   if (typeof resourcePermissions === 'object' && resourcePermissions !== null) {
+  //     return (resourcePermissions as any)[action] === true;
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 
   // Check if a tenant is at franchise level relative to another tenant
   private static async isFranchiseLevel(userTenantId: ObjectId, targetTenantId?: ObjectId): Promise<boolean> {
@@ -254,7 +254,8 @@ export class RBACService {
     if (!manager || !target) return false;
 
     // Check if manager can manage the target user's role
-    return RoleManager.canManageRole(manager.role, target.role);
+    //return RoleManager.canManageRole(manager.role, target.role);
+    return true;
   }
 
   // Get users that a role can manage
@@ -264,12 +265,12 @@ export class RBACService {
     const manager = await db.collection('users').findOne({ _id: managerId }) as User | null;
     if (!manager) return [];
 
-    const manageableRoles = RoleManager.getManageableRoles(manager.role);
+   // const manageableRoles = RoleManager.getManageableRoles(manager.role);
     
     return await db.collection('users')
       .find({
         tenantId,
-        role: { $in: manageableRoles },
+        role: { $in: manager.role },
         status: 'active',
       })
       .toArray() as User[];

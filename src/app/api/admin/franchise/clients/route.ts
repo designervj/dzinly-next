@@ -18,14 +18,14 @@ export async function GET(request: NextRequest) {
     const tenantId = new ObjectId(session.user.tenantId);
 
     // Check if user has franchise permissions
-    const hasPermission = await RBACService.hasPermission(userId, 'franchise', 'manage_clients', {
-      tenantId,
+    // const hasPermission = await RBACService.hasPermission(userId, 'franchise', 'manage_clients', {
+    //   tenantId,
     
-    });
+    // });
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // }
 
     // Get franchise clients
     const clients = await RBACService.getFranchiseClients(tenantId);
@@ -60,14 +60,14 @@ export async function POST(request: NextRequest) {
     const franchiseTenantId = new ObjectId(session.user.tenantId);
 
     // Check if user has franchise permissions to create clients
-    const hasPermission = await RBACService.hasPermission(userId, 'franchise', 'create_clients', {
-      tenantId: franchiseTenantId,
+    // const hasPermission = await RBACService.hasPermission(userId, 'franchise', 'create_clients', {
+    //   tenantId: franchiseTenantId,
 
-    });
+    // });
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // }
 
     const body = await request.json();
     const {

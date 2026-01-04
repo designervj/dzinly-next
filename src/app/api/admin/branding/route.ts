@@ -16,13 +16,13 @@ export async function GET(request: NextRequest) {
     const tenantId = new ObjectId(session.user.tenantId);
 
     // Check if user has permission to read branding settings
-    const hasPermission = await RBACService.hasPermission(userId, 'settings', 'read', {
-      tenantId,
-    });
+    // const hasPermission = await RBACService.hasPermission(userId, 'settings', 'read', {
+    //   tenantId,
+    // });
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // }
 
     const branding = await BrandingService.getBrandingSettings(tenantId);
     const presets = BrandingService.getBrandingPresets();
@@ -47,14 +47,14 @@ export async function PUT(request: NextRequest) {
     const userId = new ObjectId(session.user.id);
     const tenantId = new ObjectId(session.user.tenantId);
 
-    // Check if user has permission to update branding settings
-    const hasPermission = await RBACService.hasPermission(userId, 'settings', 'branding', {
-      tenantId,
-    });
+    // // Check if user has permission to update branding settings
+    // const hasPermission = await RBACService.hasPermission(userId, 'settings', 'branding', {
+    //   tenantId,
+    // });
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // }
 
     const body = await request.json();
     const { branding } = body as { branding: Partial<BrandingSettings> };

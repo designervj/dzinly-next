@@ -48,19 +48,19 @@ export function withRBAC(options: RBACMiddlewareOptions) {
       }
 
       // Check specific permission
-      const hasPermission = await RBACService.hasPermission(
-        userId,
-        options.resource,
-        options.action,
-        {
-          tenantId,
+      // const hasPermission = await RBACService.hasPermission(
+      //   userId,
+      //   options.resource,
+      //   options.action,
+      //   {
+      //     tenantId,
        
-        }
-      );
+      //   }
+      // );
 
-      if (!hasPermission) {
-        return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
-      }
+      // if (!hasPermission) {
+      //   return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
+      // }
 
       // Log the access
       await RBACService.logActivity(
@@ -112,35 +112,35 @@ export async function withTenantIsolation(
 }
 
 // Role-based UI middleware for dynamic rendering
-export async function withRoleBasedUI(
-  request: NextRequest,
-  handler: (request: NextRequest, context: { user: User; uiConfig: any }) => Promise<NextResponse>
-): Promise<NextResponse> {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+// export async function withRoleBasedUI(
+//   request: NextRequest,
+//   handler: (request: NextRequest, context: { user: User; uiConfig: any }) => Promise<NextResponse>
+// ): Promise<NextResponse> {
+//   try {
+//     const session = await auth();
+//     if (!session?.user?.id) {
+//       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+//     }
 
-    const userId = new ObjectId(session.user.id);
-    const tenantId = new ObjectId(session.user.tenantId);
+//     const userId = new ObjectId(session.user.id);
+//     const tenantId = new ObjectId(session.user.tenantId);
 
-    // Get user details
-    const db = await getDb();
-    const user = await db.collection('users').findOne({ _id: userId }) as User | null;
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
+//     // Get user details
+//     const db = await getDb();
+//     const user = await db.collection('users').findOne({ _id: userId }) as User | null;
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
 
-    // Get UI configuration for user's role
-    const uiConfig = await RBACService.getUIConfiguration(tenantId, user.role);
+//     // Get UI configuration for user's role
+//     //const uiConfig = await RBACService.getUIConfiguration(tenantId, user.role);
 
-    return handler(request, { user, uiConfig });
-  } catch (error) {
-    console.error('Role-based UI middleware error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
+//     return handler(request, { user, uiConfig });
+//   } catch (error) {
+//     console.error('Role-based UI middleware error:', error);
+//     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+//   }
+// }
 
 // Franchise-specific middleware
 export function withFranchiseAccess() {

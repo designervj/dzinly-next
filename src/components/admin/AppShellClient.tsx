@@ -80,11 +80,15 @@ export function AppShellClient({
   // When client receives server-provided websites, save them to Redux
   useEffect(() => {
     if (websites && websites.length > 0) {
-      dispatch(setWebsitesAction(websites));
+      // Serialize and deserialize to remove non-serializable values (ObjectId, Date, etc.)
+      const serializedWebsites = JSON.parse(JSON.stringify(websites));
+      dispatch(setWebsitesAction(serializedWebsites));
     }
     // also set current website in redux when initialCurrentWebsite is provided
     if (initialCurrentWebsite) {
-      dispatch(setCurrentWebsiteAction(initialCurrentWebsite));
+      // Serialize and deserialize to remove non-serializable values
+      const serializedCurrentWebsite = JSON.parse(JSON.stringify(initialCurrentWebsite));
+      dispatch(setCurrentWebsiteAction(serializedCurrentWebsite));
     }
   }, [dispatch, websites, initialCurrentWebsite]);
 

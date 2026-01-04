@@ -189,7 +189,7 @@ export class RoleManager {
   }
 
   static hasPermission(
-    userRole: UserRole,
+    userRole: string,
     resource: string,
     action: string,
     context?: {
@@ -198,7 +198,7 @@ export class RoleManager {
       isFranchiseLevel?: boolean;
     }
   ): boolean {
-    const roleDefinition = this.getRoleDefinition(userRole);
+    const roleDefinition = this.getRoleDefinition(userRole as UserRole);
     
     const permission = roleDefinition.permissions.find(p => p.resource === resource);
     if (!permission) return false;

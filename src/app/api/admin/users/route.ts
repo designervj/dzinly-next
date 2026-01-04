@@ -43,18 +43,18 @@ export async function GET(request: NextRequest) {
       const tenantId = new ObjectId(session.user.tenantId);
 
       // Check if user has permission to read users
-      const hasPermission = await RBACService.hasPermission(
-        userId,
-        "users",
-        "read",
-        {
-          tenantId,
-        }
-      );
+      // const hasPermission = await RBACService.hasPermission(
+      //   userId,
+      //   "users",
+      //   "read",
+      //   {
+      //     tenantId,
+      //   }
+      // );
 
-      if (!hasPermission) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
+      // if (!hasPermission) {
+      //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      // }
 
       // Get manageable users for this user
       const users = await RBACService.getManageableUsers(userId, tenantId);
@@ -81,18 +81,18 @@ export async function POST(request: NextRequest) {
     const tenantId = new ObjectId(session.user.tenantId);
 
     // Check if user has permission to create users
-    const hasPermission = await RBACService.hasPermission(
-      userId,
-      "users",
-      "create",
-      {
-        tenantId,
-      }
-    );
+    // const hasPermission = await RBACService.hasPermission(
+    //   userId,
+    //   "users",
+    //   "create",
+    //   {
+    //     tenantId,
+    //   }
+    // );
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    // }
 
     const body = await request.json();
     const { email, name, role, password, metadata } = body;

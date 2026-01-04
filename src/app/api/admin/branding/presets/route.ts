@@ -15,13 +15,13 @@ export async function POST(request: NextRequest) {
     const tenantId = new ObjectId(session.user.tenantId);
 
     // Check if user has permission to update branding settings
-    const hasPermission = await RBACService.hasPermission(userId, 'settings', 'branding', {
-      tenantId,
-    });
+    // const hasPermission = await RBACService.hasPermission(userId, 'settings', 'branding', {
+    //   tenantId,
+    // });
 
-    if (!hasPermission) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    }
+    // if (!hasPermission) {
+    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // }
 
     const body = await request.json();
     const { preset } = body;

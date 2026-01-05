@@ -11,7 +11,7 @@ import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen ">
       {/* PAGE HEADER */}
       <div className="mb-6">
         {/* <h1 className="text-3xl font-semibold">Segment Detection</h1> */}

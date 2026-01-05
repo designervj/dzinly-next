@@ -8,10 +8,11 @@ import {
   XCircle,
   Link2,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen">
       {/* PAGE HEADER */}
       <div className="mb-6">
         <h1 className="text-3xl font-semibold">Domain Settings</h1>
@@ -21,7 +22,7 @@ export default function Page() {
       </div>
 
       {/* ADD DOMAIN */}
-      <div className="bg-white rounded-2xl border shadow-sm p-6 mb-6 max-w-4xl">
+      <div className="bg-white rounded-xl border shadow-sm p-6 mb-6 max-w-4xl">
         <h2 className="text-lg font-semibold mb-4">
           Add New Domain
         </h2>
@@ -35,14 +36,14 @@ export default function Page() {
               className="w-full border rounded-lg pl-10 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-2">
+          <Button >
             <Plus size={18} /> Add Domain
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* DOMAIN LIST */}
-      <div className="bg-white rounded-2xl border shadow-sm p-6 max-w-4xl">
+      <div className="bg-white rounded-xl border shadow-sm p-6 max-w-4xl">
         <h2 className="text-lg font-semibold mb-4">
           Connected Domains
         </h2>

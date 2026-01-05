@@ -2,6 +2,7 @@
 
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { X, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const categoryAttributeMap: { [key: string]: string[] } = {
   Paint: ["paint", "color"],
@@ -388,19 +389,19 @@ export function CreateProduct() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="w-full mb-4 flex flex-row-reverse">
-        <button
+        <Button
           onClick={handleSaveProduct}
-          className="border-2 bg-blue-500 text-white w-30 h-10 rounded-lg"
+
         >
           Save Product
-        </button>
+        </Button>
       </div>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* General */}
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-4">General</h2>
+              <h2 className="text-2xl font-bold tracking-tight mb-4">General</h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -499,7 +500,7 @@ export function CreateProduct() {
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-xl font-semibold">Product options</h2>
+                  <h2 className="text-2xl font-bold tracking-tight">Product options</h2>
                   <p className="text-sm text-gray-500">
                     Define options for the product based on category
                   </p>
@@ -712,7 +713,7 @@ export function CreateProduct() {
             {/* Variants */}
             {variantConfigs.length > 0 && (
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold">Configure Variants</h2>
+                <h2 className="text-2xl font-bold tracking-tight">Configure Variants</h2>
                 <p className="text-sm text-gray-500">
                   Set SKU, pricing, and inventory
                 </p>
@@ -810,7 +811,7 @@ export function CreateProduct() {
           {/* Right Column */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow p-6 sticky top-6">
-              <h2 className="text-xl font-semibold mb-4">Organize</h2>
+              <h2 className="text-2xl font-bold tracking-tight mb-4">Organize</h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">

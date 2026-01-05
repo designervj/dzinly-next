@@ -30,7 +30,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen ">
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>

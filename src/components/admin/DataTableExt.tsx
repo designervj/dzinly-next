@@ -375,7 +375,7 @@ export function DataTableExt({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div className="text-xl font-semibold">{title} </div>
+        <div className="text-2xl font-bold tracking-tight">{title} </div>
         <div className="flex items-center gap-2">
            <div className="flex items-center gap-2">
           {onCreate ? (

@@ -240,7 +240,7 @@ export default function OnboardingTenants() {
   return (
     <div className="min-h-screen bg-white p-0">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* Main Content */}
             <div className="flex-1 p-8 lg:p-12">

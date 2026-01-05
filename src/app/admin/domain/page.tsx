@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { X, Plus, Globe, ShoppingCart, LayoutGrid } from "lucide-react";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 
 function formatDate(date: string) {
   return new Date(date).toLocaleString("en-IN", {
@@ -118,7 +119,7 @@ export default function WebsitesPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto p-6">
+    <div className="space-y-8 mx-auto p-6">
       {/* Header */}
       <div>
         {/* <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -131,8 +132,8 @@ export default function WebsitesPage() {
 
       {/* Create Form */}
       <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-          <h2 className="text-xl font-semibold text-white">
+        <div className="bg-white px-6 py-4">
+          <h2 className="text-2xl font-bold tracking-tight text-black">
             Create New Website
           </h2>
         </div>
@@ -177,14 +178,14 @@ export default function WebsitesPage() {
                 onClick={() => setServiceType("WEBSITE_ONLY")}
                 className={`p-5 rounded-xl border-2 transition-all ${
                   serviceType === "WEBSITE_ONLY"
-                    ? "border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200"
+                    ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
                     : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
                 }`}
               >
                 <Globe
                   className={`h-10 w-10 mx-auto mb-3 ${
                     serviceType === "WEBSITE_ONLY"
-                      ? "text-blue-600"
+                      ? "text-primary"
                       : "text-gray-400"
                   }`}
                 />
@@ -197,14 +198,14 @@ export default function WebsitesPage() {
                 onClick={() => setServiceType("ECOMMERCE")}
                 className={`p-5 rounded-xl border-2 transition-all ${
                   serviceType === "ECOMMERCE"
-                    ? "border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200"
+                  ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
                     : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
                 }`}
               >
                 <ShoppingCart
                   className={`h-10 w-10 mx-auto mb-3 ${
                     serviceType === "ECOMMERCE"
-                      ? "text-blue-600"
+                      ? "text-primary"
                       : "text-gray-400"
                   }`}
                 />
@@ -219,14 +220,14 @@ export default function WebsitesPage() {
                 onClick={() => setServiceType("MATERIAL_LIBRARY")}
                 className={`p-5 rounded-xl border-2 transition-all ${
                   serviceType === "MATERIAL_LIBRARY"
-                    ? "border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200"
+                    ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
                     : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
                 }`}
               >
                 <LayoutGrid
                   className={`h-10 w-10 mx-auto mb-3 ${
                     serviceType === "ECOMMERCE"
-                      ? "text-blue-600"
+                        ? "text-primary"
                       : "text-gray-400"
                   }`}
                 />
@@ -316,12 +317,13 @@ export default function WebsitesPage() {
           </div>
 
           {/* Submit Button */}
-          <button
+          <div className="flex justify-end">
+          <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl font-semibold text-lg"
           >
             Create Website
-          </button>
+          </Button>
+          </div>
         </form>
       </div>
 
@@ -343,7 +345,7 @@ export default function WebsitesPage() {
       {!loading && processedItems.length > 0 ? (
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
               Your Websites
             </h2>
           </div>

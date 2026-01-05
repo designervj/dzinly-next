@@ -39,7 +39,7 @@ export default function page() {
                  <SelectItem value="90d">Last Quarter</SelectItem>
               </SelectContent>
            </Select>
-           <Button variant="outline"><Download className="mr-2 h-4 w-4" /> Export Report</Button>
+           <Button ><Download className="mr-2 h-4 w-4" /> Export Report</Button>
         </div>
       </div>
 

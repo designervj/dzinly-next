@@ -14,6 +14,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 /* ===== DEFAULT MENU ===== */
 const defaultMenus = [
@@ -171,11 +172,11 @@ export default function Page() {
         </p>
 
         {/* MENU EDITOR PANEL */}
-        <div className="mt-6 p-4 bg-white rounded shadow space-y-3">
+        <div className="mt-6 p-4 bg-white rounded-xl shadow space-y-3">
           <h2 className="text-lg font-semibold mb-2">Menu Editor</h2>
-          <button onClick={addMenu} className="flex items-center gap-1 px-3 py-1 bg-green-500 text-white rounded">
+          <Button onClick={addMenu} className="flex items-center gap-1 px-3 py-1  ">
             <Plus className="h-3 w-3" /> Add Menu
-          </button>
+          </Button>
           {menus.map((menu, i) => (
             <div key={i} className="border p-2 rounded bg-gray-50 space-y-2">
               <div className="flex items-center gap-2">

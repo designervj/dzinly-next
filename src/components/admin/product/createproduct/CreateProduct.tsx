@@ -347,7 +347,10 @@ export function CreateProduct() {
     });
 
   const handleSaveProduct = async () => {
-    const finalObj = {
+    const finalObj: {
+      productdata: any;
+      variantData: any;
+    } = {
       productdata: {
         ...formData,
         options: productOptions,
@@ -358,13 +361,14 @@ export function CreateProduct() {
     if (images.length > 0) {
       const image: string[] = [];
 
-      const mapped = images.map((d)=>{
-        return fileToBase64(d.file)
-      })
+      const mapped = images.map((d) => {
+        return fileToBase64(d.file);
+      });
 
-      const finalImages = await Promise.all(mapped)
+      const finalImages = await Promise.all(mapped);
 
-      // finalObj.productdata.images = finalImages
+      console.log(finalImages)
+      finalObj.productdata.images = finalImages;
     }
 
     try {

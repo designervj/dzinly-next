@@ -1,4 +1,5 @@
 import { getDatabase } from "@/lib/db/mongodb";
+import { uploadBase64ToS3 } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -24,7 +25,27 @@ export async function POST(req: NextRequest) {
       brands,
       tags,
       options,
+      images,
     } = jsondata.productdata;
+
+    let imageUrls: string[] = [];
+
+    if (images?.length > 0) {
+      try {
+        imageUrls = await Promise.all(
+          images.map((img: string) => uploadBase64ToS3(img))
+        );
+      } catch (err) {
+        return NextResponse.json({
+          success: false,
+          message: "Image upload failed",
+        });
+      }
+    }
+    
+    if(imageUrls.length>0){
+      jsondata.productdata.images = imageUrls
+    }
 
     if (
       !title ||

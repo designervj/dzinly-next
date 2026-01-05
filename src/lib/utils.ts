@@ -1,6 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { randomUUID } from "crypto";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -29,7 +32,6 @@ export const demopages = [
     updatedAt: "2025-12-17T12:42:54.588+00:00",
   },
   {
-    
     slug: "/contact",
     title: "contact",
     content:
@@ -41,3 +43,33 @@ export const demopages = [
     updatedAt: "2025-12-17T12:42:54.588+00:00",
   },
 ];
+
+ const s3 = new S3Client({
+  region: process.env.AWS_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
+
+export async function uploadBase64ToS3(base64: string) {
+  const [meta, data] = base64.split(",");
+  const mime = meta.match(/:(.*?);/)?.[1];
+
+  if (!mime) throw new Error("Invalid base64 image");
+
+  const buffer = Buffer.from(data, "base64");
+  const ext = mime.split("/")[1];
+  const key = `products/${randomUUID()}.${ext}`;
+
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME!,
+      Key: key,
+      Body: buffer,
+      ContentType: mime,
+    })
+  );
+
+  return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${key}`;
+}

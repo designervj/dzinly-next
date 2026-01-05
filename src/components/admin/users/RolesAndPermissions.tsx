@@ -257,7 +257,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                   </button>
                   <button
                     onClick={() => openModal("edit", role)}
-                    className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-md text-sm font-medium flex items-center justify-center gap-1"
+                    className="flex-1 bg-primary text-white px-4 py-1.5 rounded-md text-sm font-medium flex items-center justify-center gap-1"
                   >
                     <Edit2 className="w-4 h-4" />
                     Edit
@@ -276,7 +276,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
             <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                   {modalMode === "view" && "View Role"}
                   {modalMode === "edit" && "Edit Role"}
                   {modalMode === "create" && "Create New Role"}

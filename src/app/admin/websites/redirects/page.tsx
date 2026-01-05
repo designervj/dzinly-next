@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const redirects = [
@@ -20,7 +21,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen">
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -30,10 +31,10 @@ export default function Page() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        <Button className="flex items-center gap-2">
           <Plus size={18} />
           Add Redirect
-        </button>
+        </Button>
       </div>
 
       {/* ADD REDIRECT FORM */}
@@ -46,7 +47,7 @@ export default function Page() {
           <input
             type="text"
             placeholder="/from-url"
-            className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
           />
 
           <div className="flex items-center justify-center text-gray-400">
@@ -56,19 +57,19 @@ export default function Page() {
           <input
             type="text"
             placeholder="/to-url"
-            className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
           />
 
-          <select className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
             <option>301 Permanent</option>
             <option>302 Temporary</option>
           </select>
         </div>
 
         <div className="mt-4 text-right">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <Button className=" px-4 py-2  hover:bg-primary">
             Save Redirect
-          </button>
+          </Button>
         </div>
       </div>
 

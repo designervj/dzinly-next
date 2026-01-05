@@ -51,7 +51,7 @@ export default function WebsiteBrandingPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Website Branding</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Website Branding</h1>
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-600">{error}</p>}
 

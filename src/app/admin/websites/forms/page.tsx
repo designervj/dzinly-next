@@ -2,10 +2,11 @@
 
 import React from "react";
 import { Mail, User, Phone, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen ">
       {/* PAGE HEADER */}
       <div className="mb-6">
         <h1 className="text-3xl font-semibold">Forms</h1>
@@ -15,8 +16,8 @@ export default function Page() {
       </div>
 
       {/* FORM CARD */}
-      <div className="max-w-3xl bg-white rounded-2xl border shadow-sm p-8">
-        <h2 className="text-xl font-semibold mb-6">
+      <div className="max-w-6xl bg-white rounded-xl border shadow-sm p-8">
+        <h2 className="text-2xl font-bold tracking-tight mb-6">
           Contact Form
         </h2>
 
@@ -86,18 +87,17 @@ export default function Page() {
 
           {/* ACTIONS */}
           <div className="flex justify-end gap-3">
-            <button
+            <Button
               type="reset"
-              className="px-5 py-2 rounded-lg border text-gray-600 hover:bg-gray-100"
+              variant="outline"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
             >
               Submit
-            </button>
+            </Button>
           </div>
         </form>
       </div>

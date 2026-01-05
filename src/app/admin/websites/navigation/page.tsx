@@ -18,7 +18,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen ">
       {/* PAGE TITLE */}
       <div className="mb-6">
         <h1 className="text-3xl font-semibold">Navigation</h1>
@@ -28,7 +28,7 @@ export default function Page() {
       </div>
 
       {/* MAIN CARD */}
-      <div className="bg-white rounded-2xl shadow-sm border max-w-4xl">
+      <div className="bg-white shadow-sm border max-w-4xl ">
         <div className="divide-y">
 
           {/* DASHBOARD */}

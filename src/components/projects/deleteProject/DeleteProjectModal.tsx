@@ -67,7 +67,7 @@ const DeleteModal = ({
 
           <DialogContent
             className="
-              sm:max-w-[440px] p-0 overflow-hidden rounded-2xl
+              sm:max-w-[440px] p-0 overflow-hidden rounded-xl
               bg-white border border-slate-200 shadow-2xl
               data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95
               data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95

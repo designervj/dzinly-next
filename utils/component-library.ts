@@ -32,7 +32,7 @@ export const componentTemplates: ComponentTemplate[] = [
     label: "Hero Section",
     category: "hero",
     content: `
-  <section class="relative isolate container-xl mx-auto rounded-2xl overflow-hidden mt-7 shadow-lg">
+  <section class="relative isolate container-xl mx-auto rounded-xl overflow-hidden mt-7 shadow-lg">
 
     <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center transition-all duration-700"
@@ -133,18 +133,18 @@ export const componentTemplates: ComponentTemplate[] = [
     class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory"
   >
     <!-- Slide 1 -->
-    <div class="min-w-full snap-start overflow-hidden rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] bg-white">
+    <div class="min-w-full snap-start overflow-hidden rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] bg-white">
       <img
         src="/assets/Image/about-img2.png"
-        class="w-full h-[380px] object-cover rounded-2xl"
+        class="w-full h-[380px] object-cover rounded-xl"
       />
     </div>
 
     <!-- Slide 2 -->
-    <div class="min-w-full snap-start overflow-hidden rounded-2xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] bg-white">
+    <div class="min-w-full snap-start overflow-hidden rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.1)] bg-white">
       <img
         src="/assets/Image/about-img3.png"
-        class="w-full h-[380px] object-cover rounded-2xl"
+        class="w-full h-[380px] object-cover rounded-xl"
       />
     </div>
   </div>
@@ -301,7 +301,7 @@ export const componentTemplates: ComponentTemplate[] = [
 
         <div class="relative flex items-center justify-center">
           <img src="/assets/Image/testimonials-img.png"
-            class="h-[260px] md:h-[300px] object-cover rounded-2xl shadow-md" />
+            class="h-[260px] md:h-[300px] object-cover rounded-xl shadow-md" />
           <div class="flex flex-col gap-4 ml-4">
             <img src="/assets/Image/testimonials-img-1.png"
               class="w-[90px] h-[90px] md:w-[120px] md:h-[120px] rounded-xl object-cover opacity-70 hover:opacity-100 transition">
@@ -324,7 +324,7 @@ export const componentTemplates: ComponentTemplate[] = [
 
         <div class="relative flex items-center justify-center">
           <img src="/assets/Image/testimonials-user-img.png"
-            class="h-[260px] md:h-[300px] object-cover rounded-2xl shadow-md" />
+            class="h-[260px] md:h-[300px] object-cover rounded-xl shadow-md" />
           <div class="flex flex-col gap-4 ml-4">
             <img src="/assets/Image/user-testimonials-img.png"
               class="w-[90px] h-[90px] md:w-[120px] md:h-[120px] object-cover rounded-xl opacity-70 hover:opacity-100">
@@ -648,7 +648,7 @@ export const componentTemplates: ComponentTemplate[] = [
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Thousands of businesses trust our platform to build their online presence.</p>
           </div>
           <div class="max-w-5xl mx-auto">
-            <div class="bg-gray-50 p-10 rounded-2xl shadow-sm">
+            <div class="bg-gray-50 p-10 rounded-xl shadow-sm">
               <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/3 mb-6 md:mb-0 md:pr-10">
                   <img src="/placeholder.svg?height=150&width=150" alt="Customer" class="w-32 h-32 rounded-full mx-auto" />

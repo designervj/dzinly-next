@@ -42,7 +42,7 @@ export default function RootClientPage() {
         
         <div className="max-w-6xl mx-auto relative z-10 text-center">
           {/* Logo Container */}
-          <div className="inline-flex items-center justify-center p-4 rounded-2xl mb-8 animate-fade-in">
+          <div className="inline-flex items-center justify-center p-4 rounded-xl mb-8 animate-fade-in">
             <img src="/dzinlylogo.svg" alt="Dzinly Logo" className="w-56 h-auto brightness-0 invert" />
           </div>
           
@@ -336,7 +336,7 @@ function Stat({ item, label }: { item: string, label: string }) {
 function FeatureCard({ icon, title, desc }: { icon: any, title: string, desc: string }) {
   return (
     <div className="p-8 rounded-[24px] bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-      <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center mb-6  hover:text-white transition-colors duration-300">
+      <div className="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center mb-6  hover:text-white transition-colors duration-300">
         <div className="hover:text-white transition-colors hover:text-white">{icon}</div>
       </div>
       <h3 className="text-xl font-bold mb-3 text-foreground">{title}</h3>
@@ -356,7 +356,7 @@ function CheckItem({ text }: { text: string }) {
 
 function TestimonialCard({ quote, author, role }: { quote: string, author: string, role: string }) {
     return (
-        <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm text-left">
+        <div className="bg-white p-8 rounded-xl border border-slate-100 shadow-sm text-left">
             <div className="flex gap-1 mb-4 text-amber-400">
                 <Star className="w-4 h-4 fill-current" />
                 <Star className="w-4 h-4 fill-current" />

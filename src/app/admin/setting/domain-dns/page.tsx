@@ -22,7 +22,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen">
       {/* PAGE HEADER */}
       <div className="mb-6">
         <h1 className="text-3xl font-semibold">Domain & DNS</h1>
@@ -35,7 +35,7 @@ export default function Page() {
       <div className="bg-white rounded-xl border shadow-sm p-6 mb-8">
         <div className="flex items-center gap-3 mb-4">
           <Globe className="text-purple-600" />
-          <h2 className="text-xl font-semibold">Connected Domain</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Connected Domain</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -61,7 +61,7 @@ export default function Page() {
       {/* DNS RECORDS */}
       <div className="bg-white rounded-xl border shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">DNS Records</h2>
+          <h2 className="text-2xl font-bold tracking-tight">DNS Records</h2>
           <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
             <Plus size={18} />
             Add Record

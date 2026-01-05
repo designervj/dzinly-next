@@ -28,7 +28,7 @@
 //             <div className="h-[360px]">
 //               <NeuralNetworkVisualizer intensity={0.8} />
 //             </div>
-//             <div className="h-[360px] rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col justify-between">
+//             <div className="h-[360px] rounded-xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col justify-between">
 //               <div>
 //                 <h2 className="text-lg font-semibold mb-2">
 //                   Neural Network View
@@ -59,7 +59,7 @@
 //             <div className="h-[360px]">
 //               <CodeRainWithLogs currentStepIndex={stepIndex} jobId="DZ-12345" />
 //             </div>
-//             <div className="h-[360px] rounded-2xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col justify-between">
+//             <div className="h-[360px] rounded-xl border border-slate-800 bg-slate-950/60 p-4 flex flex-col justify-between">
 //               <div>
 //                 <h2 className="text-lg font-semibold mb-2">Process Log View</h2>
 //                 <p className="text-sm text-slate-400">
@@ -94,7 +94,7 @@
 //                 />
 //               </div>
 //             </div>
-//             <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+//             <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
 //               <div>
 //                 <h2 className="text-base font-semibold text-slate-100 mb-1">
 //                   Combined Internal Generation Screen

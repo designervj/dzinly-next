@@ -257,7 +257,7 @@ const currentWebsiteSections: NavSection[] = [
       },
       {
         label: "Media",
-        href: "/admin/websites/edia",
+        href: "/admin/websites/media",
         icon: ImageIcon,
         permission: ["media:read", "media:create", "media:update"],
       },
@@ -318,7 +318,7 @@ const currentWebsiteSections: NavSection[] = [
       },
       {
         label: "Domain Settings",
-        href: "/admin/websites/domains",
+        href: "/admin/websites/domain",
         icon: Globe2,
         permission: [
           "websites:update",

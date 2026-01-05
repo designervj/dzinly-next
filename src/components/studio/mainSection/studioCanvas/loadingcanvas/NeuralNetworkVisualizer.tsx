@@ -147,7 +147,7 @@ export default function NeuralNetworkVisualizer({ intensity = 0.7 }: NeuralProps
   }, [intensity]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-2xl bg-slate-950 border border-slate-800">
+    <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-950 border border-slate-800">
       <canvas
         ref={canvasRef}
         className="w-full h-full block"

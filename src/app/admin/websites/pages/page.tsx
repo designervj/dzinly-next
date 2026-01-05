@@ -1,5 +1,6 @@
+// "use client";
+// import { cookies } from "next/headers";
 
-import { cookies } from "next/headers";
 import { DataTableExt } from "@/components/admin/DataTableExt";
 import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";

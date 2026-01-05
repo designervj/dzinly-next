@@ -38,8 +38,8 @@ export default function CategoryForm({
               key={ic}
               type="button"
               onClick={() => setCategory({ ...category, icon: ic })}
-              className={`px-3 py-1.5 rounded border text-sm ${
-                category.icon === ic ? "bg-accent text-white" : ""
+              className={`px-3 py-1.5 rounded border text-sm  ${
+                category.icon === ic ? "bg-primary text-white" : ""
               }`}
             >
               {ic}

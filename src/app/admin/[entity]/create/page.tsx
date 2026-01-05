@@ -284,7 +284,7 @@ export default function EntityCreatePage() {
           )}
 
           {/* Actions */}
-          <div className="flex items-center gap-3 pt-4 border-t">
+          <div className="flex items-center gap-3 pt-4 border-t justify-end">
             <Button type="submit" disabled={loading}>
               {loading ? "Creating..." : `Create ${getEntityTitle()}`}
             </Button>

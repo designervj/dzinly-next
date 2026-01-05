@@ -233,7 +233,7 @@ const PorjectForm = () => {
                 <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mr-3">
                   1
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                   Photo Guidelines
                 </h2>
               </div>
@@ -281,7 +281,7 @@ const PorjectForm = () => {
                 <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold mr-3">
                   2
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                   Upload Images
                 </h2>
               </div>

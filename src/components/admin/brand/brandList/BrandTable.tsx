@@ -169,6 +169,7 @@ const BrandTable = () => {
   return (
     <>
       <div>
+      
         <DataTableExt
           title=""
           data={product_brand ?? []}

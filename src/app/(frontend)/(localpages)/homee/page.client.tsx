@@ -1,20 +1,33 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { usePathname, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 import { 
   Shield, Layout, Users, Zap, CheckCircle, ArrowRight, 
   Layers, Lock, BarChart3, Star, Globe, ChevronDown 
 } from "lucide-react"; 
+import { useEffect } from "react";
+import { getHomePage } from "@/hooks/slices/homepage/HomePageThunk";
 
 export default function RootClientPage() {
   const router = useRouter();
   const { user } = useSelector((state: RootState) => state.user);
+   const dispatch = useDispatch<AppDispatch>();
 
+   const { homepage, hasFetched, isLoading, error } = useSelector((state: RootState) => state.homepage);
   const handleLogin = () => {
-    if (user) router.push("/admin");
+    if (user) router.push("/admin/dashboard");
     else router.push("/auth/signin");
   };
+  const pathname= usePathname();
+
+  const tenantId = "6941349ebc8a14e00bbc100c";
+  const slug="home-mahimavalenza"
+  useEffect(() => {
+  if( !hasFetched && !homepage){
+    dispatch(getHomePage({ tenantId, slug }));
+  }
+  }, [homepage, hasFetched]);
 
   return (
     <main className="min-h-screen bg-background text-foreground font-sans">

@@ -5,6 +5,7 @@ import { Check, Download, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const themes = [
   {
@@ -45,7 +46,8 @@ export default function ThemePresetsPage() {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Theme Presets </h1>
+        {/* <h1 className="text-2xl font-bold tracking-tight">Theme Presets </h1> */}
+        <BreadCrumbPage/>
         <p className="text-muted-foreground">Instantly apply a cohesive look to your entire workspace.</p>
       </div>
 

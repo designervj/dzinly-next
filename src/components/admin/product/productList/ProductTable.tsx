@@ -15,6 +15,7 @@ import {
 import ProductForm from "../forms/ProductForm";
 import { ProductModel } from "../type/ProductModel";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const ProductTable = () => {
   const { listProduct, isProductLoading } = useSelector(
@@ -178,6 +179,7 @@ const ProductTable = () => {
   return (
     <>
       <div>
+        <BreadCrumbPage/>
         <DataTableExt
           title="Products"
           data={products ?? []}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { X, Plus, Globe, ShoppingCart, LayoutGrid } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 function formatDate(date: string) {
   return new Date(date).toLocaleString("en-IN", {
@@ -120,10 +121,11 @@ export default function WebsitesPage() {
     <div className="space-y-8 max-w-4xl mx-auto p-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        {/* <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
           <Globe className="h-8 w-8 text-blue-600" />
           Websites
-        </h1>
+        </h1> */}
+        <BreadCrumbPage/>
         <p className="text-gray-600 mt-2">Manage your website configurations</p>
       </div>
 

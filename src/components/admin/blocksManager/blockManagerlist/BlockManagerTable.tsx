@@ -6,6 +6,7 @@ import { BlockForm } from "../form/BlockForm";
 import { RootState } from "@/store/store";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 
 const BlockManagerTable: React.FC = () => {
@@ -21,7 +22,7 @@ const BlockManagerTable: React.FC = () => {
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Blocks</h2>
+        <BreadCrumbPage/>
         <Button
           onClick={() => setIsDialogOpen(true)}
           className="btn btn-primary"

@@ -12,7 +12,7 @@ export interface ReviewProps {
 
 
 export const Review = ({ tenantData, userData, websiteData, handleSave }: ReviewProps) => {
-  
+
 
   return (
     <div className="space-y-6">
@@ -112,9 +112,9 @@ export const Review = ({ tenantData, userData, websiteData, handleSave }: Review
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-gray-600">Primary Domains:</span>
-              {websiteData.primaryDomains.length > 0 ? (
+              {websiteData?.primaryDomain?.length > 0 ? (
                 <div className="space-y-1">
-                  {websiteData.primaryDomains.map((domain, index) => (
+                  {websiteData?.primaryDomain?.map((domain, index) => (
                     <span
                       key={index}
                       className="block font-medium text-blue-600"

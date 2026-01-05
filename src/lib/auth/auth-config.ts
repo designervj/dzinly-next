@@ -36,7 +36,7 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
           
-         console.log(" user----", user);
+     
              if(user.role=="superadmin"){
           tenantdata = await tenantService.getTenantBySlug(inputTenantSlug);
         }else{

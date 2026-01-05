@@ -11,7 +11,7 @@ export const getHomePage = createAsyncThunk<
     "homepage/getHomePage",
     async ({ tenantId, slug }, { rejectWithValue }) => {
         try {
-            const response = await fetch(`/api/public/pages/${slug}`, {
+            const response = await fetch(`/api/public/pages?slug${slug}?tenantId=${tenantId}`, {
                 headers: {
                     "x-tenant-id": String(tenantId),
                 },

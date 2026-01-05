@@ -1,4 +1,4 @@
-import { RolesAndPermissions } from "@/components/admin/users/RolesAndPermissions";
+import { RolesAndPermissions } from "@/components/admin/users/rolesAndPermissions/RolesAndPermissions";
 
 
 export default async function RoleAndPermission() {

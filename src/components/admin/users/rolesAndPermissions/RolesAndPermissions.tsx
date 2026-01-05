@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { addRoles, updateRolePermissions } from "@/hooks/slices/RolePermission/rolePermissionSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { Plus, X, Eye, Edit2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,7 +34,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   const { rolesPermissions, hasFetched } = useSelector(
     (state: RootState) => state.rolePermission
   );
-
+  const router = useRouter();
   // upadate the redux
 
   useEffect(() => {
@@ -192,6 +193,10 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
     : {};
   const formCategorized = categorizePermissions(formData.permissions);
 
+
+  const handleCreateNewRole = () => {
+    router.push("/admin/users/roles-permissions/createnew");
+  };
   return (
     <>
       <div className="min-h-screen bg-gray-50 p-6">
@@ -210,7 +215,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
        
               {/* <a href="admin/users/roles-permissions/createnew"><Button >Create New Role</Button></a> */}
            
-           <Button onClick={() => openModal("create")}>Create New Role</Button>
+           <Button onClick={handleCreateNewRole}>Create New Role</Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

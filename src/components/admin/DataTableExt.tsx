@@ -347,8 +347,9 @@ export function DataTableExt({
       primaryDomain?: string[];
     }
   ) {
+
     e.preventDefault();
-    if (path.includes("domain") || path.includes("/admin/pages")) {
+    if (path.includes("domain") || path.includes("/admin/websites")) {
       const isLocalHost = window.location.hostname.includes("localhost");
       let domain;
       if (path.includes("domain") && row.primaryDomain?.length) {

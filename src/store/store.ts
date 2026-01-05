@@ -16,6 +16,7 @@ import canvasReducer from "../hooks/slices/canvas/canvasSlice"
 import tabContentReducer from "../hooks/slices/canvas/tabSlice"
 import accountReducer from "../hooks/slices/user/accountSlice"
 import packageReducer from "../hooks/slices/package/packageSlice"
+import websitePageReducer from "../hooks/slices/websites/websitePageSlice"
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     attribute:attributeReducer,
     product:productReducer,
     websites: websitesReducer,
+    websitePage:websitePageReducer,
     llmSetting:llmSettingReducer,
     dataStorage: dataStorageReducer,
     block:BlockReducer,

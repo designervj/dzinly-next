@@ -25,6 +25,9 @@ const createSchema = z.object({
     .optional(),
   status: z.enum(["draft", "published"]).default("draft"),
   publishedAt: z.coerce.date().optional(),
+  // Allow these to be passed but they will be overridden by server values if needed
+  websiteId: z.string().optional(),
+  tenantId: z.string().optional(),
 });
 
 export async function GET(req: Request) {
@@ -42,12 +45,38 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.tenantId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const json = await req.json();
-  const parsed = createSchema.safeParse(json);
-  if (!parsed.success) return NextResponse.json({ error: "Invalid payload", issues: parsed.error.flatten() }, { status: 400 });
-  const websiteId = (await cookies()).get('current_website_id')?.value;
-  const created = await pageService.createPage(session.user.tenantId as string, parsed.data as Omit<Page, keyof import("@/types").BaseDocument>, websiteId);
-  return NextResponse.json(created, { status: 201 });
+  try {
+    const session = await auth();
+    if (!session?.user?.tenantId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const json = await req.json();
+    const parsed = createSchema.safeParse(json);
+
+    if (!parsed.success) {
+      return NextResponse.json({
+        error: "Invalid payload",
+        issues: parsed.error.flatten()
+      }, { status: 400 });
+    }
+
+    // Use websiteId from request body if provided, otherwise fall back to cookie
+    const websiteId = parsed.data.websiteId || (await cookies()).get('current_website_id')?.value;
+
+    // Remove websiteId and tenantId from the data as they will be handled by the service
+    const { websiteId: _, tenantId: __, ...pageData } = parsed.data;
+
+    const created = await pageService.createPage(
+      session.user.tenantId as string,
+      pageData as Omit<Page, keyof import("@/types").BaseDocument>,
+      websiteId
+    );
+
+    return NextResponse.json(created, { status: 201 });
+  } catch (error) {
+    console.error("Error creating page:", error);
+    return NextResponse.json({
+      error: "Internal server error",
+      message: error instanceof Error ? error.message : "Unknown error"
+    }, { status: 500 });
+  }
 }

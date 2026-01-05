@@ -1,7 +1,9 @@
+
 import { cookies } from "next/headers";
 import { DataTableExt } from "@/components/admin/DataTableExt";
 import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";
+import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
 
 export default async function PagesAdmin() {
   const session = await auth();
@@ -20,20 +22,28 @@ export default async function PagesAdmin() {
       currentWebsiteId
     );
 
+
+
     const items = (data || []).map((p: any) => ({
       ...p,
       _id: p._id?.toString(),
       tenantId: p.tenantId?.toString(),
       websiteId: p.websiteId?.toString(),
-      createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
-      updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : null,
+      createdAt: p.createdAt ? formatDateDisplay(new Date(p.createdAt).toISOString()) : null,
+      updatedAt: p.updatedAt ? formatDateDisplay(new Date(p.updatedAt).toISOString()) : null,
       publishedAt: p.publishedAt
         ? new Date(p.publishedAt).toISOString().slice(0, 10)
         : null,
     }));
 
-    const website = data.length > 0 ? data[0].website.primaryDomain : null;
-    const sysdomain = data.length > 0 ? data[0].website.systemSubdomain : null;
+
+    const website = data.length > 0 && data[0].website?.primaryDomain?.[0]
+      ? data[0].website.primaryDomain[0]
+      : null;
+    const sysdomain = data.length > 0 && data[0].website?.systemSubdomain
+      ? data[0].website.systemSubdomain
+      : null;
+
 
     return (
       <div>
@@ -42,12 +52,13 @@ export default async function PagesAdmin() {
           sysdomain={sysdomain}
           title="Pages"
           data={items}
-          createHref="/admin/pages/new"
+          createHref="/admin/websites/pages/new"
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },
             { key: "publishedAt", label: "Published" },
-            { key: "createdAt", label: "Created" },
+            { key: 'createdAt', label: 'Created At' },
+            { key: 'updatedAt', label: 'Updated At' },
           ]}
         />
       </div>

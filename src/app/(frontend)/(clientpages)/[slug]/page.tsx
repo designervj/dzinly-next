@@ -34,7 +34,7 @@ export default async function PageTemplate({ params }: any) {
   if (!t || !t.item || !t.item.content ||!t.item.websiteId) {
     return <div>Page not found or content unavailable</div>;
   }
-  console.log("websaitite---",t.item.websiteId)
+
   const html = t.item.content;
 
   const EditButton = (await import("../EditButton")).default;

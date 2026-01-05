@@ -1,6 +1,10 @@
 
 "use client";
-import { useState, useTransition } from "react";
+import { RootState } from "@/store/store";
+import { useRouter } from "next/navigation";
+import { useState, useTransition, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 // Field configuration type
 export type FieldConfig = {
@@ -26,12 +30,17 @@ export default function PageCreator({
   apiEndpoint = "/api/pages",
   onCreateRedirect = "/admin/pages",
 }: PageCreatorProps) {
+
+  const { currentWebsite } = useSelector((state: RootState) => state.websites);
+  const router = useRouter();
   // Single state object for all form data
   const [formData, setFormData] = useState(() => {
     const initialData: Record<string, any> = {};
     fields.forEach((field) => {
       const { name, type } = field;
-
+      if (name === "websiteId") {
+        initialData[name] = currentWebsite?._id;
+      }
       if (type === "array") {
         initialData[name] = Array.isArray(item[name]) ? item[name] : [];
       } else {
@@ -41,12 +50,25 @@ export default function PageCreator({
     return initialData;
   });
 
+  // Update websiteId when currentWebsite changes
+  useEffect(() => {
+    if (currentWebsite?._id) {
+      setFormData((prev) => ({ ...prev, websiteId: currentWebsite._id }));
+    }
+  }, [currentWebsite]);
+
   const [saving, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
 
   // Generic change handler
   const handleChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    // If changing the title, also auto-update the slug
+    if (name === "title") {
+      const slug = value.toLowerCase().replace(/\s+/g, '-');
+      setFormData((prev) => ({ ...prev, [name]: value, slug }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   // Array handlers
@@ -79,10 +101,9 @@ export default function PageCreator({
       });
 
       if (res.ok) {
-        setMsg("Created successfully!");
-        setTimeout(() => {
-          window.location.href = onCreateRedirect;
-        }, 500);
+        toast.success("Created successfully!");
+        router.push("/admin/websites/pages");
+       
       } else {
         setMsg("Create failed");
       }
@@ -90,7 +111,21 @@ export default function PageCreator({
   };
 
   const handleCancel = () => {
-    window.location.href = onCreateRedirect;
+   // clear form data
+   setFormData(() => {
+    const initialData: Record<string, any> = {};
+    fields.forEach((field) => {
+      const { name, type } = field;
+      if (type === "array") {
+        initialData[name] = Array.isArray(item[name]) ? item[name] : [];
+      } else {
+        initialData[name] = item[name] || "";
+      }
+    });
+    return initialData;
+  });
+
+   router.push("/admin/websites/pages");
   };
 
   // Render fields
@@ -228,14 +263,12 @@ export default function PageCreator({
 
       {/* Success/Error message with animation */}
       {msg && (
-        <div className={`mb-6 p-4 rounded-xl shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 ${
-          msg.includes("success") 
-            ? "bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200" 
-            : "bg-gradient-to-r from-red-50 to-rose-50 border border-red-200"
-        }`}>
-          <p className={`font-medium flex items-center gap-2 ${
-            msg.includes("success") ? "text-green-700" : "text-red-700"
+        <div className={`mb-6 p-4 rounded-xl shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 ${msg.includes("success")
+          ? "bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200"
+          : "bg-gradient-to-r from-red-50 to-rose-50 border border-red-200"
           }`}>
+          <p className={`font-medium flex items-center gap-2 ${msg.includes("success") ? "text-green-700" : "text-red-700"
+            }`}>
             {msg.includes("success") ? (
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

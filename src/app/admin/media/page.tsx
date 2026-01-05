@@ -20,7 +20,6 @@ export default function MediaGalleryCMS() {
     (async () => {
       const res = await fetch("/api/media");
       const json = await res.json();
-      console.log(json);
       setMediaItems(json.items);
     })();
   }, []);
@@ -77,7 +76,7 @@ export default function MediaGalleryCMS() {
     return Array.from(tags);
   }, [mediaItems]);
 
-  console.log(categories, allTags);
+  
 
   const filteredMedia = useMemo(() => {
     return mediaItems.filter((item) => {

@@ -12,6 +12,7 @@ export default function WebsitesExtTable({ items, currentId }: { items: any[]; c
     <DataTableExt
       title="Websites"
       data={rows}
+       opentab={() => {}}
       initialColumns={[
         { 
           key: "name", 

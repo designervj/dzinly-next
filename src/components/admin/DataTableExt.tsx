@@ -54,6 +54,7 @@ export type DataTableExtProps = {
   onView?: (row: any) => void;
   website?: string[];
   sysdomain?: string;
+  opentab?: (row: any) => void;
 };
 
 type SortDir = "asc" | "desc";
@@ -106,6 +107,7 @@ export function DataTableExt({
   onView,
   website,
   sysdomain,
+  opentab
 }: DataTableExtProps) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);

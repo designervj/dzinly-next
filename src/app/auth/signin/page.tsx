@@ -26,7 +26,7 @@ function SignInForm() {
     try {
       const result = await signIn("credentials", {
         redirect: false,
-        callbackUrl: "/admin",
+        callbackUrl: "/admin/dashboard",
         email,
         password,
         tenantSlug,
@@ -46,7 +46,7 @@ function SignInForm() {
         };
         dispatch(setUser(mappedUser));
       }
-      router.push("/admin");
+      router.push("/admin/dashboard");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Sign-in failed";
       console.log("mesagge---", err)

@@ -53,6 +53,7 @@ export default async function PagesAdmin() {
           title="Pages"
           data={items}
           createHref="/admin/websites/pages/new"
+           opentab={() => {}}
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },

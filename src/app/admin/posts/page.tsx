@@ -20,6 +20,7 @@ export default async function PostsAdmin() {
         title="Posts"
         data={items}
         createHref="/admin/posts/new"
+         opentab={() => {}}
         initialColumns={[
           // { key: "title", label: "Title", render: (_v, row) => (<a className="underline" href={`/admin/posts/${row._id}`}>{row.title}</a>) },
           { key: "slug", label: "Slug" },

@@ -6,8 +6,9 @@ import { DataTableExt } from '../../DataTableExt'
 
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { deleteWebsitePage, updateCurrentPage } from '@/hooks/slices/website/websitePageSlice';
+
 import { WebsitePageModel } from './WebsitePageType'
+import { deleteWebsitePage, updateCurrentPage } from '@/hooks/slices/websites/websitePageSlice'
 
 const WebsitePageTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,26 +44,7 @@ const WebsitePageTable = () => {
     if (!ok) return;
 
     dispatch(deleteWebsitePage(id));
-    // try {
-    //   const res = await fetch(`/api/pages/websites/id=${id}`, {
-    //     method: 'DELETE',
-    //   });
-    //   if (!res.ok) {
-    //     const body = await res.json().catch(() => ({}));
-    //     throw new Error(body?.error || `HTTP ${res.status}`);
-    //   }
-    //   dispatch(deleteWebsitePage(id));
-    //   toast({
-    //     title: 'Deleted',
-    //     description: `Page ${row?.title ?? id} removed`,
-    //   });
-    // } catch (err: any) {
-    //   console.error('Failed to delete page', err);
-    //   toast({
-    //     title: 'Delete failed',
-    //     description: String(err?.message || err),
-    //   });
-    // }
+  
   };
 
   const handleView = (row: WebsitePageModel) => {

@@ -215,7 +215,7 @@ const ListCategory = () => {
     <>
       <div>
         <DataTableExt
-          title="Categories"
+          title=""
           data={product_categories ?? []}
           onCreate={handleAdd}
           initialColumns={initialColumns}

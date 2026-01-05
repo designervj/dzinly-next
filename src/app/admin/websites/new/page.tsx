@@ -1,6 +1,7 @@
 import { cookies as cookiesFn, headers as headersFn } from "next/headers";
 import PageCreator, { FieldConfig } from "@/components/admin/Creator";
 import { auth } from "@/auth";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default async function NewPage() {
   const session = await auth()
@@ -73,7 +74,8 @@ export default async function NewPage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-medium">Create New Page</h2>
+      {/* <h2 className="text-xl font-medium">Create New Page</h2> */}
+      <BreadCrumbPage/>
       <PageCreator item={emptyItem} fields={fieldConfig} />
     </div>
   );

@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function page() {
   const actions = [
@@ -58,7 +59,8 @@ export default function page() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Quick Actions</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Quick Actions</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Shortcuts for your most frequent administrative tasks.</p>
         </div>
         <Button variant="secondary" className="bg-primary text-white hover:bg-secondary text-sm"><Zap className="mr-0 h-4 w-4" /> Customize Shortcuts</Button>

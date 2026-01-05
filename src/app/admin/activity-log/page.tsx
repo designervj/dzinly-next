@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const logs = [
   { id: 1, user: "Admin User", action: "Updated Product", target: "Modern Sofa v2", ip: "192.168.1.1", time: "2 mins ago", type: "update" },
@@ -20,7 +21,8 @@ export default function ActivityLogPage() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
        <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Activity Log</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Activity Log</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Audit trail of all actions performed within the system.</p>
         </div>
         <Button variant="outline"><Filter className="mr-2 h-4 w-4" /> Advanced Filters</Button>

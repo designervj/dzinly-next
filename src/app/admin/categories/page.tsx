@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage"
 
 type Category = { _id: string; name: string; slug: string }
 
@@ -19,7 +20,7 @@ export default function CategoriesAdmin() {
     const name = prompt("Category name")
     if (!name) return
     const slug = name.toLowerCase().replace(/\s+/g, "-")
-    await fetch("/api/categories", { method: "POST", headers: { "Content-Type":"application/json" }, body: JSON.stringify({ name, slug }) })
+    await fetch("/api/categories", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, slug }) })
     startTransition(() => { load() })
   }
 
@@ -28,7 +29,8 @@ export default function CategoriesAdmin() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-medium">Website Categories</h2>
+        {/* <h2 className="text-xl font-medium">Website Categories</h2> */}
+        <BreadCrumbPage />
         <div className="flex gap-2">
           <Button onClick={create}>New</Button>
           <Button onClick={() => startTransition(() => { load() })} disabled={isPending}>{isPending ? 'Loading...' : 'Reload'}</Button>

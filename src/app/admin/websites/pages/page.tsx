@@ -4,6 +4,7 @@ import { DataTableExt } from "@/components/admin/DataTableExt";
 import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";
 import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default async function PagesAdmin() {
   const session = await auth();
@@ -47,13 +48,13 @@ export default async function PagesAdmin() {
 
     return (
       <div>
+        <BreadCrumbPage/>
         <DataTableExt
           website={website}
           sysdomain={sysdomain}
-          title="Pages"
+          title=""
           data={items}
           createHref="/admin/websites/pages/new"
-           opentab={() => {}}
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },
@@ -61,6 +62,7 @@ export default async function PagesAdmin() {
             { key: 'createdAt', label: 'Created At' },
             { key: 'updatedAt', label: 'Updated At' },
           ]}
+
         />
       </div>
     );

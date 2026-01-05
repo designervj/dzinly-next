@@ -181,6 +181,7 @@ type NavItem = {
 type NavSection = {
   id: string;
   label: string;
+  href?: string;
   items: NavItem[];
   permission?: string;
 };
@@ -230,10 +231,11 @@ const currentWebsiteSections: NavSection[] = [
   {
     id: "websites",
     label: "Websites",
+    href: "/admin/websites",
     items: [
       {
         label: "Pages",
-        href: "/admin/websites/pages",
+        href: "/admin/websites",
         icon: FileCode2,
         permission: [
           "websites:update",
@@ -480,17 +482,17 @@ const currentWebsiteSections: NavSection[] = [
           "product:create",
         ],
       },
-      {
-        label: "Attributes",
-        href: "/admin/attributes-list",
-        icon: Component,
-        permission: [
-          "product:read",
-          "product:update",
-          "product:delete",
-          "product:create",
-        ],
-      },
+      // {
+      //   label: "Attributes",
+      //   href: "/admin/attributes-list",
+      //   icon: Component,
+      //   permission: [
+      //     "product:read",
+      //     "product:update",
+      //     "product:delete",
+      //     "product:create",
+      //   ],
+      // },
       {
         label: "Variants",
         href: "/admin/variants",

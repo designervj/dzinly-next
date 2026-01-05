@@ -1,6 +1,7 @@
 import Link from "next/link";
 import EntityCreateModal from "@/components/admin/EntityCreateModal";
 import { entityComponents, isValidEntityComponent } from "@/components/admin/EntityRegistry";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default async function EntityIndexPage(props: any) {
   const params = await props.params;
@@ -29,8 +30,9 @@ export default async function EntityIndexPage(props: any) {
     <div className="mx-auto max-w-full px-6">
       <div className="flex items-center justify-between mb-6">
         <EntityCreateModal entity={entity} />
+        
       </div>
-
+<BreadCrumbPage/>
       <EntityComponent />
     </div>
   );

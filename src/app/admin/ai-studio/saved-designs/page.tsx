@@ -7,6 +7,7 @@ import {
   Trash2,
   LayoutTemplate,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   const designs = [
@@ -34,7 +35,8 @@ export default function Page() {
     <div className="min-h-screen bg-gray-50 p-8">
       {/* PAGE TITLE */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Saved Designs</h1>
+        {/* <h1 className="text-3xl font-semibold">Saved Designs</h1> */}
+        <BreadCrumbPage />
         <p className="text-gray-500 mt-1">
           Manage your saved layouts and templates
         </p>

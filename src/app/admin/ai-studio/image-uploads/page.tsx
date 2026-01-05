@@ -1,5 +1,6 @@
 "use client";
 
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 import React from "react";
 
 export default function ImageUploadsPage() {
@@ -8,9 +9,10 @@ export default function ImageUploadsPage() {
 
       {/* Page Title */}
       <div>
-        <h1 className="text-2xl font-semibold text-gray-800">
+        {/* <h1 className="text-2xl font-semibold text-gray-800">
           Image Uploads
-        </h1>
+        </h1> */}
+        <BreadCrumbPage/>
         <p className="text-sm text-gray-500">
           Upload and manage your images for AI processing
         </p>

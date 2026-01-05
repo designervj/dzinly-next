@@ -7,16 +7,18 @@ import {
   Sparkles,
   Settings,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       {/* PAGE TITLE */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold flex items-center gap-2">
+        {/* <h1 className="text-3xl font-semibold flex items-center gap-2">
           <Brain className="text-purple-600" />
           AI Settings
-        </h1>
+        </h1> */}
+        <BreadCrumbPage/>
         <p className="text-gray-500 mt-1">
           Configure AI behavior and features
         </p>

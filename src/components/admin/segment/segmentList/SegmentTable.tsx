@@ -211,7 +211,7 @@ const SegmentTable = () => {
     <>
       <div>
         <DataTableExt
-          title="Segments"
+          title=""
           data={segments ?? []}
          onCreate={handleAdd}
           initialColumns={initialColumns}

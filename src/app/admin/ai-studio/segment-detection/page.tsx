@@ -7,13 +7,15 @@ import {
   Layers,
   Trash2,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       {/* PAGE HEADER */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Segment Detection</h1>
+        {/* <h1 className="text-3xl font-semibold">Segment Detection</h1> */}
+        <BreadCrumbPage />
         <p className="text-gray-500 mt-1">
           Upload image and detect segments automatically
         </p>
@@ -21,7 +23,7 @@ export default function Page() {
 
       {/* MAIN GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* LEFT – IMAGE UPLOAD */}
         <div className="bg-white rounded-xl border p-6">
           <h2 className="font-semibold mb-4 flex items-center gap-2">

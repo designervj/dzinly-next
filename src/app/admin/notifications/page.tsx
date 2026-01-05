@@ -22,6 +22,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 // Mock Notifications
 const initialNotifications = [
@@ -57,7 +58,8 @@ export default function page() {
     <div className="space-y-6 max-w-4xl mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Notifications</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Stay updated with important system events and alerts.</p>
         </div>
         <div className="flex gap-2">

@@ -229,7 +229,7 @@ const AttributeTable = () => {
   return (
     <div>
       <DataTableExt
-        title="Attributes"
+        title=""
         data={product_attribute ?? []}
             onCreate={handleAdd}
         // createHref="/admin/attribute/create"

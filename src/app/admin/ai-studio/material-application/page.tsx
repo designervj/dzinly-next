@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Plus, Trash2, Edit3 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   const applications = [
@@ -33,7 +34,8 @@ export default function Page() {
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-semibold">Material Applications</h1>
+          {/* <h1 className="text-3xl font-semibold">Material Applications</h1> */}
+          <BreadCrumbPage/>
           <p className="text-gray-500 mt-1">
             Manage how materials are used across different applications
           </p>

@@ -15,13 +15,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function page() {
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Analytics Overview</h1>
+               <BreadCrumbPage/>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Analytics Overview</h1> */}
           <p className="text-muted-foreground">Real-time insights into your platform's performance.</p>
         </div>
         <div className="flex gap-2">

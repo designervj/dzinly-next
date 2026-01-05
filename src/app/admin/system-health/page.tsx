@@ -5,13 +5,15 @@ import { Activity, Database, Server, Globe, CheckCircle2, AlertTriangle, Refresh
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function page() {
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">System Health</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">System Health</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Monitor service status, API latency, and database uptime.</p>
         </div>
         <Button variant="outline"><RefreshCw className="mr-2 h-4 w-4" /> Refresh Status</Button>

@@ -170,7 +170,7 @@ const BrandTable = () => {
     <>
       <div>
         <DataTableExt
-          title="Brands"
+          title=""
           data={product_brand ?? []}
           onCreate={handleAdd}
           initialColumns={initialColumns}

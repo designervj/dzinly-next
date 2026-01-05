@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Search, Tag, Grid, List, Plus, X } from "lucide-react";
 import { Media } from "@/modules/website/types";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function MediaGalleryCMS() {
   const [viewMode, setViewMode] = useState("grid");
@@ -76,7 +77,7 @@ export default function MediaGalleryCMS() {
     return Array.from(tags);
   }, [mediaItems]);
 
-  
+
 
   const filteredMedia = useMemo(() => {
     return mediaItems.filter((item) => {
@@ -152,7 +153,8 @@ export default function MediaGalleryCMS() {
         {/* --- HEADER --- */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Media Gallery</h1>
+            {/* <h1 className="text-3xl font-bold text-gray-900">Media Gallery</h1> */}
+            <BreadCrumbPage />
 
             <button
               onClick={() => setShowAddModal(true)}
@@ -202,22 +204,20 @@ export default function MediaGalleryCMS() {
             <div className="flex items-center gap-2 ml-auto">
               <button
                 onClick={() => setViewMode("grid")}
-                className={`p-2 rounded ${
-                  viewMode === "grid"
+                className={`p-2 rounded ${viewMode === "grid"
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-700"
-                }`}
+                  }`}
               >
                 <Grid size={20} />
               </button>
 
               <button
                 onClick={() => setViewMode("list")}
-                className={`p-2 rounded ${
-                  viewMode === "list"
+                className={`p-2 rounded ${viewMode === "list"
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-700"
-                }`}
+                  }`}
               >
                 <List size={20} />
               </button>
@@ -238,11 +238,10 @@ export default function MediaGalleryCMS() {
                 <button
                   key={tag}
                   onClick={() => toggleTag(tag)}
-                  className={`px-3 py-1 rounded-full text-sm transition ${
-                    selectedTags.includes(tag)
+                  className={`px-3 py-1 rounded-full text-sm transition ${selectedTags.includes(tag)
                       ? "bg-blue-600 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
+                    }`}
                 >
                   {tag}
                 </button>

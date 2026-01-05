@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { IoMdHome } from "react-icons/io";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 // --- Mock Data for Chart ---
 const chartData = [
@@ -64,37 +65,10 @@ export default function DashboardPage() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-6">
         <div>
-          <div className="flex items-center gap-3 ">
-            <h1 className="text-2xl font-bold tracking-tight border-r pe-4">Dashboard</h1>
-            <Breadcrumb>
-              <BreadcrumbList>
-                {/* Home */}
-                <BreadcrumbItem>
-                  <BreadcrumbLink >
-                    <Link href="/" className="inline-flex items-center gap-1">
-                      <IoMdHome className="h-5 w-5 text-muted-foreground" />
-                    </Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-
-                <span className="mx-0 select-none">-</span>
-
-                {/* Websites */}
-                <BreadcrumbItem>
-                  <BreadcrumbLink>
-                    <Link href="/websites" className="text-muted-foreground font-normal">Overview</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-
-                <span className="mx-0 select-none">-</span>
-
-                {/* Current */}
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
+       
+              <BreadCrumbPage/>
+       
+       
           <p className="text-muted-foreground mt-1">
             Overview of your store's performance and AI usage.
           </p>

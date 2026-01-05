@@ -32,6 +32,20 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+
+import { Home } from "lucide-react";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { IoMdHome } from "react-icons/io";
+
 // --- Mock Data for Chart ---
 const chartData = [
   { name: "Mon", total: 1200 },
@@ -46,11 +60,41 @@ const chartData = [
 export default function DashboardPage() {
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10 font-sans text-slate-900">
-      
+    
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <div className="flex items-center gap-3 ">
+             <h1 className="text-2xl font-bold tracking-tight border-r pe-4">Dashboard</h1>
+                <Breadcrumb>
+                    <BreadcrumbList className="text-sm text-muted-foreground">
+                      {/* Home */}
+                      <BreadcrumbItem>
+                        <BreadcrumbLink >
+                          <Link href="/" className="inline-flex items-center gap-1">
+                            <IoMdHome className="h-5 w-5 text-muted-foreground" />
+                          </Link>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+
+                      <span className="mx-0 select-none">-</span>
+
+                      {/* Websites */}
+                      <BreadcrumbItem>
+                        <BreadcrumbLink>
+                          <Link href="/websites" className="text-muted-foreground font-normal">Overview</Link>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+
+                      <span className="mx-0 select-none">-</span>
+
+                      {/* Current */}
+                      <BreadcrumbItem>
+                        <BreadcrumbPage className="text-muted-foreground font-normal">Dashboard</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>    
+           </div>
           <p className="text-muted-foreground mt-1">
             Overview of your store's performance and AI usage.
           </p>

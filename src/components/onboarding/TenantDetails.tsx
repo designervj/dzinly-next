@@ -53,11 +53,6 @@ export const TenantDetails = ({
     ) {
       setTenantData({ ...tenantData, allowedCategories: [] });
     }
-    else{
-      const structedClone = structuredClone(tenantData)
-      delete structedClone.allowedCategories
-      setTenantData(structedClone)
-    }
   }, [tenantData.tenantType]);
 
   const tenantTypes = [

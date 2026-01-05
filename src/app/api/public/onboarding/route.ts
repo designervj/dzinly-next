@@ -37,7 +37,7 @@ const schema = z.object({
   websiteData: z.object({
     name: z.string().min(2).max(80),
     serviceType: z.enum(["WEBSITE_ONLY", "ECOMMERCE"]).default("WEBSITE_ONLY"),
-    primaryDomains: z.array(z.string()),
+    primaryDomain: z.array(z.string()),
   }),
 });
 
@@ -49,6 +49,8 @@ export async function POST(req: Request) {
   try {
     const json = await req.json();
     const parsed = schema.safeParse(json);
+
+    console.log(json)
 
     if (!parsed.success) {
       return NextResponse.json(

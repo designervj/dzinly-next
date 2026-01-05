@@ -235,7 +235,7 @@ const currentWebsiteSections: NavSection[] = [
     items: [
       {
         label: "Pages",
-        href: "/admin/websites",
+        href: "/admin/pages",
         icon: FileCode2,
         permission: [
           "websites:update",

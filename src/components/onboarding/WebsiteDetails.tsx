@@ -266,13 +266,13 @@ export const WebsiteDetails = ({
           </div>
 
           {/* Added Domains List */}
-          {websiteData.primaryDomains.length > 0 && (
+          {websiteData.primaryDomain.length > 0 && (
             <div className="space-y-2">
               <p className="text-sm font-medium text-gray-700">
                 Added Domains:
               </p>
               <div className="space-y-2">
-                {websiteData.primaryDomains.map((domain, index) => (
+                {websiteData.primaryDomain.map((domain, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg"

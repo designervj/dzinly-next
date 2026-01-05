@@ -8,7 +8,6 @@ const page = () => {
     <div className="h-screen">
       <OnboardingTenants/>
       <GetAllRolePermission/>
-      
     </div>
   )
 }

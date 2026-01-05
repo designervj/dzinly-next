@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Upload, Palette, Plus, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TenantDetails } from "./TenantDetails";
 import { UserDetails } from "./UserDetails";
 import { WebsiteDetails } from "./WebsiteDetails";
@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 export interface websiteData {
   name: string;
   serviceType: string;
-  primaryDomains: string[];
+  primaryDomain: string[];
 }
 
 export interface tenantData {
@@ -28,6 +28,7 @@ export interface tenantData {
     typography: string;
     logo: string | null;
   };
+  allowedCategories?: string[];
 }
 
 export interface userData {
@@ -35,19 +36,18 @@ export interface userData {
   email: string;
   password: string;
   role: string;
-  permissions?:string[]
+  permissions?: string[];
 }
 
 export interface currentDomain {
-  type:string,
-  value: string
+  type: string;
+  value: string;
 }
-
-
 
 export default function OnboardingTenants() {
   const [currentStep, setCurrentStep] = useState(1);
-    const router= useRouter()
+  const router = useRouter();
+  const [availableCategories, setAvailableCategories] = useState([]);
   // Form state
   const [tenantData, setTenantData] = useState<tenantData>({
     name: "",
@@ -64,18 +64,28 @@ export default function OnboardingTenants() {
     },
   });
 
+  useEffect(() => {
+    if (tenantData.tenantType == "manufacturer") {
+      (async () => {
+        const req = await fetch("/api/admin/category");
+        const res = await req.json();
+        setAvailableCategories(res.items);
+      })();
+    }
+  }, [tenantData.tenantType]);
+
   const [userData, setUserData] = useState<userData>({
     name: "",
     email: "",
     password: "",
     role: "owner",
-    permissions:[]
+    permissions: [],
   });
 
   const [websiteData, setWebsiteData] = useState<websiteData>({
     name: "",
     serviceType: "WEBSITE_ONLY",
-    primaryDomains: [],
+    primaryDomain: [],
   });
 
   const [currentDomain, setCurrentDomain] = useState<currentDomain>({
@@ -99,10 +109,10 @@ export default function OnboardingTenants() {
         ? `${currentDomain.value}.mahimavalenza.in`
         : currentDomain.value;
 
-    if (!websiteData.primaryDomains.includes(domainValue)) {
+    if (!websiteData.primaryDomain.includes(domainValue)) {
       setWebsiteData({
         ...websiteData,
-        primaryDomains: [...websiteData?.primaryDomains, domainValue],
+        primaryDomain: [...websiteData?.primaryDomain, domainValue],
       });
       setCurrentDomain({ type: "subdomain", value: "" });
     }
@@ -111,12 +121,13 @@ export default function OnboardingTenants() {
   const removePrimaryDomain = (domain: string) => {
     setWebsiteData({
       ...websiteData,
-      primaryDomains: websiteData.primaryDomains.filter((d) => d !== domain),
+      primaryDomain: websiteData.primaryDomain.filter((d) => d !== domain),
     });
   };
 
   const handleSave = async () => {
     try {
+      console.log(userData, tenantData, websiteData);
       const res = await fetch("/api/public/onboarding", {
         method: "POST",
         body: JSON.stringify({
@@ -144,7 +155,7 @@ export default function OnboardingTenants() {
         setWebsiteData({
           name: "",
           serviceType: "WEBSITE_ONLY",
-          primaryDomains: [],
+          primaryDomain: [],
         });
         setUserData({
           name: "",
@@ -154,7 +165,7 @@ export default function OnboardingTenants() {
         });
         setCurrentStep(1);
         toast.success(`SuccessFully Onboarded ${result.userid}`);
-        router.push("/")
+        router.push("/");
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -192,6 +203,7 @@ export default function OnboardingTenants() {
           <TenantDetails
             tenantData={tenantData}
             setTenantData={setTenantData}
+            availableCategories={availableCategories}
           />
         );
 

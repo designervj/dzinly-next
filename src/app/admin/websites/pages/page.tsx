@@ -9,6 +9,7 @@ import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 export default async function PagesAdmin() {
   const session = await auth();
 
+
   if (!session?.user?.tenantId) {
     return (
       <div className="text-sm text-red-600">Unauthorized: Please sign in</div>

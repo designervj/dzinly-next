@@ -107,6 +107,8 @@ export function CreateProduct() {
     [key: number]: string;
   }>({});
 
+  console.log(images);
+
   // useEffect(() => {
   //   (async () => {
   //     const req = await fetch("/api/admin/category");
@@ -336,6 +338,14 @@ export function CreateProduct() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
   const handleSaveProduct = async () => {
     const finalObj = {
       productdata: {
@@ -344,6 +354,18 @@ export function CreateProduct() {
       },
       variantData: variantConfigs,
     };
+
+    if (images.length > 0) {
+      const image: string[] = [];
+
+      const mapped = images.map((d)=>{
+        return fileToBase64(d.file)
+      })
+
+      const finalImages = await Promise.all(mapped)
+
+      // finalObj.productdata.images = finalImages
+    }
 
     try {
       const req = await fetch("/api/products", {

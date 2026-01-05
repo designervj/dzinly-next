@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getDatabase } from "@/lib/db/mongodb";
 import bcrypt from "bcryptjs";
 import { permission } from "process";
+import { demopages } from "@/lib/utils";
 
 const schema = z.object({
   tenantData: z.object({
@@ -22,14 +23,15 @@ const schema = z.object({
       logo: z.string().nullish(),
       typography: z.string().min(3).max(80),
     }),
+    allowedCategories: z.optional(z.array(z.string())),
   }),
   userData: z.object({
     email: z.string().email(),
     password: z.string().min(6).max(100),
     name: z.string().min(3).max(80),
     role: z.string().min(3).max(80),
-    permissions:z.array(z.string()),
-    status: z.string().min(3).max(80),
+    permissions: z.array(z.string()),
+    status: z.optional(z.string().min(3).max(80)),
   }),
 
   websiteData: z.object({
@@ -61,6 +63,7 @@ export async function POST(req: Request) {
     const tenantColl = db.collection("tenants");
     const userColl = db.collection("users");
     const websiteColl = db.collection("websites");
+    const pagesColl = db.collection("pages");
 
     // 1️⃣ Insert tenant
     const tenantRes = await tenantColl.insertOne({
@@ -75,7 +78,7 @@ export async function POST(req: Request) {
     const userRes = await userColl.insertOne({
       ...userData,
       passwordHash: passwordHash,
-      status:"active",
+      status: "active",
       tenantId,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -90,6 +93,20 @@ export async function POST(req: Request) {
       updatedAt: new Date(),
     });
     websiteId = websiteRes.insertedId;
+
+    const finalPages = demopages.map((d) => {
+      return {
+        ...d,
+        websiteId: websiteId,
+        tenantId: tenantId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    });
+
+    const pagesres = await pagesColl.insertMany(finalPages);
+
+    console.log(pagesres.insertedIds)
 
     return NextResponse.json({
       ok: true,

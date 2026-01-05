@@ -30,6 +30,8 @@ export async function GET(req: NextRequest, ctx: any) {
   const params = (await ctx?.params) ?? {};
   const { entity } = params ?? {};
 
+  console.log(params)
+
   try {
     if (!isValidEntity(entity)) {
       return NextResponse.json(

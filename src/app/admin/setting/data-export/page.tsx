@@ -1,6 +1,14 @@
 import React from "react";
 import { Download, FileText } from "lucide-react";
-
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 export default function DataExportPage() {
   const exports = [
     { id: 1, name: "Users Data", type: "CSV", date: "30 Dec 2025" },
@@ -10,29 +18,47 @@ export default function DataExportPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Data Export</h1>
+      {/* <h1 className="text-2xl font-semibold">Data Export 1</h1> */}
+       <BreadCrumbPage />
 
       {/* Export Options */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
         <h2 className="text-lg font-medium">Export Data</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 w-full">
+          {/* <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 w-full">
             <option>Select Data Type</option>
             <option>Users</option>
             <option>Orders</option>
             <option>Transactions</option>
-          </select>
+          </select> */}
 
-          <select className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 w-full">
-            <option>Select Format</option>
-            <option>CSV</option>
-            <option>Excel</option>
-            <option>JSON</option>
-          </select>
+            <Select defaultValue="all">
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Data Type" />
+                </SelectTrigger>
 
-          <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:bg-blue-700">
+                <SelectContent>
+                  <SelectItem value="all">Select Data Type</SelectItem>
+                  <SelectItem value="admin">Users</SelectItem>
+                  <SelectItem value="editor">Orders</SelectItem>
+                  <SelectItem value="viewer">Transactions</SelectItem>
+                </SelectContent>
+              </Select>
+
+          <Select defaultValue="csv">
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select format" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="csv">CSV</SelectItem>
+              <SelectItem value="excel">Excel</SelectItem>
+              <SelectItem value="json">JSON</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button >
             <Download size={18} /> Export
-          </button>
+          </Button>
         </div>
       </div>
 

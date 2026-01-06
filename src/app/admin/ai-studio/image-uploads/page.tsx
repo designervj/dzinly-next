@@ -5,10 +5,10 @@ import React from "react";
 
 export default function ImageUploadsPage() {
   return (
-    <div className="p-6 space-y-6 bg-[#f8f9fb] min-h-screen">
+    <div className=" space-y-6  min-h-screen">
 
       {/* Page Title */}
-      <div>
+      <div className="mb-6">
         {/* <h1 className="text-2xl font-semibold text-gray-800">
           Image Uploads
         </h1> */}

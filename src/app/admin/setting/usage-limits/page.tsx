@@ -1,10 +1,12 @@
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 export default function UsageLimitsPage() {
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Usage & Limits</h1>
-
+      {/* <h1 className="text-2xl font-semibold">Usage & Limits 1</h1> */}
+      <BreadCrumbPage />
       {/* API Usage Section */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
         <h2 className="text-lg font-medium">API Usage</h2>
@@ -40,9 +42,9 @@ export default function UsageLimitsPage() {
 
       {/* Customize Limits Button */}
       <div className="flex justify-end">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">
+        <Button>
           Upgrade Limits
-        </button>
+        </Button>
       </div>
     </div>
   );

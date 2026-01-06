@@ -104,7 +104,6 @@ export default function Page() {
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="success">Success</SelectItem>
             <SelectItem value="warning">Warning</SelectItem>
-
           </SelectContent>
         </Select>
 

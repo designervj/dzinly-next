@@ -2,6 +2,8 @@
 
 import React from "react";
 import { Globe, Plus, Trash2 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const dnsRecords = [
@@ -25,7 +27,7 @@ export default function Page() {
     <div className="min-h-screen">
       {/* PAGE HEADER */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Domain & DNS</h1>
+        <BreadCrumbPage />
         <p className="text-gray-500 mt-1">
           Manage your domain and DNS records
         </p>
@@ -62,10 +64,10 @@ export default function Page() {
       <div className="bg-white rounded-xl border shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold tracking-tight">DNS Records</h2>
-          <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+          <Button >
             <Plus size={18} />
             Add Record
-          </button>
+          </Button>
         </div>
 
         <div className="overflow-x-auto">

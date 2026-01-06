@@ -8,6 +8,8 @@ import {
   Shield,
   Mail,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const teams = [
@@ -36,16 +38,16 @@ export default function Page() {
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-semibold">Teams</h1>
+        <BreadCrumbPage/>
           <p className="text-gray-500 mt-1">
             Manage team members and their roles
           </p>
         </div>
 
-        <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+        <Button >
           <Plus size={18} />
           Add Member
-        </button>
+        </Button>
       </div>
 
       {/* TEAM LIST */}

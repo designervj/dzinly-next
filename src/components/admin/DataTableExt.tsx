@@ -36,6 +36,7 @@ import {
   Trash2,
   Edit2,
 } from "lucide-react";
+import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
 
 export type ColumnConfig = {
   key: string;
@@ -374,10 +375,11 @@ export function DataTableExt({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="text-2xl font-bold tracking-tight">{title} </div>
-        <div className="flex items-center gap-2">
-           <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between mb-5">
+        {/* <div className="text-2xl font-bold tracking-tight">{title} </div> */}
+        {/* <div className="flex items-center gap-2"> */}
+           <div className="flex items-center gap-2 justify-between w-full">
+               <BreadCrumbPage/>
           {onCreate ? (
             <Button size="sm" className="py-2 rounded-sm px-4 py-2" onClick={onCreate}>Create New</Button>
           ) : createHref ? (
@@ -386,7 +388,7 @@ export function DataTableExt({
             </Link>
           ) : null}
         </div>
-        </div>
+        {/* </div> */}
       </div>
 
       <div className="flex items-center gap-2">

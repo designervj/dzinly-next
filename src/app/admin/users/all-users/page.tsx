@@ -7,7 +7,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { IUser } from "@/models/user";
 import { Button } from "@/components/ui/button";
-
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 export default function Page() {
   const users = [
     {
@@ -46,8 +53,8 @@ export default function Page() {
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-semibold">All Users</h1>
-          <p className="text-gray-500 mt-1">
+        <BreadCrumbPage/>
+           <p className="text-gray-500 mt-1">
             Manage users, roles and permissions
           </p>
         </div>
@@ -69,12 +76,18 @@ export default function Page() {
           />
         </div>
 
-        <select className="border rounded-lg px-4 py-2">
-          <option>All Roles</option>
-          <option>Admin</option>
-          <option>Editor</option>
-          <option>Viewer</option>
-        </select>
+        <Select defaultValue="all">
+      <SelectTrigger className="w-[220px]">
+        <SelectValue placeholder="Select role" />
+      </SelectTrigger>
+
+      <SelectContent>
+        <SelectItem value="all">All Roles</SelectItem>
+        <SelectItem value="admin">Admin</SelectItem>
+        <SelectItem value="editor">Editor</SelectItem>
+        <SelectItem value="viewer">Viewer</SelectItem>
+      </SelectContent>
+    </Select>
       </div>
 
       {/* USERS TABLE */}

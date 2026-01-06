@@ -387,7 +387,7 @@ export function CreateProduct() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen">
       <div className="w-full mb-4 flex flex-row-reverse">
         <Button
           onClick={handleSaveProduct}

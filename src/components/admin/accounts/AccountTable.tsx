@@ -186,8 +186,9 @@ const AccountTable = () => {
   return (
     <>
       <div>
+        
         <DataTableExt
-          title="Accounts"
+          title=""
           data={allAccounts ?? []}
           onCreate={handleAdd}
           initialColumns={initialColumns}

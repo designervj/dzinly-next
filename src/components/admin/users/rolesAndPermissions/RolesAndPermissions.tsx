@@ -1,5 +1,6 @@
 "use client";
 
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 import { Button } from "@/components/ui/button";
 import { addRoles, updateRolePermissions } from "@/hooks/slices/RolePermission/rolePermissionSlice";
 import { AppDispatch, RootState } from "@/store/store";
@@ -199,14 +200,13 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   };
   return (
     <>
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen">
         <div className="max-w-7xl mx-auto">
         
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                Roles & Permissions
-              </h1>
+
+               <BreadCrumbPage/>
               <p className="text-sm text-gray-500 mt-1">
                 Review your members roles and allocate permissions
               </p>
@@ -317,7 +317,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Permissions
+                        Permissions 
                       </label>
                       <div className="space-y-4">
                         {Object.entries(selectedCategorized).map(
@@ -378,7 +378,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Permissions
+                        Permissions 
                       </label>
                       <div className="space-y-4">
                         {Object.entries(categorizedPermissions).map(

@@ -8,6 +8,14 @@ import {
   Trash2,
   Filter,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Page() {
   const logs = [
@@ -41,7 +49,8 @@ export default function Page() {
     <div className="min-h-screen">
       {/* HEADER */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Activity Logs</h1>
+        {/* <h1 className="text-3xl font-semibold">Activity Logs</h1> */}
+        <BreadCrumbPage/>
         <p className="text-gray-500 mt-1">
           Track all user and system activities
         </p>
@@ -54,13 +63,52 @@ export default function Page() {
           <span className="text-sm font-medium">Filters</span>
         </div>
 
-        <select className="border rounded-lg px-3 py-2 text-sm">
+        {/* <select className="border rounded-lg px-3 py-2 text-sm">
           <option>All Users</option>
           <option>Admin</option>
           <option>Editor</option>
-        </select>
+        </select> */}
 
-        <select className="border rounded-lg px-3 py-2 text-sm">
+         <Select defaultValue="all">
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Select role" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="all">All Roles</SelectItem>
+            <SelectItem value="admin">Admin</SelectItem>
+            <SelectItem value="editor">Editor</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select defaultValue="all">
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Select module" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="all">All Modules</SelectItem>
+            <SelectItem value="admin">Pages</SelectItem>
+            <SelectItem value="editor">Media</SelectItem>
+            <SelectItem value="settings">Settings</SelectItem>
+
+          </SelectContent>
+        </Select>
+
+        <Select defaultValue="all">
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Select module" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="success">Success</SelectItem>
+            <SelectItem value="warning">Warning</SelectItem>
+
+          </SelectContent>
+        </Select>
+
+        {/* <select className="border rounded-lg px-3 py-2 text-sm">
           <option>All Modules</option>
           <option>Pages</option>
           <option>Media</option>
@@ -71,7 +119,7 @@ export default function Page() {
           <option>All Status</option>
           <option>Success</option>
           <option>Warning</option>
-        </select>
+        </select> */}
       </div>
 
       {/* LOGS TABLE */}

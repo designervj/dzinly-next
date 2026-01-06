@@ -1,6 +1,6 @@
 
 "use client";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 
 export default function WebsitesExtTable({ items, currentId }: { items: any[]; currentId: string | null }) {
   const rows = (items || []).map((w) => ({
@@ -12,32 +12,32 @@ export default function WebsitesExtTable({ items, currentId }: { items: any[]; c
     <DataTableExt
       title="Websites"
       data={rows}
-       opentab={() => {}}
+      opentab={() => { }}
       initialColumns={[
-        { 
-          key: "name", 
-          label: "Name", 
-          render: (_v, row) => (<a className="underline" href="#">{row.name}</a>) 
+        {
+          key: "name",
+          label: "Name",
+          render: (_v, row) => (<a className="underline" href="#">{row.name}</a>)
         },
-        { 
-          key: "systemSubdomain", 
-          label: "System Subdomain" 
+        {
+          key: "systemSubdomain",
+          label: "System Subdomain"
         },
-        { 
-          key: "primaryDomain", 
+        {
+          key: "primaryDomain",
           label: "Primary Domains",
           render: (value, row) => {
             // Handle both array and single value for backward compatibility
             const domains = Array.isArray(value) ? value : (value ? [value] : []);
-            
+
             if (domains.length === 0) {
               return <span className="text-gray-400">-</span>;
             }
-            
+
             return (
               <div className="flex flex-wrap gap-1">
                 {domains.map((domain: string, index: number) => (
-                  <span 
+                  <span
                     key={index}
                     className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs"
                   >
@@ -48,13 +48,13 @@ export default function WebsitesExtTable({ items, currentId }: { items: any[]; c
             );
           }
         },
-        { 
-          key: "serviceType", 
-          label: "Service" 
+        {
+          key: "serviceType",
+          label: "Service"
         },
-        { 
-          key: "isCurrent", 
-          label: "Current" 
+        {
+          key: "isCurrent",
+          label: "Current"
         },
       ]}
     />

@@ -18,7 +18,7 @@ export class PageService {
     const collection = await this.getCollection();
     const tid =
       typeof tenantId === "string" ? new ObjectId(tenantId) : tenantId;
-    return collection.findOne({ tenantId: tid, slug, status: "published" });
+    return collection.findOne({ tenantId: tid, slug });
   }
 
   async getBySlugForWebsite(
@@ -139,27 +139,25 @@ export class PageService {
 
   async updatePage(
     id: string | ObjectId,
-    tenantId: string | ObjectId,
-    // updates: Partial<Page>
-    updates: string
+    // tenantId: string | ObjectId,
+    updates: Partial<Page>
   ): Promise<boolean> {
     const collection = await this.getCollection();
     const oid = typeof id === "string" ? new ObjectId(id) : id;
-    const tid =
-      typeof tenantId === "string" ? new ObjectId(tenantId) : tenantId;
-    // const result = await collection.updateOne(
-    //   { _id: oid, tenantId: tid },
-    //   {
-    //     $set: {
-    //       ...updates,
-    //       updatedAt: new Date(),
-    //     },
-    //   }
-    // );
+    // const tid =
+    //   typeof tenantId === "string" ? new ObjectId(tenantId) : tenantId;
+
+    // Remove _id and other fields that shouldn't be updated
+    const { _id, tenantId: _, createdAt, ...updateFields } = updates as any;
 
     const result = await collection.updateOne(
-      { _id: oid, tenantId: tid },
-      { $set: { content: updates } }
+      { _id: oid },
+      {
+        $set: {
+          ...updateFields,
+          updatedAt: new Date(),
+        },
+      }
     );
     return result.modifiedCount > 0;
   }

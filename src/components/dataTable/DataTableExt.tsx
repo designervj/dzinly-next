@@ -48,7 +48,7 @@ export type ColumnConfig = {
 export type DataTableExtProps = {
   title: string;
   data: any[];
-   onCreate?: () => void;
+  onCreate?: () => void;
   createHref?: string;
   initialColumns?: ColumnConfig[];
   onDelete?: (row: any) => void;
@@ -102,7 +102,7 @@ export function DataTableExt({
   title,
   data,
   createHref,
-    onCreate,
+  onCreate,
   initialColumns,
   onDelete,
   onView,
@@ -323,13 +323,9 @@ export function DataTableExt({
     setPage(1);
   }
 
-  function handleEdit(e: React.MouseEvent, row: any) {
+  const handleEdit = (e: React.MouseEvent, row: any) => {
     e.stopPropagation();
-    if (onView) {
-      onView(row);
-    } else {
-      router.push(`${lastSegment}/${row._id}`);
-    }
+    (onView ?? ((row: any) => router.push(`${lastSegment}/${row._id}`)))(row);
   }
 
   function handleDelete(e: React.MouseEvent, row: any) {

@@ -4,41 +4,41 @@ import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { DataTableExt } from '../admin/DataTableExt';
+import { DataTableExt } from '../dataTable/DataTableExt';
 import { ProjectModel } from './projectModel';
 import { deleteProject } from '@/hooks/slices/project/projectThunks';
 import { formatDateDisplay } from './FunctionDisplayDate';
 import GridHome from './gridProjects/GridHome';
 
 const ProjectTable = () => {
-    // Helper to format date as 'today', 'yesterday', or '12 Dec 2025'
-   
+  // Helper to format date as 'today', 'yesterday', or '12 Dec 2025'
+
   const dispatch = useDispatch<AppDispatch>();
   const { toast } = useToast();
   const router = useRouter();
 
-    const {projects}= useSelector((state:RootState)=>state.projects)
-    const listPojects=useMemo(()=>{
-        if(projects && projects.length>0)
-            return projects
-    },[projects])
+  const { projects } = useSelector((state: RootState) => state.projects)
+  const listPojects = useMemo(() => {
+    if (projects && projects.length > 0)
+      return projects
+  }, [projects])
 
-    const handleAdd=()=>{
-        router.push("/admin/projects/create")
-    }
+  const handleAdd = () => {
+    router.push("/admin/projects/create")
+  }
 
-    const handleDelete=async(data:ProjectModel)=>{
-      if(data && data._id ){
-     const response= await  dispatch(deleteProject(typeof data._id === 'string' ? data._id : data._id.toString())).unwrap()
-       
-      if(response){
+  const handleDelete = async (data: ProjectModel) => {
+    if (data && data._id) {
+      const response = await dispatch(deleteProject(typeof data._id === 'string' ? data._id : data._id.toString())).unwrap()
+
+      if (response) {
         alert("project delete")
       }
     }
   }
-    const handleView=(data:ProjectModel)=>{
-        
-    }
+  const handleView = (data: ProjectModel) => {
+
+  }
 
   // Define columns for DataTableExt based on ProductTable style
   const initialColumns = [
@@ -78,7 +78,7 @@ const ProjectTable = () => {
   return (
     <>
       <div>
-            {/* <DataTableExt
+        {/* <DataTableExt
               title=""
               data={listPojects ?? []}
               onCreate={handleAdd}
@@ -86,8 +86,8 @@ const ProjectTable = () => {
               onDelete={(row) => handleDelete(row)}
               onView={(row) => handleView(row)}
             /> */}
-           < GridHome/>
-          </div>
+        < GridHome />
+      </div>
     </>
   )
 }

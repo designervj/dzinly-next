@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from '@/store/store'
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { DataTableExt } from '../../DataTableExt'
+import { DataTableExt } from '../../../dataTable/DataTableExt'
 
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -44,14 +44,15 @@ const WebsitePageTable = () => {
     if (!ok) return;
 
     dispatch(deleteWebsitePage(id));
-  
+
   };
 
   const handleView = (row: WebsitePageModel) => {
-    const id = row?._id ;
+    const id = row?._id;
+    console.log("id. website --", id)
     if (!id) return;
     dispatch(updateCurrentPage(row))
-    router.push(`/admin/pages/${id}`);
+    router.push(`/admin/websites/pages/${id}`);
   };
 
   const initialColumns = [
@@ -72,9 +73,9 @@ const WebsitePageTable = () => {
     const localsub = typeof currentSubdomain === 'string' ? currentSubdomain.split('.')[0] : '';
     const isLocalHost = window.location.hostname.includes("localhost");
     if (isLocalHost) {
-      
+
       const url = `http://${localsub}.localhost:55803/${row.slug}`;
-   
+
       window.open(url, '_blank');
     } else {
       const url = `https://${currentSubdomain}/${row.slug}`;
@@ -88,7 +89,7 @@ const WebsitePageTable = () => {
         title="Pages"
         data={filteredPages}
         createHref="/admin/pages/new"
-        initialColumns={initialColumns} 
+        initialColumns={initialColumns}
         onDelete={handleDelete}
         onView={handleView}
         opentab={handleViewTab}

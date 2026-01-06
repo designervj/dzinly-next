@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from '@/store/store';
 import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { DataTableExt } from '@/components/admin/DataTableExt';
+import { DataTableExt } from '@/components/dataTable/DataTableExt';
 import { addAttribute, removeAttribute } from '@/hooks/slices/attribute/AttributeSlice';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -19,23 +19,23 @@ const AttributeTable = () => {
   const { listAttribute, isAttributeLoading } = useSelector(
     (state: RootState) => state.attribute
   );
-    const { listCategory,  } = useSelector(
+  const { listCategory, } = useSelector(
     (state: RootState) => state.category
   );
-      const { user } = useSelector(
+  const { user } = useSelector(
     (state: RootState) => state.user
   );
-   const { currentWebsite } = useSelector((state: RootState) => state.websites);
+  const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  
+
   // Edit modal state
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingAttribute, setEditingAttribute] = useState<MaterialAttributes | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
- const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-    const [newAttribute, setNewAttribute] = useState<MaterialAttributes | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newAttribute, setNewAttribute] = useState<MaterialAttributes | null>(null);
 
 
 
@@ -58,16 +58,16 @@ const AttributeTable = () => {
     return [];
   }, [listCategory, listAttribute]);
 
-   
-   
 
 
-    const handleAdd = () => {
-       if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:create")){
-              toast.error("You don't have permission to create attribute");
-              return;
-            }
-            router.push(`/admin/attribute/create`);
+
+
+  const handleAdd = () => {
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("attribute:create")) {
+      toast.error("You don't have permission to create attribute");
+      return;
+    }
+    router.push(`/admin/attribute/create`);
     // setNewAttribute({ name: '', category_id: null, type: '', possible_values: [], data_type: undefined ,websiteId:currentWebsite?._id,tenantId:user?.tenantId, userId:user?.id as string | undefined});
     // setFieldErrors({});
     // setIsAddDialogOpen(true);
@@ -76,7 +76,7 @@ const AttributeTable = () => {
 
 
   const handleDelete = async (row: any) => {
-    if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:delete")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("attribute:delete")) {
       toast.error("You don't have permission to delete attribute");
       return;
     }
@@ -114,7 +114,7 @@ const AttributeTable = () => {
   };
 
   const handleSaveEdit = async () => {
-    if(user?.role !== "superadmin" && !user?.permissions?.includes("attribute:update")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("attribute:update")) {
       toast.error("You don't have permission to update attribute");
       return;
     }
@@ -148,7 +148,7 @@ const AttributeTable = () => {
       setIsEditDialogOpen(false);
       setEditingAttribute(null);
       setFieldErrors({});
-      
+
       // Reload the data
       window.location.reload();
     } catch (err: any) {
@@ -159,8 +159,8 @@ const AttributeTable = () => {
     }
   };
 
-    const handleSaveAdd = async () => {
-      console.log(" new Attribute ", newAttribute)
+  const handleSaveAdd = async () => {
+    console.log(" new Attribute ", newAttribute)
     if (!newAttribute) return;
     setFieldErrors({});
     const errors: Record<string, string> = {};
@@ -182,7 +182,7 @@ const AttributeTable = () => {
         body: JSON.stringify(newAttribute),
       });
       const data = await res.json().catch(() => null);
- if (!res.ok) {
+      if (!res.ok) {
         const msg =
           data?.error ??
           data?.message ??
@@ -190,11 +190,11 @@ const AttributeTable = () => {
           "Failed to create";
         throw new Error(msg);
       }
-         const created = data?.item ?? data;
+      const created = data?.item ?? data;
       toast.success(`Attribute ${newAttribute.name} created successfully`);
       setIsAddDialogOpen(false);
       setNewAttribute(null);
-       dispatch(addAttribute(created));
+      dispatch(addAttribute(created));
       // window.location.reload();
     } catch (err: any) {
       console.error('Failed to create attribute', err);
@@ -209,21 +209,21 @@ const AttributeTable = () => {
     { key: '_id', label: 'ID', hidden: true },
     { key: 'id', label: 'ID', hidden: true },
     { key: 'name', label: 'Name' },
-    { 
-      key: 'category', 
+    {
+      key: 'category',
       label: 'Category',
       render: (value: any, row: any) => value?.name || '-'
     },
-   {
-             key: 'createdAt',
-             label: 'Created At',
-             render: (value: any) => formatDateDisplay(value),
-           },
-           {
-             key: 'updatedAt',
-             label: 'Updated At',
-             render: (value: any) => formatDateDisplay(value),
-           },
+    {
+      key: 'createdAt',
+      label: 'Created At',
+      render: (value: any) => formatDateDisplay(value),
+    },
+    {
+      key: 'updatedAt',
+      label: 'Updated At',
+      render: (value: any) => formatDateDisplay(value),
+    },
   ];
 
   return (
@@ -231,14 +231,14 @@ const AttributeTable = () => {
       <DataTableExt
         title=""
         data={product_attribute ?? []}
-            onCreate={handleAdd}
+        onCreate={handleAdd}
         // createHref="/admin/attribute/create"
         initialColumns={initialColumns}
         onDelete={(row) => handleDelete(row)}
         onView={(row) => handleView(row)}
       />
 
-        {/* Add Attribute Dialog */}
+      {/* Add Attribute Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -288,7 +288,7 @@ const AttributeTable = () => {
           <DialogHeader>
             <DialogTitle>Edit Attribute</DialogTitle>
           </DialogHeader>
-          
+
           {editingAttribute && (
             <div className="space-y-4 py-4">
               <AttributeForm
@@ -305,7 +305,7 @@ const AttributeTable = () => {
               />
             </div>
           )}
-          
+
           <DialogFooter>
             <Button
               variant="outline"

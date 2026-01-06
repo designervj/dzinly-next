@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";
 import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";

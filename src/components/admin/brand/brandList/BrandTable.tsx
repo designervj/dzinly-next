@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from 'react'
-import { DataTableExt } from '../../DataTableExt';
+import { DataTableExt } from '../../../dataTable/DataTableExt';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
@@ -17,35 +17,35 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
 const BrandTable = () => {
-    const { listBrand, isBrandLoading } = useSelector(
+  const { listBrand, isBrandLoading } = useSelector(
     (state: RootState) => state.brand
   );
-   const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
- const { currentWebsite } = useSelector((state: RootState) => state.websites);
-  
+  const { currentWebsite } = useSelector((state: RootState) => state.websites);
+
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingBrand, setEditingBrand] = useState<MaterialBrandModel | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
-  
+
   const product_brand = useMemo(() => {
-      if (
-        currentWebsite &&
-        currentWebsite._id &&
-        listBrand &&
-        listBrand.length > 0
-      ) {
-        const list = listBrand.filter(
-          (item) => item.websiteId === currentWebsite._id
-        );
-        
-        return list.length > 0 ? list : listBrand;
-      }
-      return [];
-    }, [currentWebsite, listBrand]);
+    if (
+      currentWebsite &&
+      currentWebsite._id &&
+      listBrand &&
+      listBrand.length > 0
+    ) {
+      const list = listBrand.filter(
+        (item) => item.websiteId === currentWebsite._id
+      );
+
+      return list.length > 0 ? list : listBrand;
+    }
+    return [];
+  }, [currentWebsite, listBrand]);
 
   const handleDelete = async (row: any) => {
     const id = row?._id ?? row?.id;
@@ -65,7 +65,7 @@ const BrandTable = () => {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
-     // dispatch(removeCategory(id));
+      // dispatch(removeCategory(id));
       toast.success(`Brand ${row?.name ?? id} removed`);
     } catch (err: any) {
       console.error('Failed to delete category', err);
@@ -76,7 +76,7 @@ const BrandTable = () => {
   const handleEdit = (row: any) => {
     const id = row?._id ?? row?.id;
     if (!id) return;
-    
+
     // Set the brand data for editing
     setEditingBrand(row);
     setFieldErrors({});
@@ -85,41 +85,41 @@ const BrandTable = () => {
 
   const handleSaveEdit = async () => {
     if (!editingBrand) return;
-    
+
     setFieldErrors({});
     const errors: Record<string, string> = {};
-    
+
     if (!editingBrand.name?.trim()) {
       errors.name = 'Name is required';
     }
-    
+
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
     }
-    
+
     setIsSaving(true);
     try {
       const id = (editingBrand as any)._id ?? editingBrand.id;
-      
+
       // Remove _id from the payload to avoid immutable field error
       const { _id, ...updateData } = editingBrand as any;
-      
+
       const res = await fetch(`/api/admin/brand`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...updateData, id }),
       });
-      
+
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
-      
+
       toast.success(`Brand ${editingBrand.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingBrand(null);
-      
+
       // Refresh the data
       window.location.reload();
     } catch (err: any) {
@@ -134,12 +134,12 @@ const BrandTable = () => {
     // Handle logo file upload if needed
   };
 
-   const handleAdd = () => {
-      if(user?.role !== "superadmin" && !user?.permissions?.includes("product:create")){
-        toast.error("You don't have permission to create category");
-        return;
-      }
-      router.push(`/admin/brand/create`);
+  const handleAdd = () => {
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("product:create")) {
+      toast.error("You don't have permission to create category");
+      return;
+    }
+    router.push(`/admin/brand/create`);
     // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
     // setFieldErrors({});
     // setIsAddDialogOpen(true);
@@ -150,11 +150,12 @@ const BrandTable = () => {
     { key: 'name', label: 'Name' },
     { key: 'url', label: 'URL' },
     { key: 'description', label: 'Description' },
-    { key: 'logo', label: 'Logo' ,
-      render:(value:any)=>value?(
-        <img 
-          src={value} 
-          alt="Product" 
+    {
+      key: 'logo', label: 'Logo',
+      render: (value: any) => value ? (
+        <img
+          src={value}
+          alt="Product"
           className="w-12 h-12 object-cover rounded"
         />
       ) : (
@@ -169,7 +170,7 @@ const BrandTable = () => {
   return (
     <>
       <div>
-      
+
         <DataTableExt
           title=""
           data={product_brand ?? []}
@@ -186,7 +187,7 @@ const BrandTable = () => {
           <DialogHeader>
             <DialogTitle>Edit Brand</DialogTitle>
           </DialogHeader>
-          
+
           {editingBrand && (
             <div className="space-y-4">
               <BrandForm
@@ -201,7 +202,7 @@ const BrandTable = () => {
                 fieldErrors={fieldErrors}
                 handleLogoFile={handleLogoFile}
               />
-              
+
               <div className="flex justify-end gap-2 pt-4">
                 <Button
                   variant="outline"

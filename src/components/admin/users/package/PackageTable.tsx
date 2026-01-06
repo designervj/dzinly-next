@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import { DataTableExt } from '../../DataTableExt';
+import { DataTableExt } from '../../../dataTable/DataTableExt';
 import { useRouter } from 'next/navigation';
 import {
   Dialog,
@@ -128,25 +128,25 @@ const PackageTable = () => {
     { key: '_id', label: 'ID', hidden: true },
     { key: 'id', label: 'ID', hidden: true },
     { key: 'name', label: 'Name' },
-    { 
-      key: 'description', 
+    {
+      key: 'description',
       label: 'Description',
       render: (value: string) => (
         <span className="truncate max-w-xs block">{value || '-'}</span>
       )
     },
     {
-              key: 'createdAt',
-              label: 'Created',
-              render: (value: any) => formatDateDisplay(value),
-            },
-            {
-              key: 'updatedAt',
-              label: 'Updated',
-              render: (value: any) => formatDateDisplay(value),
-            },
-    { 
-      key: 'type', 
+      key: 'createdAt',
+      label: 'Created',
+      render: (value: any) => formatDateDisplay(value),
+    },
+    {
+      key: 'updatedAt',
+      label: 'Updated',
+      render: (value: any) => formatDateDisplay(value),
+    },
+    {
+      key: 'type',
       label: 'Type',
       render: (value: string) => {
         const colors = {
@@ -161,18 +161,18 @@ const PackageTable = () => {
         );
       }
     },
-    { 
-      key: 'price', 
+    {
+      key: 'price',
       label: 'Price',
       render: (value: number) => `$${value.toFixed(2)}`
     },
-    { 
-      key: 'salePrice', 
+    {
+      key: 'salePrice',
       label: 'Sale Price',
       render: (value: number) => value ? `$${value.toFixed(2)}` : '-'
     },
-    { 
-      key: 'roleType', 
+    {
+      key: 'roleType',
       label: 'Role Type',
       render: (value: string) => value || '-'
     },
@@ -192,7 +192,7 @@ const PackageTable = () => {
         />
       </div>
 
-      
+
     </>
   );
 };

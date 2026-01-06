@@ -3,7 +3,8 @@
 "use client";
 import Link from "next/link";
 import { useState, useTransition } from "react";
-
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 // Field configuration type
 export type FieldConfig = {
   name: string;
@@ -34,6 +35,7 @@ export default function PageEditor({
   onDeleteRedirect = "/admin/pages",
   viewUrl,
 }: PageEditorProps) {
+  const router= useRouter()
   // Single state object for all form data
   const [formData, setFormData] = useState(() => {
     const initialData: Record<string, any> = {};
@@ -115,6 +117,10 @@ export default function PageEditor({
         body: JSON.stringify(transformedData),
       });
       setMsg(res.ok ? "Saved" : "Save failed");
+      if(res.ok){
+        toast.message("updated successfully")
+  router.push("/admin/websites")
+      }
     });
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { DataTableExt } from '../DataTableExt';
+import { DataTableExt } from '../../dataTable/DataTableExt';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
@@ -138,8 +138,8 @@ const AccountTable = () => {
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
     { key: 'slug', label: 'Slug' },
-    { 
-      key: 'plan', 
+    {
+      key: 'plan',
       label: 'Plan',
       render: (value: string) => (
         <span className="capitalize px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
@@ -147,8 +147,8 @@ const AccountTable = () => {
         </span>
       )
     },
-    { 
-      key: 'status', 
+    {
+      key: 'status',
       label: 'Status',
       render: (value: string) => {
         const colors = {
@@ -163,21 +163,21 @@ const AccountTable = () => {
         );
       }
     },
-    { 
-      key: 'subscriptionStatus', 
+    {
+      key: 'subscriptionStatus',
       label: 'Subscription',
       render: (value: string) => (
         <span className="capitalize">{value}</span>
       )
     },
     { key: 'customDomainVerified', label: 'Domain Verified', render: (value: boolean) => value ? '✓' : '✗' },
-    { 
-      key: 'createdAt', 
+    {
+      key: 'createdAt',
       label: 'Created',
       render: (value: Date) => new Date(value).toLocaleDateString()
     },
-    { 
-      key: 'updatedAt', 
+    {
+      key: 'updatedAt',
       label: 'Updated',
       render: (value: Date) => new Date(value).toLocaleDateString()
     },

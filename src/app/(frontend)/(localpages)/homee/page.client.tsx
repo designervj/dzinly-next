@@ -22,14 +22,14 @@ export default function RootClientPage() {
   const pathname= usePathname();
 
   console.log("pathname",pathname);
-  const tenantId = "6941349ebc8a14e00bbc100c";
-  const slug="home-mahimavalenza"
-  useEffect(() => {
-  if( !hasFetched && !homepage && pathname === "/" ){
-    console.log("dispatching");
-    dispatch(getHomePage({ tenantId, slug }));
-  }
-  }, [homepage, hasFetched,pathname]);
+  // const tenantId = "6941349ebc8a14e00bbc100c";
+  // const slug="home-mahimavalenza"
+  // useEffect(() => {
+  // if( !hasFetched && !homepage && pathname === "/" ){
+  //   console.log("dispatching");
+  //   dispatch(getHomePage({ tenantId, slug }));
+  // }
+  // }, [homepage, hasFetched,pathname]);
 
   return (
     <main className="min-h-screen bg-background text-foreground font-sans">

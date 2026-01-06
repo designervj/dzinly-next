@@ -54,11 +54,23 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const json = await req.json();
+  const session = await auth();
 
-  const ok = await pageService.updatePage(id, json.tenantId, json.content);
-  if (!ok)
+  // if (!session?.user?.tenantId) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+
+  const updates = await req.json();
+
+  const ok = await pageService.updatePage(
+    id,
+    updates
+  );
+
+  if (!ok) {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  }
+
   return NextResponse.json({ ok: true });
 }
 

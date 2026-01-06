@@ -1,15 +1,15 @@
 // "use client";
 // import { cookies } from "next/headers";
 
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";
 import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
-
+import { cookies } from "next/dist/server/request/cookies";
+import { redirect } from "next/navigation";
 export default async function PagesAdmin() {
   const session = await auth();
-
 
   if (!session?.user?.tenantId) {
     return (
@@ -47,16 +47,19 @@ export default async function PagesAdmin() {
       ? data[0].website.systemSubdomain
       : null;
 
-
+    const handleView = (row: any) => {
+      redirect(`/admin/websites/pages/${row._id}`);
+    }
     return (
       <div>
-        <BreadCrumbPage/>
+        <BreadCrumbPage />
         <DataTableExt
           website={website}
           sysdomain={sysdomain}
           title=""
           data={items}
           createHref="/admin/websites/pages/new"
+          onView={(row) => handleView(row)}
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },

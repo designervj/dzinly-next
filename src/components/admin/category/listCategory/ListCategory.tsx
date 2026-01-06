@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from "@/store/store";
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 import { addCategory, removeCategory, setCategories } from "@/hooks/slices/category/CategorySlice";
 
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ const ListCategory = () => {
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const dispatch = useDispatch<AppDispatch>();
- 
+
   const router = useRouter();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -33,10 +33,10 @@ const ListCategory = () => {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
 
-   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-      const [newCategory, setNewCategory] = useState<MaterialCategory | null>(null);
-  
-  
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState<MaterialCategory | null>(null);
+
+
   const product_categories = useMemo(() => {
     if (
       currentWebsite &&
@@ -47,67 +47,67 @@ const ListCategory = () => {
       const list = listCategory.filter(
         (item) => item.websiteId === currentWebsite._id
       );
-      
+
       return list.length > 0 ? list : listCategory;
     }
     return [];
   }, [currentWebsite, listCategory]);
 
-    const handleAdd = () => {
-      if(user?.role !== "superadmin" && !user?.permissions?.includes("category:create")){
-        toast.error("You don't have permission to create category");
-        return;
-      }
-      router.push(`/admin/category/create`);
+  const handleAdd = () => {
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("category:create")) {
+      toast.error("You don't have permission to create category");
+      return;
+    }
+    router.push(`/admin/category/create`);
     // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
     // setFieldErrors({});
     // setIsAddDialogOpen(true);
   };
 
-      const handleSaveAdd = async () => {
-      if (!newCategory) return;
-      setFieldErrors({});
-      const errors: Record<string, string> = {};
-      if (!newCategory.name?.trim()) {
-        errors.name = 'Name is required';
+  const handleSaveAdd = async () => {
+    if (!newCategory) return;
+    setFieldErrors({});
+    const errors: Record<string, string> = {};
+    if (!newCategory.name?.trim()) {
+      errors.name = 'Name is required';
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+    setIsSaving(true);
+    try {
+      const res = await fetch(`/api/admin/category`, {
+        method: 'POST',
+        credentials: "same-origin",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCategory),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        const msg =
+          data?.error ??
+          data?.message ??
+          (typeof data === "string" ? data : undefined) ??
+          "Failed to create";
+        throw new Error(msg);
       }
-      if (Object.keys(errors).length > 0) {
-        setFieldErrors(errors);
-        return;
-      }
-      setIsSaving(true);
-      try {
-        const res = await fetch(`/api/admin/category`, {
-          method: 'POST',
-            credentials: "same-origin",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newCategory),
-        });
-          const data = await res.json().catch(() => null);
-   if (!res.ok) {
-          const msg =
-            data?.error ??
-            data?.message ??
-            (typeof data === "string" ? data : undefined) ??
-            "Failed to create";
-          throw new Error(msg);
-        }
-           const created = data?.item ?? data;
-        toast.success(`Category ${newCategory.name} created successfully`);
-        setIsAddDialogOpen(false);
-        setNewCategory(null);
-         dispatch(addCategory(created));
-        // window.location.reload();
-      } catch (err: any) {
-        console.error('Failed to create category', err);
-        toast.error(String(err?.message || err));
-      } finally {
-        setIsSaving(false);
-      }
-    };
-  
+      const created = data?.item ?? data;
+      toast.success(`Category ${newCategory.name} created successfully`);
+      setIsAddDialogOpen(false);
+      setNewCategory(null);
+      dispatch(addCategory(created));
+      // window.location.reload();
+    } catch (err: any) {
+      console.error('Failed to create category', err);
+      toast.error(String(err?.message || err));
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleDelete = async (row: any) => {
-    if(user?.role !== "superadmin" && !user?.permissions?.includes("category:delete")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("category:delete")) {
       toast.error("You don't have permission to delete category");
       return;
     }
@@ -137,7 +137,7 @@ const ListCategory = () => {
   };
 
   const handleView = (row: any) => {
-       if(user?.role !== "superadmin" && !user?.permissions?.includes("category:update")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("category:update")) {
       toast.error("You don't have permission to update category");
       return;
     }
@@ -150,35 +150,35 @@ const ListCategory = () => {
 
   const handleSaveEdit = async () => {
     if (!editingCategory) return;
-    
+
     setFieldErrors({});
     const errors: Record<string, string> = {};
-    
+
     if (!editingCategory.name?.trim()) {
       errors.name = 'Name is required';
     }
-    
+
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
     }
-    
+
     setIsSaving(true);
     try {
       const id = (editingCategory as any)._id ?? editingCategory.id;
       const { _id, ...updateData } = editingCategory as any;
-      
+
       const res = await fetch(`/api/admin/category`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...updateData, id }),
       });
-      
+
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
-      
+
       toast.success(`Category ${editingCategory.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingCategory(null);
@@ -199,16 +199,16 @@ const ListCategory = () => {
     { key: "name", label: "Name" },
     { key: "icon", label: "Icon" },
     { key: "sort_order", label: "Sort Order" },
-     {
-          key: 'createdAt',
-          label: 'Created At',
-          render: (value: any) => formatDateDisplay(value),
-        },
-        {
-          key: 'updatedAt',
-          label: 'Updated At',
-          render: (value: any) => formatDateDisplay(value),
-        },
+    {
+      key: 'createdAt',
+      label: 'Created At',
+      render: (value: any) => formatDateDisplay(value),
+    },
+    {
+      key: 'updatedAt',
+      label: 'Updated At',
+      render: (value: any) => formatDateDisplay(value),
+    },
   ];
 
   return (
@@ -225,7 +225,7 @@ const ListCategory = () => {
       </div>
 
 
- <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Add Category</DialogTitle>
@@ -234,7 +234,7 @@ const ListCategory = () => {
             <div className="space-y-4">
               <CategoryForm
                 category={newCategory}
-                   setCategory={(value) => {
+                setCategory={(value) => {
                   if (typeof value === 'function') {
                     setNewCategory(prev => prev ? value(prev) : null);
                   } else {
@@ -242,7 +242,7 @@ const ListCategory = () => {
                   }
                 }}
                 fieldErrors={fieldErrors}
-              
+
               />
               <div className="flex justify-end gap-2 pt-4">
                 <Button
@@ -272,7 +272,7 @@ const ListCategory = () => {
           <DialogHeader>
             <DialogTitle>Edit Category</DialogTitle>
           </DialogHeader>
-          
+
           {editingCategory && (
             <div className="space-y-4">
               <CategoryForm
@@ -286,7 +286,7 @@ const ListCategory = () => {
                 }}
                 fieldErrors={fieldErrors}
               />
-              
+
               <div className="flex justify-end gap-2 pt-4">
                 <Button
                   variant="outline"

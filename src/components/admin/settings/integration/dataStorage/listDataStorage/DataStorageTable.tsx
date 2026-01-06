@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { getAllDataStorage, deleteDataStorage, updateDataStorage, createDataStorage } from "@/hooks/slices/dataStorage/DataStorageSlice";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import StorageForm from "../form/StorageForm";

@@ -40,7 +40,8 @@ export default function EditButton({ pageData }: { pageData: PageModel }) {
   };
 
   return (
-    <header className="w-full bg-black">
+    <>
+   { user && user.id && user.role === "superadmin" &&  <header className="w-full bg-black">
       <div className="flex h-14 items-center justify-center">
         <button
         onClick={handleClick}
@@ -50,6 +51,8 @@ export default function EditButton({ pageData }: { pageData: PageModel }) {
           Edit in Builder
         </button>
       </div>
-    </header>
+    </header>}
+    </>
+ 
   );
 }

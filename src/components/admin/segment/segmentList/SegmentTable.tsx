@@ -2,7 +2,7 @@
 import { AppDispatch, RootState } from "@/store/store";
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 import { removeSegment } from "@/hooks/slices/segment/SegmentSlice";
 
 import { useRouter } from "next/navigation";
@@ -48,18 +48,18 @@ const SegmentTable = () => {
     return [];
   }, [currentWebsite, listSegment]);
 
-   const handleAdd = () => {
-        if(user?.role !== "superadmin" && !user?.permissions?.includes("category:create")){
-          toast.error("You don't have permission to create category");
-          return;
-        }
-        router.push(`/admin/segment/create`);
-      // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
-      // setFieldErrors({});
-      // setIsAddDialogOpen(true);
-    };
+  const handleAdd = () => {
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("category:create")) {
+      toast.error("You don't have permission to create category");
+      return;
+    }
+    router.push(`/admin/segment/create`);
+    // setNewCategory({ name: "", icon: "", sort_order: 0 ,websiteId:currentWebsite?._id,tenantId:user?.tenantId});
+    // setFieldErrors({});
+    // setIsAddDialogOpen(true);
+  };
   const handleDelete = async (row: any) => {
-    if(user?.role !== "superadmin" && !user?.permissions?.includes("segment:delete")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("segment:delete")) {
       toast.error("You don't have permission to delete segment");
       return;
     }
@@ -89,7 +89,7 @@ const SegmentTable = () => {
   };
 
   const handleView = (row: any) => {
-    if(user?.role !== "superadmin" && !user?.permissions?.includes("segment:update")){
+    if (user?.role !== "superadmin" && !user?.permissions?.includes("segment:update")) {
       toast.error("You don't have permission to update segment");
       return;
     }
@@ -102,35 +102,35 @@ const SegmentTable = () => {
 
   const handleSaveEdit = async () => {
     if (!editingSegment) return;
-    
+
     setFieldErrors({});
     const errors: Record<string, string> = {};
-    
+
     if (!editingSegment.name?.trim()) {
       errors.name = 'Name is required';
     }
-    
+
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
     }
-    
+
     setIsSaving(true);
     try {
       const id = (editingSegment as any)._id ?? editingSegment.id;
       const { _id, ...updateData } = editingSegment as any;
-      
+
       const res = await fetch(`/api/admin/segment`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...updateData, id }),
       });
-      
+
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error || `HTTP ${res.status}`);
       }
-      
+
       toast.success(`Segment ${editingSegment.name} updated successfully`);
       setIsEditDialogOpen(false);
       setEditingSegment(null);
@@ -213,7 +213,7 @@ const SegmentTable = () => {
         <DataTableExt
           title=""
           data={segments ?? []}
-         onCreate={handleAdd}
+          onCreate={handleAdd}
           initialColumns={initialColumns}
           onDelete={(row) => handleDelete(row)}
           onView={(row) => handleView(row)}
@@ -226,7 +226,7 @@ const SegmentTable = () => {
           <DialogHeader>
             <DialogTitle>Edit Segment</DialogTitle>
           </DialogHeader>
-          
+
           {editingSegment && (
             <div className="space-y-4">
               <SegmentForm
@@ -240,7 +240,7 @@ const SegmentTable = () => {
                 }}
                 fieldErrors={fieldErrors}
               />
-              
+
               <div className="flex justify-end gap-2 pt-4">
                 <Button
                   variant="outline"

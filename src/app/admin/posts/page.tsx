@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { DataTableExt } from "@/components/admin/DataTableExt";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 
 export default async function PostsAdmin() {
   const cookie = (await cookies()).toString();
@@ -20,7 +20,7 @@ export default async function PostsAdmin() {
         title="Posts"
         data={items}
         createHref="/admin/posts/new"
-         opentab={() => {}}
+        opentab={() => { }}
         initialColumns={[
           // { key: "title", label: "Title", render: (_v, row) => (<a className="underline" href={`/admin/posts/${row._id}`}>{row.title}</a>) },
           { key: "slug", label: "Slug" },

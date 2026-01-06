@@ -1,3 +1,5 @@
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 export default function IntegrationsPage() {
@@ -10,7 +12,8 @@ export default function IntegrationsPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Integrations</h1>
+      {/* <h1 className="text-2xl font-semibold">Integrations</h1> */}
+      <BreadCrumbPage />
 
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
         {integrations.map((integration, idx) => (
@@ -38,9 +41,9 @@ export default function IntegrationsPage() {
       </div>
 
       <div className="flex justify-end">
-        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        <Button >
           Add New Integration
-        </button>
+        </Button>
       </div>
     </div>
   );

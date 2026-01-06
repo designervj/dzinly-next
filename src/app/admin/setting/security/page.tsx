@@ -1,5 +1,8 @@
 import React from "react";
 import { Shield, Key, LogOut, Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+
 
 export default function SecurityPage() {
   const sessions = [
@@ -9,7 +12,9 @@ export default function SecurityPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Security Settings</h1>
+      <h1 className="text-2xl font-semibold">Security Settings </h1>
+            <BreadCrumbPage />
+
 
       {/* Password Change */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
@@ -80,9 +85,9 @@ export default function SecurityPage() {
         <p className="text-gray-600">
           Receive notifications when your account is accessed from a new device.
         </p>
-        <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        <Button>
           Enable Alerts
-        </button>
+        </Button>
       </div>
     </div>
   );

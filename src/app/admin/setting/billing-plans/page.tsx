@@ -1,9 +1,13 @@
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 export default function BillingPlansPage() {
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Billing & Plans</h1>
+      {/* <h1 className="text-2xl font-semibold">Billing & Plans</h1> */}
+               <BreadCrumbPage />
+      
 
       {/* Current Plan Section */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
@@ -13,9 +17,9 @@ export default function BillingPlansPage() {
             <p className="text-gray-700">Pro Plan</p>
             <p className="text-gray-500 text-sm">Next billing date: 30 Dec 2025</p>
           </div>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded">
+          <Button variant="secondary">
             Change Plan
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -29,9 +33,9 @@ export default function BillingPlansPage() {
           </div>
           <button className="text-red-500">Remove</button>
         </div>
-        <button className="mt-3 bg-green-600 text-white px-4 py-2 rounded">
+        <Button>
           Add Payment Method
-        </button>
+        </Button>
       </div>
 
       {/* Billing History */}

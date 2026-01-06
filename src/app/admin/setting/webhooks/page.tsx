@@ -1,5 +1,8 @@
 import React from "react";
 import { Plus, Trash2, Copy } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
+
 
 export default function WebhooksPage() {
   const webhooks = [
@@ -10,14 +13,17 @@ export default function WebhooksPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Webhooks</h1>
+      {/* <h1 className="text-2xl font-semibold">Webhooks 1</h1> */}
+      <div className="flex items-center justify-between">
+       <BreadCrumbPage />
 
       {/* Add New Webhook */}
       <div className="flex justify-end mb-4">
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <Button>
           <Plus size={18} />
           Add Webhook
-        </button>
+        </Button>
+      </div>
       </div>
 
       {/* Webhooks Table */}

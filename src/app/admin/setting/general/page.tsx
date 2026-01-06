@@ -2,13 +2,16 @@
 
 import React from "react";
 import { Save } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   return (
     <div className="min-h-screen">
       {/* Page Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">General Settings</h1>
+        {/* <h1 className="text-3xl font-semibold">General Settings</h1> */}
+         <BreadCrumbPage />
         <p className="text-gray-500 mt-1">
           Manage your application general configuration
         </p>
@@ -110,10 +113,10 @@ export default function Page() {
 
         {/* Save Button */}
         <div className="mt-8 flex justify-end">
-          <button className="flex items-center gap-2 bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700">
+          <Button>
             <Save size={18} />
-            Save Changes
-          </button>
+             Save Changes
+          </Button>
         </div>
       </div>
     </div>

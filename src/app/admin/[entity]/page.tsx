@@ -32,7 +32,7 @@ export default async function EntityIndexPage(props: any) {
         <EntityCreateModal entity={entity} />
         
       </div>
-<BreadCrumbPage/>
+
       <EntityComponent />
     </div>
   );

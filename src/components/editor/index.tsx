@@ -34,40 +34,40 @@ export default function GrapesJSEditor() {
   const { page } = useSelector((state: RootState) => state.pageEdit);
 
   function extractCssFromHtml(html: string): string {
-  const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
-  if (!matches) return "";
-  return matches.map(styleTag => {
-    const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-    return inner ? inner[1] : "";
-  }).join("\n");
-}
+    const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+    if (!matches) return "";
+    return matches.map(styleTag => {
+      const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+      return inner ? inner[1] : "";
+    }).join("\n");
+  }
 
 
 
-// get llm setting data based on tenenantId
+  // get llm setting data based on tenenantId
 const {currentWebsite}= useSelector((state:RootState)=>state.websites)
 useEffect(()=>{
   if(user && user.tenantId &&!currentWebsite){
  dispatch(fetchLLMSettingByWebsiteId({websiteId:user.tenantId}))
-  }
+    }
 },[user])
 
 
   // update the page content into editor
   useEffect(() => {
-  if (state.editor && page?.content) {
-    state.editor.setComponents(page.content);
+    if (state.editor && page?.content) {
+  debugger
+    //  const css= extractCssFromHtml(page.content)
+    //   if (css) {
+    //   state.editor.setStyle(css);
+    // }
+        state.editor.setComponents(page.content);   
      setEditorHtml(page.content);
-    // const css= extractCssFromHtml(page.content)
     // console.log("css---", css)
-    // state.editor.setStyle(css)
-  }else{
-    // dispatch(clearPageEdit())
-    //   state.editor.setComponents("");
-    // setEditorHtml("");
+    //state.editor.setStyle(css)
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [state.editor, page?.content]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.editor, page?.content]);
 
 
 
@@ -75,11 +75,11 @@ useEffect(()=>{
     if (!state.editor) return;
     const updateHandler = () => {
       const html = state.editor.getHtml();
-      
+
       // console.log("hfjhhfdhhfhfh----",html)
-      
-     // setEditorHtml(html);
-    //  dispatch({ type: "pageEdit/setContent", payload: html });
+
+      // setEditorHtml(html);
+      //  dispatch({ type: "pageEdit/setContent", payload: html });
     };
     state.editor.on("component:update", updateHandler);
     return () => {
@@ -223,7 +223,7 @@ useEffect(()=>{
   const handleUpdateCss = (css: string) => {
     if (!state.editor) return;
     state.editor.setStyle(css);
-   // setEditorCss(css);
+    setEditorCss(css);
   };
 
   const handleUpdateJs = (js: string) => {
@@ -372,20 +372,20 @@ useEffect(()=>{
 
 
   // Fix: handleStyleChange to match expected signature
-  const handleStyleChange = (property:string, value:string) => {
-  
+  const handleStyleChange = (property: string, value: string) => {
+
     if (property && value) {
       actions.updateStyle(property, value);
     }
-  } 
+  }
 
-    // Fix: handleStyleChange to match expected signature
-  const handleUpdateInteractivity= (data: any) => {
- 
-    if (data && data.type && data.event && data.action && data.target &&data.options) {
-      actions.updateInteractivity(data.type , data.event , data.action , data.target ,data.options);
+  // Fix: handleStyleChange to match expected signature
+  const handleUpdateInteractivity = (data: any) => {
+
+    if (data && data.type && data.event && data.action && data.target && data.options) {
+      actions.updateInteractivity(data.type, data.event, data.action, data.target, data.options);
     }
-  } 
+  }
   return (
     <div className="h-screen bg-[#0F172A] text-white overflow-hidden flex flex-col">
       <TooltipProvider delayDuration={300}>
@@ -417,9 +417,8 @@ useEffect(()=>{
         <div className="relative flex flex-1 overflow-hidden">
           {/* Canvas */}
           <div
-            className={`${
-              showSidebar ? "w-[90%]" : "w-full"
-            } transition-all duration-300 ease-in-out relative`}
+            className={`${showSidebar ? "w-[90%]" : "w-full"
+              } transition-all duration-300 ease-in-out relative`}
           >
             {state.isLoading && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/80">

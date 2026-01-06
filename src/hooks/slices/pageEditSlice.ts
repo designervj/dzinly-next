@@ -9,6 +9,7 @@ import { WebsitePageModel } from '@/components/admin/website/websitePage/Website
 interface PageEditState {
   page: WebsitePageModel | null;
   updatePage: WebsitePageModel | null;
+
   hasfetchPage: boolean,
   isLoading: boolean
   error: string
@@ -17,10 +18,36 @@ interface PageEditState {
 const initialState: PageEditState = {
   page: null,
   updatePage: null,
+
   hasfetchPage: false,
   isLoading: false,
   error: ''
 }
+// Thunk to fetch website by ID
+export const fetchWebsiteThunk = createAsyncThunk(
+  'pageEdit/homeWebsite',
+  async ({ tenantId, slug }: { tenantId: string, slug: string }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/public/pages?slug=${slug}&tenantId=${tenantId}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Failed to fetch website' }));
+        return rejectWithValue(errorData.error || 'Failed to fetch website');
+      }
+
+      const data = await response.json();
+      return data.item;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Network error occurred');
+    }
+  }
+);
+
 // Thunk to save page via API
 export const savePageThunk = createAsyncThunk(
   'pageEdit/savePage',
@@ -37,14 +64,39 @@ export const savePageThunk = createAsyncThunk(
         body: JSON.stringify(data),
       });
 
+      if (response.ok) {
 
-      if (!response.ok) throw new Error('Failed to save page');
-      // Optionally update local state
-      const { page } = (getState() as RootState).pageEdit;
-      if (page) {
-        dispatch(setPageEdit({ ...page, content: payload.content }));
+        const updatedPage = await response.json();
+        console.log("updatedPage---->", updatedPage)
+        const { page } = (getState() as RootState).pageEdit;
+        const oldPage = { ...page, content: payload.content };
+        dispatch(setPageEdit(oldPage));
+        //   console.log("savePageThunk - Dispatching setPageEdit with updated content");
+        //  dispatch(setPageEdit(updatedPage));
+        return {
+          ok: true,
+          message: "Page saved successfully"
+        }
       }
-      return await response.json();
+
+      // if (!response.ok) throw new Error('Failed to save page');
+      // // Optionally update local state
+      // const { page } = (getState() as RootState).pageEdit;
+      // console.log("savePageThunk - Current page from Redux:", {
+      //   hasPage: !!page,
+      //   currentContentLength: page?.content?.length || 0,
+      //   newContentLength: payload.content?.length || 0
+      // });
+
+      // if (page) {
+      //   const updatedPage = { ...page, content: payload.content };
+      //   console.log("savePageThunk - Dispatching setPageEdit with updated content");
+      //  dispatch(setPageEdit(updatedPage));
+      // }
+      // return {
+      //   ok: true,
+      //   message: "Page saved successfully"
+      // }
     } catch (error) {
       // Optionally handle error (e.g., show toast)
       throw error;
@@ -58,8 +110,9 @@ export const pageEditSlice = createSlice({
   initialState,
   reducers: {
     setPageEdit: (state, action) => {
+
       state.page = action.payload;
-      state.hasfetchPage = true;
+      state.hasfetchPage = true
     },
     updatePage: (state, action) => {
       state.updatePage = action.payload
@@ -72,12 +125,28 @@ export const pageEditSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Fetch website thunk
+      .addCase(fetchWebsiteThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = '';
+      })
+      .addCase(fetchWebsiteThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.page = action.payload;
+        state.hasfetchPage = true
+        state.error = '';
+      })
+      .addCase(fetchWebsiteThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string || 'Failed to fetch website';
+      })
+      // Save page thunk
       .addCase(savePageThunk.pending, (state) => {
         state.isLoading = true;
         state.error = '';
       })
       .addCase(savePageThunk.fulfilled, (state, action) => {
-       
+
         state.isLoading = false;
         state.error = '';
       })

@@ -7,8 +7,9 @@ import { fetchWebsiteById } from "@/hooks/slices/websites/WebsiteSlice";
 import { PageModel } from "@/types/pages/PageModel";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchLLMSettingByWebsiteId } from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
+import { WebsitePageModel } from "@/components/admin/website/websitePage/WebsitePageType";
 
-export default function EditButton({ pageData }: { pageData: PageModel }) {
+export default function EditButton({ pageData }: { pageData: WebsitePageModel }) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 

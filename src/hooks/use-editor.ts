@@ -926,7 +926,7 @@ export function useEditor(containerId: string) {
     },
 
     savePage: async () => {
-      console.log("save the page called");
+      // console.log("save the page called");
 
       if (!page?._id) {
         toast.error("No page ID found. Cannot save.");
@@ -955,8 +955,8 @@ export function useEditor(containerId: string) {
           content: fullHtml,
         })
       ).unwrap();
-      // console.log("console.log", response)
-      if (response.ok) {
+      console.log("console.log----use editor", response)
+      if (response && response.ok) {
         toast.success("Page content updated successfully!");
       }
       // Optionally handle response or errors here

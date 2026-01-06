@@ -7,14 +7,14 @@ import {
   Layers, Lock, BarChart3, Star, Globe, ChevronDown 
 } from "lucide-react"; 
 import { useEffect } from "react";
-import { getHomePage } from "@/hooks/slices/homepage/HomePageThunk";
+
 
 export default function RootClientPage() {
   const router = useRouter();
   const { user } = useSelector((state: RootState) => state.user);
    const dispatch = useDispatch<AppDispatch>();
 
-   const { homepage, hasFetched, isLoading, error } = useSelector((state: RootState) => state.homepage);
+ 
   const handleLogin = () => {
     if (user) router.push("/admin/dashboard");
     else router.push("/auth/signin");

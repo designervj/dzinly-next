@@ -17,11 +17,10 @@ import tabContentReducer from "../hooks/slices/canvas/tabSlice"
 import accountReducer from "../hooks/slices/user/accountSlice"
 import packageReducer from "../hooks/slices/package/packageSlice"
 import websitePageReducer from "../hooks/slices/websites/websitePageSlice"
-import homepageReducer from "../hooks/slices/homepage/homePageSlice"
 
 export const store = configureStore({
   reducer: {
-    homepage:homepageReducer,
+
     user:userSlice,
     pageEdit: pageEditReducer,
     category: categoryReducer,

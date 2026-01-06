@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const customers = [
   { id: 1, name: "Alice Johnson", email: "alice@example.com", orders: 12, spent: "$1,299.00", lastOrder: "2 days ago", group: "VIP" },
@@ -29,7 +30,8 @@ export default function CustomersPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Customers</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Customers</h1> */}
+          <BreadCrumbPage/>
           <p className="text-sm text-muted-foreground mt-1">View and manage your customer base and segments.</p>
         </div>
         <Button className="bg-primary text-white">Add Customer</Button>

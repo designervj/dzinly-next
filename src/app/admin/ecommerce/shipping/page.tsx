@@ -12,7 +12,8 @@ export default function ShippingPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-10">
       <div>
-         <h1 className="text-2xl font-bold tracking-tight">Shipping & Delivery</h1>
+         {/* <h1 className="text-2xl font-bold tracking-tight">Shipping & Delivery</h1> */}
+         <BreadCrumbPage/>
          <p className="text-muted-foreground">Manage where you ship and how much you charge.</p>
       </div>
 
@@ -91,3 +92,4 @@ export default function ShippingPage() {
 
 // Icon import helper
 import { Globe } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";

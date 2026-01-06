@@ -19,7 +19,8 @@ export default function ReportsPage() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex justify-between items-center">
          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900">Analytics & Reports</h1>
+            {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Analytics & Reports</h1> */}
+            <BreadCrumbPage/>
             <p className="text-sm text-muted-foreground mt-1">Deep dive into sales performance and store insights.</p>
          </div>
          <div className="flex gap-2">
@@ -134,3 +135,4 @@ function StatCard({ title, value, trend, icon: Icon, positive = true }: any) {
 
 // Additional import for icon
 import { ShoppingBag } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";

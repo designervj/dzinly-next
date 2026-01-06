@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 // --- Mock Data ---
 const orders = [
@@ -63,7 +64,8 @@ export default function OrdersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Orders</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Orders</h1> */}
+          <BreadCrumbPage/>
           <p className="text-sm text-muted-foreground mt-1">Manage and track customer orders across all channels.</p>
         </div>
         <div className="flex gap-2">

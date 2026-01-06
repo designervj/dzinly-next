@@ -10,13 +10,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function StoreSettingsPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Store Configuration</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Store Configuration</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Manage global settings for your e-commerce storefront.</p>
         </div>
         <Button><Save className="w-4 h-4 mr-2" /> Save Changes</Button>

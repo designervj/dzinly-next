@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const invoices = [
   { id: "INV-2024-001", customer: "Alice Johnson", date: "Dec 17, 2025", dueDate: "Dec 17, 2025", amount: "$1,299.00", status: "Paid" },
@@ -23,7 +24,9 @@ export default function InvoicesPage() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Invoices</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Invoices</h1> */}
+          <BreadCrumbPage/>
+          <p className="text-sm text-muted-foreground mt-1">History of all generated invoices and their payment status.</p>
           <p className="text-sm text-muted-foreground mt-1">History of all generated invoices and their payment status.</p>
         </div>
         <Button ><Download className="mr-2 h-4 w-4" /> Export Report</Button>

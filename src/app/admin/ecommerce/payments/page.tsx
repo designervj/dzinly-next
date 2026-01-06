@@ -9,12 +9,14 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function PaymentsPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-10">
       <div>
-         <h1 className="text-2xl font-bold tracking-tight">Payment Providers</h1>
+         {/* <h1 className="text-2xl font-bold tracking-tight">Payment Providers</h1> */}
+         <BreadCrumbPage/>
          <p className="text-muted-foreground">Accept payments through multiple gateways securely.</p>
       </div>
 

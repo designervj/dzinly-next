@@ -8,13 +8,15 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function TaxesPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Taxes & Duties</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight">Taxes & Duties</h1> */}
+          <BreadCrumbPage/>
           <p className="text-muted-foreground">Configure how taxes are collected at checkout.</p>
         </div>
       </div>

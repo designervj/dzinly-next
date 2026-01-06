@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const abandonedCarts = [
   { id: "AC-1023", customer: "Guest (john.doe@gmail.com)", items: 3, total: "$120.00", time: "2 hours ago", status: "Not Sent" },
@@ -34,7 +35,8 @@ export default function AbandonedCartsPage() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Abandoned Carts</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Abandoned Carts</h1> */}
+          <BreadCrumbPage/>
           <p className="text-sm text-muted-foreground mt-1">Review carts left behind and trigger recovery emails.</p>
         </div>
         <div className="flex gap-2">

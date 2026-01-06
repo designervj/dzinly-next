@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const subscriptions = [
   { id: "SUB-8821", customer: "Tech Solutions Ltd", plan: "Enterprise Annual", amount: "$2,400", interval: "Yearly", status: "Active", nextBill: "Dec 20, 2025" },
@@ -23,7 +24,8 @@ export default function SubscriptionsPage() {
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Subscriptions</h1>
+          {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Subscriptions</h1> */}
+          <BreadCrumbPage/>
           <p className="text-sm text-muted-foreground mt-1">Manage recurring billing cycles and subscriber status.</p>
         </div>
         <Button className="bg-primary text-white">Create Subscription</Button>

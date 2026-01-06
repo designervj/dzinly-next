@@ -3,21 +3,21 @@ import React, { useEffect } from 'react'
 import { WebsitePageModel } from '../admin/website/websitePage/WebsitePageType'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/store/store'
-import { setHomePage } from '@/hooks/slices/homepage/homePageSlice'
+import { setPageEdit } from '@/hooks/slices/pageEditSlice'
 
 
 type Props={
     homePageData:WebsitePageModel
 }
 const GethomePage = ({homePageData}:Props) => {
-  const { homepage:pageHome, hasFetched, isLoading, error } = useSelector((state: RootState) => state.homepage);
+  const { page:pageHome, hasfetchPage, isLoading, error } = useSelector((state: RootState) => state.pageEdit);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-  if( !hasFetched && !pageHome  ){
+  if( !hasfetchPage && !pageHome  ){
  
-     dispatch(setHomePage(homePageData));
+     dispatch(setPageEdit(homePageData));
   }
-  }, [pageHome, hasFetched,homePageData]);
+  }, [pageHome, hasfetchPage,homePageData]);
 
   return (
   null

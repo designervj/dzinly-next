@@ -88,13 +88,26 @@ export async function POST(req: Request) {
     });
     userId = userRes.insertedId;
 
+    websiteData.primaryDomain = websiteData.primaryDomain.filter((d) => {
+      return (
+        d !== `${websiteData.name}.localhost:55803` &&
+        d !== `${websiteData.name}.mahimavalenza.in`
+      );
+    });
+
+    websiteData.primaryDomain.push(
+      `${websiteData.name}.localhost:55803`,
+      `${websiteData.name}.mahimavalenza.in`
+    );
+
     // 3️⃣ Insert website
     const websiteRes = await websiteColl.insertOne({
       ...websiteData,
-      primaryDomain: [
-        ...websiteData.primaryDomain,
-        `${websiteData.name}.localhost:55803`,
-      ],
+      // primaryDomain: [
+      //   ...websiteData.primaryDomain,
+      //   `${websiteData.name}.localhost:55803`,
+      //   `${websiteData.name}.mahimavalenza.in`,
+      // ],
       systemSubdomain: `${websiteData.name}.mahimavalenza.in`,
       tenantId,
       createdAt: new Date(),
@@ -119,10 +132,7 @@ export async function POST(req: Request) {
       tenantId,
       userId,
       websiteId,
-      websitedomain: [
-        ...websiteData.primaryDomain,
-        `${websiteData.name}.localhost:55803`,
-      ],
+      websitedomain: websiteData.primaryDomain,
       systemSubdomain: `${websiteData.name}.mahimavalenza.in`,
     });
   } catch (e: any) {

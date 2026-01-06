@@ -50,8 +50,6 @@ export async function POST(req: Request) {
     const json = await req.json();
     const parsed = schema.safeParse(json);
 
-    console.log(json)
-
     if (!parsed.success) {
       return NextResponse.json(
         { ok: false, error: "Invalid payload", issues: parsed.error.flatten() },
@@ -77,8 +75,11 @@ export async function POST(req: Request) {
 
     // 2️⃣ Insert user
     const passwordHash = await bcrypt.hash(userData.password, 10);
+
+    const { password, ...rest } = userData;
+
     const userRes = await userColl.insertOne({
-      ...userData,
+      ...rest,
       passwordHash: passwordHash,
       status: "active",
       tenantId,
@@ -90,6 +91,11 @@ export async function POST(req: Request) {
     // 3️⃣ Insert website
     const websiteRes = await websiteColl.insertOne({
       ...websiteData,
+      primaryDomain: [
+        ...websiteData.primaryDomain,
+        `${websiteData.name}.localhost:55803`,
+      ],
+      systemSubdomain: `${websiteData.name}.mahimavalenza.in`,
       tenantId,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -106,15 +112,18 @@ export async function POST(req: Request) {
       };
     });
 
-    const pagesres = await pagesColl.insertMany(finalPages);
-
-    console.log(pagesres.insertedIds)
+    await pagesColl.insertMany(finalPages);
 
     return NextResponse.json({
       ok: true,
       tenantId,
       userId,
       websiteId,
+      websitedomain: [
+        ...websiteData.primaryDomain,
+        `${websiteData.name}.localhost:55803`,
+      ],
+      systemSubdomain: `${websiteData.name}.mahimavalenza.in`,
     });
   } catch (e: any) {
     // 🔥 ROLLBACK (reverse order)

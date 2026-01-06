@@ -78,7 +78,7 @@ export default function OnboardingTenants() {
     name: "",
     email: "",
     password: "",
-    role: "owner",
+    role: tenantData.tenantType,
     permissions: [],
   });
 
@@ -165,6 +165,15 @@ export default function OnboardingTenants() {
         });
         setCurrentStep(1);
         toast.success(`SuccessFully Onboarded ${result.userid}`);
+        const { websitedomain, systemSubdomain } = result;
+        let domain;
+        const isLocalHost = window.location.hostname.includes("localhost");
+        domain = isLocalHost
+          ? `${websitedomain.find((d: any) => d.includes("localhost"))}/home`
+          : `${systemSubdomain}/home`;
+        if (!domain) return;
+        const url = isLocalHost ? `http://${domain}` : `https://${domain}`;
+        window.open(url, "_blank", "noopener,noreferrer");
         router.push("/");
       }
     } catch (error: any) {
@@ -195,6 +204,8 @@ export default function OnboardingTenants() {
       description: "Review & submit",
     },
   ];
+
+  // console.log(userData, tenantData)
 
   const renderStepContent = () => {
     switch (currentStep) {

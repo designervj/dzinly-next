@@ -50,6 +50,7 @@ export default async function PagesAdmin() {
     const handleView = (row: any) => {
       redirect(`/admin/websites/pages/${row._id}`);
     }
+    
     return (
       <div>
         <BreadCrumbPage />

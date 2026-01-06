@@ -3,6 +3,8 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RightColumn } from "./RightColumn";
+import { ProductOptions } from "./ProductOptions";
 
 const categoryAttributeMap: { [key: string]: string[] } = {
   Paint: ["paint", "color"],
@@ -26,7 +28,7 @@ interface ImageFile {
   file: File;
 }
 
-interface ProductOption {
+export interface ProductOption {
   id: number;
   title: string;
   values: string[];
@@ -49,6 +51,14 @@ interface VariantConfig {
   attributes: VariantAttribute[];
 }
 
+export interface Attributes {
+  id: number;
+  name: string;
+  category_id: string;
+  unit?: string;
+  default_values: string[];
+}
+
 export function CreateProduct() {
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -62,7 +72,7 @@ export function CreateProduct() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [productOptions, setProductOptions] = useState<ProductOption[]>([]);
   const [variantConfigs, setVariantConfigs] = useState<VariantConfig[]>([]);
-  const [attributes, setAttributes] = useState([
+  const [attributes, setAttributes] = useState<Attributes[]>([
     {
       id: 1,
       name: "Color",
@@ -150,9 +160,7 @@ export function CreateProduct() {
       setVariantConfigs([]);
       return;
     }
-
     const combinations: VariantAttribute[][] = [];
-
     const generate = (depth: number, current: VariantAttribute[]) => {
       if (depth === variantOptions.length) {
         combinations.push(current);
@@ -368,7 +376,7 @@ export function CreateProduct() {
 
       const finalImages = await Promise.all(mapped);
 
-      console.log(finalImages)
+      console.log(finalImages);
       finalObj.productdata.images = finalImages;
     }
 
@@ -389,19 +397,16 @@ export function CreateProduct() {
   return (
     <div className="min-h-screen">
       <div className="w-full mb-4 flex flex-row-reverse">
-        <Button
-          onClick={handleSaveProduct}
-
-        >
-          Save Product
-        </Button>
+        <Button onClick={handleSaveProduct}>Save Product</Button>
       </div>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* General */}
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold tracking-tight mb-4">General</h2>
+              <h2 className="text-2xl font-bold tracking-tight mb-4">
+                General
+              </h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -500,7 +505,9 @@ export function CreateProduct() {
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold tracking-tight">Product options</h2>
+                  <h2 className="text-2xl font-bold tracking-tight">
+                    Product options
+                  </h2>
                   <p className="text-sm text-gray-500">
                     Define options for the product based on category
                   </p>
@@ -523,188 +530,24 @@ export function CreateProduct() {
                   );
 
                   return (
-                    <div
+                    <ProductOptions
                       key={option.id}
-                      className="border border-gray-200 rounded-lg p-4"
-                    >
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="relative attribute-dropdown-container">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Title
-                          </label>
-                          <input
-                            type="text"
-                            value={option.title}
-                            onChange={(e) => {
-                              updateOption(option.id, "title", e.target.value);
-                              setSearchTerm(e.target.value);
-                            }}
-                            onFocus={() => setShowDropdown(option.id)}
-                            placeholder="Search attribute..."
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-                          {option.unit && (
-                            <span className="text-xs text-gray-500 mt-1 block">
-                              Unit: {option.unit}
-                            </span>
-                          )}
-                          {showDropdown === option.id &&
-                            filteredAttrs.length > 0 && (
-                              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
-                                {filteredAttrs.map((attr) => (
-                                  <button
-                                    key={attr.id}
-                                    type="button"
-                                    onClick={() =>
-                                      selectAttribute(option.id, attr.id)
-                                    }
-                                    className="w-full px-3 py-2 text-left hover:bg-gray-100 text-sm"
-                                  >
-                                    <div className="font-medium">
-                                      {attr.name}
-                                    </div>
-                                    {attr.unit && (
-                                      <div className="text-xs text-gray-500">
-                                        Unit: {attr.unit}
-                                      </div>
-                                    )}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                        </div>
-                        <div className="value-dropdown-container">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Values
-                          </label>
-                          <div className="relative">
-                            <input
-                              type="text"
-                              placeholder="Search or add value..."
-                              value={valueSearchTerm[option.id] || ""}
-                              onChange={(e) =>
-                                setValueSearchTerm((prev) => ({
-                                  ...prev,
-                                  [option.id]: e.target.value,
-                                }))
-                              }
-                              onFocus={() => setShowValueDropdown(option.id)}
-                              onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                  addValue(
-                                    option.id,
-                                    valueSearchTerm[option.id] || ""
-                                  );
-                                }
-                              }}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-
-                            {showValueDropdown === option.id &&
-                              availVals.length > 0 && (
-                                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
-                                  {availVals
-                                    .filter(
-                                      (val) =>
-                                        val
-                                          .toLowerCase()
-                                          .includes(
-                                            (
-                                              valueSearchTerm[option.id] || ""
-                                            ).toLowerCase()
-                                          ) && !option.values.includes(val)
-                                    )
-                                    .map((val, i) => (
-                                      <button
-                                        key={i}
-                                        type="button"
-                                        onClick={() => addValue(option.id, val)}
-                                        className="w-full px-3 py-2 text-left hover:bg-blue-50 text-sm flex items-center justify-between"
-                                      >
-                                        <span>{val}</span>
-                                        <span className="text-blue-600 text-xs">
-                                          + Add
-                                        </span>
-                                      </button>
-                                    ))}
-                                  {availVals.filter(
-                                    (val) =>
-                                      val
-                                        .toLowerCase()
-                                        .includes(
-                                          (
-                                            valueSearchTerm[option.id] || ""
-                                          ).toLowerCase()
-                                        ) && !option.values.includes(val)
-                                  ).length === 0 &&
-                                    (
-                                      valueSearchTerm[option.id] || ""
-                                    ).trim() && (
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          addValue(
-                                            option.id,
-                                            valueSearchTerm[option.id] || ""
-                                          )
-                                        }
-                                        className="w-full px-3 py-2 text-left hover:bg-green-50 text-sm flex items-center justify-between"
-                                      >
-                                        <span>
-                                          Create "{valueSearchTerm[option.id]}"
-                                        </span>
-                                        <span className="text-green-600 text-xs">
-                                          + Create New
-                                        </span>
-                                      </button>
-                                    )}
-                                </div>
-                              )}
-                          </div>
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {option.values.map((val, idx) => (
-                              <span
-                                key={idx}
-                                className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm"
-                              >
-                                {val}
-                                <button
-                                  onClick={() => removeValue(option.id, idx)}
-                                  className="text-blue-600 hover:text-blue-800"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={option.useForVariants}
-                            onChange={(e) =>
-                              updateOption(
-                                option.id,
-                                "useForVariants",
-                                e.target.checked
-                              )
-                            }
-                            className="w-4 h-4 text-blue-600 rounded"
-                          />
-                          <span className="text-sm text-gray-700">
-                            Use for variants
-                          </span>
-                        </label>
-                        <button
-                          onClick={() => removeOption(option.id)}
-                          className="text-red-500 text-sm font-medium hover:text-red-600"
-                        >
-                          × Remove
-                        </button>
-                      </div>
-                    </div>
+                      option={option}
+                      removeValue={removeValue}
+                      removeOption={removeOption}
+                      availVals={availVals}
+                      showValueDropdown={showValueDropdown}
+                      addValue={addValue}
+                      setShowValueDropdown={setShowValueDropdown}
+                      setValueSearchTerm={setValueSearchTerm}
+                      showDropdown={showDropdown}
+                      valueSearchTerm={valueSearchTerm}
+                      filteredAttrs={filteredAttrs}
+                      selectAttribute={selectAttribute}
+                      updateOption={updateOption}
+                      setSearchTerm={setSearchTerm}
+                      setShowDropdown={setShowDropdown}
+                    />
                   );
                 })}
               </div>
@@ -713,7 +556,9 @@ export function CreateProduct() {
             {/* Variants */}
             {variantConfigs.length > 0 && (
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-2xl font-bold tracking-tight">Configure Variants</h2>
+                <h2 className="text-2xl font-bold tracking-tight">
+                  Configure Variants
+                </h2>
                 <p className="text-sm text-gray-500">
                   Set SKU, pricing, and inventory
                 </p>
@@ -809,70 +654,10 @@ export function CreateProduct() {
           </div>
 
           {/* Right Column */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6 sticky top-6">
-              <h2 className="text-2xl font-bold tracking-tight mb-4">Organize</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Segment Type <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="segmentType"
-                    value={formData.segmentType}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded-md"
-                  >
-                    <option>Wall</option>
-                    <option>Floor</option>
-                    <option>Ceiling</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Categories <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="categories"
-                    value={formData.categories}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded-md"
-                  >
-                    <option>Paint</option>
-                    <option>Primer</option>
-                    <option>Stain</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Brands <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="brands"
-                    value={formData.brands}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border-2 border-blue-500 rounded-md"
-                  >
-                    <option>PPG</option>
-                    <option>Sherwin-Williams</option>
-                    <option>Behr</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tags <span className="text-gray-400 text-xs">Optional</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="tags"
-                    value={formData.tags}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded-md"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <RightColumn
+            formData={formData}
+            handleInputChange={handleInputChange}
+          />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { userData } from "./OnboardingTenants";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -10,11 +10,24 @@ export interface UserProps {
   setUserData: React.Dispatch<React.SetStateAction<userData>>;
 }
 
+export const UserDetails = ({ userData, setUserData }: UserProps) => {
+  const { rolesPermissions } = useSelector(
+    (state: RootState) => state.rolePermission
+  );
 
-export const UserDetails = ({userData, setUserData}:UserProps) => {
+  useEffect(() => {
+    (() => {
+      let t = rolesPermissions.find((d) => d.code == userData.role);
 
-  const {rolesPermissions}= useSelector((state:RootState)=>state.rolePermission)
-   console.log("rolesPermissions--",rolesPermissions)
+      const clone = structuredClone(userData);
+      clone.permissions = rolesPermissions.find(
+        (d) => d.code == clone.role
+      )?.permissions;
+      console.log(clone);
+      setUserData(clone);
+    })();
+  }, [userData.role]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -69,7 +82,7 @@ export const UserDetails = ({userData, setUserData}:UserProps) => {
           <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
         </div>
 
-        <div>
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
             Role *
           </label>
@@ -110,69 +123,8 @@ export const UserDetails = ({userData, setUserData}:UserProps) => {
                   </label>
                 );
               })}
-            {/* <label
-              className={`flex items-center gap-4 p-4 border-2 rounded-lg cursor-pointer transition ${
-                userData.role === "owner"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <input
-                type="radio"
-                name="role"
-                value="owner"
-                checked={userData.role === "owner"}
-                onChange={(e) =>
-                  setUserData({ ...userData, role: e.target.value })
-                }
-                className="hidden"
-              />
-              <div className="text-2xl">👑</div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900">Owner</p>
-                <p className="text-sm text-gray-600">
-                  Full access to all features and settings
-                </p>
-              </div>
-              {userData.role === "owner" && (
-                <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <Check className="w-3 h-3 text-white" />
-                </div>
-              )}
-            </label>
-
-            <label
-              className={`flex items-center gap-4 p-4 border-2 rounded-lg cursor-pointer transition ${
-                userData.role === "admin"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <input
-                type="radio"
-                name="role"
-                value="admin"
-                checked={userData.role === "admin"}
-                onChange={(e) =>
-                  setUserData({ ...userData, role: e.target.value })
-                }
-                className="hidden"
-              />
-              <div className="text-2xl">⚙️</div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900">Admin</p>
-                <p className="text-sm text-gray-600">
-                  Manage users and content with limited access
-                </p>
-              </div>
-              {userData.role === "admin" && (
-                <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <Check className="w-3 h-3 text-white" />
-                </div>
-              )}
-            </label> */}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

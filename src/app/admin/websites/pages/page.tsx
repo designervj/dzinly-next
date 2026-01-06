@@ -25,8 +25,6 @@ export default async function PagesAdmin() {
       currentWebsiteId
     );
 
-
-
     const items = (data || []).map((p: any) => ({
       ...p,
       _id: p._id?.toString(),
@@ -50,7 +48,7 @@ export default async function PagesAdmin() {
     const handleView = (row: any) => {
       redirect(`/admin/websites/pages/${row._id}`);
     }
-    
+
     return (
       <div>
         <BreadCrumbPage />

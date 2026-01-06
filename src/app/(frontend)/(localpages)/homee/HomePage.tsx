@@ -4,31 +4,58 @@ import { headers } from "next/headers";
 const API_BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:55803";
 import React from 'react'
 import EditButton from "../../(clientpages)/EditButton";
+import RootClientPage from "./page.client";
 
 export default async function HomeTemplate({ params }: any) {
   const tenantId = "6941349ebc8a14e00bbc100c";
-  const slug = "home-mahimavalenza"
-  const res = await fetch(`${API_BASE_URL}/api/public/pages?slug=${slug}&tenantId=${tenantId}`);
-  const t = await res.json();
-  console.log("tt=> ", t)
-  // Check if the response has the expected structure
-  if (!t || !t.item || !t.item.content) {
-    return <div>Page not found or content unavailable</div>;
+  const slug = "home-mahimavalenza";
+
+  try {
+    // Fetch page data from API
+    const res = await fetch(`${API_BASE_URL}/api/public/pages?slug=${slug}&tenantId=${tenantId}`, {
+      cache: 'no-store' // Ensure fresh data on each request
+    });
+
+    // Check if response is OK (status 200-299)
+    if (!res.ok) {
+      console.error(`API returned status ${res.status} for /api/public/pages`);
+      // Fallback to static client page
+      return <RootClientPage />;
+    }
+
+    // Check if response is JSON
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('API returned non-JSON response:', contentType);
+      // Fallback to static client page
+      return <RootClientPage />;
+    }
+
+    // Parse JSON response
+    const t = await res.json();
+
+    // Check if the response has the expected structure
+    if (!t || !t.item || !t.item.content) {
+      console.warn('API response missing expected data structure');
+      return <RootClientPage />;
+    }
+
+    const html = t.item.content;
+    const name = "Himanshu";
+    const processedHtml = html.replace(/\{\{name\}\}/g, name);
+
+    return (
+      <>
+        <GethomePage homePageData={t.item} />
+        <EditButton pageData={t.item} />
+        <div dangerouslySetInnerHTML={{ __html: processedHtml }} />
+      </>
+    );
+
+  } catch (error) {
+    // Catch any errors (network, JSON parsing, etc.)
+    console.error('Error loading homepage data:', error);
+    // Fallback to static client page
+    return <RootClientPage />;
   }
-
-  const html = t.item.content;
-
-  //   const EditButton = (await import("../EditButton")).default;
-
-  const name = "Himanshu";
-
-  const processedHtml = html.replace(/\{\{name\}\}/g, name);
-  return (
-    <>
-      <GethomePage homePageData={t.item} />
-      <EditButton pageData={t.item} />
-      <div dangerouslySetInnerHTML={{ __html: processedHtml }} />
-    </>
-
-  )
 }

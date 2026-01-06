@@ -15,6 +15,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 /* ===== DEFAULT MENU ===== */
 const defaultMenus = [
@@ -81,6 +82,9 @@ export default function Page() {
 
   return (
     <div className={template === "dark" ? "bg-gray-900 text-white min-h-screen" : "bg-gray-100 min-h-screen"}>
+      <div className="mb-6">
+        <BreadCrumbPage />
+      </div>
       {/* HEADER */}
       <header className={template === "dark" ? "bg-gray-800 text-white shadow" : "bg-white text-gray-800 shadow"}>
         <div className="flex items-center justify-between px-6 py-3">
@@ -166,10 +170,8 @@ export default function Page() {
 
       {/* PAGE CONTENT */}
       <main className="p-6">
-        <h1 className="text-2xl font-semibold mb-2">Dashboard</h1>
-        <p className="text-gray-600">
-          Yahan tum apna page <span className="bg-purple-700 text-white px-1 rounded">content</span> likh sakte ho.
-        </p>
+
+      
 
         {/* MENU EDITOR PANEL */}
         <div className="mt-6 p-4 bg-white rounded-xl shadow space-y-3">

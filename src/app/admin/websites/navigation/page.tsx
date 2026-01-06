@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   const [open, setOpen] = useState<string | null>("posts");
@@ -21,7 +22,9 @@ export default function Page() {
     <div className="min-h-screen ">
       {/* PAGE TITLE */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Navigation</h1>
+        {/* <h1 className="text-3xl font-semibold">Navigation</h1> */}
+         <BreadCrumbPage />
+        
         <p className="text-gray-500 mt-1">
           Manage your website navigation and menus
         </p>

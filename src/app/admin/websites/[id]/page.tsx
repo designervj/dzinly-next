@@ -123,7 +123,7 @@ export default async function PageDetail({
 
     return (
       <div className="space-y-4">
-        <h2 className="text-xl font-medium">Edit Page</h2>
+        {/* <h2 className="text-xl font-medium">Edit Page aa</h2> */}
         <PageEditor viewUrl={serializedWebsite} id={pageId} item={serializedItem} fields={fieldConfig} />
       </div>
     );

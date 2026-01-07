@@ -138,6 +138,7 @@ const AccountTable = () => {
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
     { key: 'slug', label: 'Slug' },
+
     {
       key: 'plan',
       label: 'Plan',
@@ -181,6 +182,8 @@ const AccountTable = () => {
       label: 'Updated',
       render: (value: Date) => new Date(value).toLocaleDateString()
     },
+
+        { key: 'tenantType', label: 'Account Type' },
   ];
 
   return (

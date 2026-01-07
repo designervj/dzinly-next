@@ -462,7 +462,7 @@ const currentWebsiteSections: NavSection[] = [
       },
       {
         label: "Styles",
-        href: "/admin/styles",
+        href: "/admin/products/styles",
         icon: Palette,
         permission: [
           "product:read",
@@ -495,7 +495,7 @@ const currentWebsiteSections: NavSection[] = [
       // },
       {
         label: "Variants",
-        href: "/admin/variants",
+        href: "/admin/products/variants",
         icon: Boxes,
         permission: [
           "product:read",
@@ -506,7 +506,7 @@ const currentWebsiteSections: NavSection[] = [
       },
       {
         label: "Pricing Rules",
-        href: "/admin/pricing-rules",
+        href: "/admin/products/pricing-rules",
         icon: CircleDollarSign,
         permission: [
           "product:read",

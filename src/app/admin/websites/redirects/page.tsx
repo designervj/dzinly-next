@@ -3,6 +3,7 @@
 import React from "react";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   const redirects = [
@@ -25,7 +26,11 @@ export default function Page() {
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-semibold">Redirects</h1>
+          {/* <h1 className="text-3xl font-semibold">Redirects</h1>
+           */}
+
+         <BreadCrumbPage />
+
           <p className="text-gray-500 mt-1">
             Manage URL redirects for your website
           </p>

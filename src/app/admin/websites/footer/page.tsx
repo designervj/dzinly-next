@@ -12,6 +12,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   /* ================= STATES ================= */
@@ -59,12 +60,15 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-
+      <div className="mb-6">
+        <BreadCrumbPage />
+        </div>
       {/* ================= EDIT PANEL ================= */}
       <div className="bg-white border-b p-6">
-        <h2 className="text-2xl font-bold mb-6">
+        {/* <h2 className="text-2xl font-bold mb-6">
           Footer Editor (Live)
-        </h2>
+        </h2> */}
+
 
         {/* Brand */}
         <div className="mb-4">

@@ -23,6 +23,7 @@ export default function BuilderClient() {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
   const { page: pageHome, hasfetchPage, isLoading, error } = useSelector((state: RootState) => state.pageEdit);
+  
   const pathname = usePathname();
   const slug = pathname.split('/').pop();
   console.log("pathan---", pathname)

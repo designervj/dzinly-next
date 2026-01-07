@@ -14,11 +14,20 @@ import { AiChatModal } from "./aiChatModel/AiChatModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { clearPageEdit } from "@/hooks/slices/pageEditSlice";
-import { fetchLLMSettingByWebsiteId, fetchLLMSettings } from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
+import {
+  fetchLLMSettingByWebsiteId,
+  fetchLLMSettings,
+} from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
 
 export default function GrapesJSEditor() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { state, actions, isAiChatOpen, setIsAiChatOpen, selectedComponentForAi } = useEditor("gjs-editor");
+  const {
+    state,
+    actions,
+    isAiChatOpen,
+    setIsAiChatOpen,
+    selectedComponentForAi,
+  } = useEditor("gjs-editor");
 
   const [showResponsivePanel, setShowResponsivePanel] = useState(false);
   const [customDevices, setCustomDevices] = useState<DeviceConfig[]>([]);
@@ -33,43 +42,43 @@ export default function GrapesJSEditor() {
   const dispatch = require("react-redux").useDispatch();
   const { page } = useSelector((state: RootState) => state.pageEdit);
 
+  console.log("Page: ==>>>>",page)
+
   function extractCssFromHtml(html: string): string {
     const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
     if (!matches) return "";
-    return matches.map(styleTag => {
-      const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-      return inner ? inner[1] : "";
-    }).join("\n");
+    return matches
+      .map((styleTag) => {
+        const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        return inner ? inner[1] : "";
+      })
+      .join("\n");
   }
 
-
-
   // get llm setting data based on tenenantId
-const {currentWebsite}= useSelector((state:RootState)=>state.websites)
-useEffect(()=>{
-  if(user && user.tenantId &&!currentWebsite){
- dispatch(fetchLLMSettingByWebsiteId({websiteId:user.tenantId}))
-    }
-},[user])
+  const { currentWebsite } = useSelector((state: RootState) => state.websites);
 
+  useEffect(() => {
+    if (user && user.tenantId && !currentWebsite) {
+      dispatch(fetchLLMSettingByWebsiteId({ websiteId: user.tenantId }));
+    }
+  }, [user]);
 
   // update the page content into editor
   useEffect(() => {
     if (state.editor && page?.content) {
-  debugger
-    //  const css= extractCssFromHtml(page.content)
-    //   if (css) {
-    //   state.editor.setStyle(css);
-    // }
-        state.editor.setComponents(page.content);   
-     setEditorHtml(page.content);
-    // console.log("css---", css)
-    //state.editor.setStyle(css)
-  }
+      debugger;
+      //  const css= extractCssFromHtml(page.content)
+      //   if (css) {
+      //   state.editor.setStyle(css);
+      // }
+      state.editor.setComponents(page.content);
+      setEditorHtml(page.content);
+      // console.log("css---", css)
+      //state.editor.setStyle(css)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.editor, page?.content]);
-
-
 
   useEffect(() => {
     if (!state.editor) return;
@@ -213,7 +222,7 @@ useEffect(()=>{
   // Code editor sync
   // ─────────────────────────────
   const handleUpdateHtml = (html: string) => {
-    console.log("update html")
+    console.log("update html");
     if (!state.editor) return;
     //onsole.log("html ---", html)
     state.editor.setComponents(html);
@@ -359,8 +368,6 @@ useEffect(()=>{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.editor]);
 
-
-
   const allDevices = [
     ...(state.editor?.DeviceManager?.getAll()?.models?.map((model: any) => ({
       id: model.id,
@@ -370,22 +377,32 @@ useEffect(()=>{
     ...customDevices,
   ];
 
-
   // Fix: handleStyleChange to match expected signature
   const handleStyleChange = (property: string, value: string) => {
-
     if (property && value) {
       actions.updateStyle(property, value);
     }
-  }
+  };
 
   // Fix: handleStyleChange to match expected signature
   const handleUpdateInteractivity = (data: any) => {
-
-    if (data && data.type && data.event && data.action && data.target && data.options) {
-      actions.updateInteractivity(data.type, data.event, data.action, data.target, data.options);
+    if (
+      data &&
+      data.type &&
+      data.event &&
+      data.action &&
+      data.target &&
+      data.options
+    ) {
+      actions.updateInteractivity(
+        data.type,
+        data.event,
+        data.action,
+        data.target,
+        data.options
+      );
     }
-  }
+  };
   return (
     <div className="h-screen bg-[#0F172A] text-white overflow-hidden flex flex-col">
       <TooltipProvider delayDuration={300}>
@@ -417,8 +434,9 @@ useEffect(()=>{
         <div className="relative flex flex-1 overflow-hidden">
           {/* Canvas */}
           <div
-            className={`${showSidebar ? "w-[90%]" : "w-full"
-              } transition-all duration-300 ease-in-out relative`}
+            className={`${
+              showSidebar ? "w-[90%]" : "w-full"
+            } transition-all duration-300 ease-in-out relative`}
           >
             {state.isLoading && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/80">

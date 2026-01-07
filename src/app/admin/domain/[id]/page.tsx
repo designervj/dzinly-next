@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { X, Plus, Globe, ShoppingCart, LayoutGrid, ArrowLeft } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import {
+  X,
+  Plus,
+  Globe,
+  ShoppingCart,
+  LayoutGrid,
+  ArrowLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 import { toast } from "sonner";
@@ -17,7 +24,9 @@ const DomainEditPage = () => {
   const domainId = params.id as string;
 
   // Get current website from Redux
-  const currentWebsite = useSelector((state: RootState) => state.websites.currentWebsite);
+  const currentWebsite = useSelector(
+    (state: RootState) => state.websites.currentWebsite
+  );
 
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
@@ -86,7 +95,7 @@ const DomainEditPage = () => {
 
     try {
       setSaving(true);
-      const response = await fetch(`/api/domain/${domainId}`, {
+      const response = await fetch(`/api/domain/update/${domainId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -96,15 +105,13 @@ const DomainEditPage = () => {
         }),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         toast.success("Domain updated successfully");
         router.push("/admin/domain");
       } else {
-        let msg = "";
-        try {
-          msg = (await response.json()).error;
-        } catch { }
-        toast.error("Update failed: " + (msg || response.status));
+        toast.error("Update failed: ", result.message);
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to update domain");
@@ -182,7 +189,9 @@ const DomainEditPage = () => {
                 value={currentWebsite.systemSubdomain}
                 disabled
               />
-              <p className="text-xs text-gray-500">This field cannot be edited</p>
+              <p className="text-xs text-gray-500">
+                This field cannot be edited
+              </p>
             </div>
           )}
 
@@ -195,16 +204,18 @@ const DomainEditPage = () => {
               <button
                 type="button"
                 onClick={() => setServiceType("WEBSITE_ONLY")}
-                className={`p-5 rounded-xl border-2 transition-all ${serviceType === "WEBSITE_ONLY"
-                  ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
-                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-                  }`}
+                className={`p-5 rounded-xl border-2 transition-all ${
+                  serviceType === "WEBSITE_ONLY"
+                    ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
+                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                }`}
               >
                 <Globe
-                  className={`h-10 w-10 mx-auto mb-3 ${serviceType === "WEBSITE_ONLY"
-                    ? "text-primary"
-                    : "text-gray-400"
-                    }`}
+                  className={`h-10 w-10 mx-auto mb-3 ${
+                    serviceType === "WEBSITE_ONLY"
+                      ? "text-primary"
+                      : "text-gray-400"
+                  }`}
                 />
                 <div className="font-semibold text-gray-900">Website Only</div>
                 <div className="text-xs text-gray-500 mt-1">For Architects</div>
@@ -213,16 +224,18 @@ const DomainEditPage = () => {
               <button
                 type="button"
                 onClick={() => setServiceType("ECOMMERCE")}
-                className={`p-5 rounded-xl border-2 transition-all ${serviceType === "ECOMMERCE"
-                  ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
-                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-                  }`}
+                className={`p-5 rounded-xl border-2 transition-all ${
+                  serviceType === "ECOMMERCE"
+                    ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
+                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                }`}
               >
                 <ShoppingCart
-                  className={`h-10 w-10 mx-auto mb-3 ${serviceType === "ECOMMERCE"
-                    ? "text-primary"
-                    : "text-gray-400"
-                    }`}
+                  className={`h-10 w-10 mx-auto mb-3 ${
+                    serviceType === "ECOMMERCE"
+                      ? "text-primary"
+                      : "text-gray-400"
+                  }`}
                 />
                 <div className="font-semibold text-gray-900">E-Commerce</div>
                 <div className="text-xs text-gray-500 mt-1">
@@ -233,16 +246,18 @@ const DomainEditPage = () => {
               <button
                 type="button"
                 onClick={() => setServiceType("MATERIAL_LIBRARY")}
-                className={`p-5 rounded-xl border-2 transition-all ${serviceType === "MATERIAL_LIBRARY"
-                  ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
-                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-                  }`}
+                className={`p-5 rounded-xl border-2 transition-all ${
+                  serviceType === "MATERIAL_LIBRARY"
+                    ? "border-primary-500 bg-primary/5 shadow-md ring-2 ring-primary"
+                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                }`}
               >
                 <LayoutGrid
-                  className={`h-10 w-10 mx-auto mb-3 ${serviceType === "MATERIAL_LIBRARY"
-                    ? "text-primary"
-                    : "text-gray-400"
-                    }`}
+                  className={`h-10 w-10 mx-auto mb-3 ${
+                    serviceType === "MATERIAL_LIBRARY"
+                      ? "text-primary"
+                      : "text-gray-400"
+                  }`}
                 />
                 <div className="font-semibold text-gray-900">
                   Materials Library
@@ -339,10 +354,7 @@ const DomainEditPage = () => {
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={saving}
-            >
+            <Button type="submit" disabled={saving}>
               {saving ? "Updating..." : "Update Website"}
             </Button>
           </div>

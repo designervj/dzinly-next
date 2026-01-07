@@ -40,6 +40,7 @@ interface SectionProps extends StyleEditorProps {}
 
 // Typography section component
 function TypographySection({ styles, onStyleChange }: SectionProps) {
+  console.log("====...",styles)
   return (
     <div className="space-y-4">
       <FontFamilyControl styles={styles} onStyleChange={onStyleChange} />

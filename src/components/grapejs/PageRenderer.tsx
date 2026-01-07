@@ -19,6 +19,7 @@ export default function PageRenderer({ slug }: PageRendererProps) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         const fetchPage = async () => {
             try {

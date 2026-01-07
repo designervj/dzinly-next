@@ -1801,11 +1801,11 @@ function Topbar({
           <Menu className="h-5 w-5" />
         </Button>
 
-        <div className="hidden text-sm font-medium text-foreground md:inline">
+        {/* <div className="hidden text-sm font-medium text-foreground md:inline">
           Dashboard
-        </div>
+        </div> */}
 
-        {currentWebsite && (
+        {/* {currentWebsite && (
           <div className="flex items-center gap-2 rounded-full border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
               {currentWebsite.name.charAt(0).toUpperCase()}
@@ -1817,7 +1817,7 @@ function Topbar({
               {currentWebsite.primaryDomain || currentWebsite.systemSubdomain}
             </span>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="flex items-center gap-2">

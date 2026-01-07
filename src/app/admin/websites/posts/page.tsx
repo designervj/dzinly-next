@@ -3,6 +3,7 @@
 import React from "react";
 import { Plus, Trash2, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   const posts = [
@@ -44,10 +45,11 @@ export default function Page() {
     <div className="bg-gray-100 min-h-screen p-6">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-        <h1 className="text-3xl font-bold text-gray-800">Posts</h1>
-        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        {/* <h1 className="text-3xl font-bold text-gray-800">Posts 1</h1> */}
+        <BreadCrumbPage />
+        <Button>
           <Plus className="h-4 w-4" /> Add New Post
-        </button>
+        </Button>
       </div>
 
       {/* Posts Grid */}

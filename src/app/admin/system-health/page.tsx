@@ -16,7 +16,7 @@ export default function page() {
           <BreadCrumbPage/>
           <p className="text-muted-foreground">Monitor service status, API latency, and database uptime.</p>
         </div>
-        <Button variant="outline"><RefreshCw className="mr-2 h-4 w-4" /> Refresh Status</Button>
+        <Button ><RefreshCw className="mr-2 h-4 w-4" /> Refresh Status</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

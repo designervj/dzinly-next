@@ -59,7 +59,7 @@ export default async function PagesAdmin() {
           sysdomain={sysdomain}
           title=""
           data={items}
-          createHref="/admin/websites/new"
+          createHref="/admin/websites/create"
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },

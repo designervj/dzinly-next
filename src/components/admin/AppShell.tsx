@@ -1220,7 +1220,7 @@ function Sidebar({
                 {!collapsed && (
                   <div className="flex flex-col leading-tight text-left ms-3 me-3 bg-background border border-border/50 shadow-sm rounded-md px-3 py-2 mt-4">
                     <span className="text-xs font-semibold text-foreground">
-                      {currentUser?.name || "Select website"}
+                      {currentWebsite?.name || "Select website"}
                     </span>
                     {currentUser.role != "customer" && (
                       <span className="text-[11px] text-muted-foreground">
@@ -1603,7 +1603,7 @@ function MobileSidebar({
 
   return (
     <div className="flex flex-col h-full bg-muted/20">
-      {websites.length > 0 && (
+      {/* {websites.length > 0 && (
         <div className="p-4 border-b">
           <Select
             value={currentWebsite?._id || ""}
@@ -1626,7 +1626,7 @@ function MobileSidebar({
             </SelectContent>
           </Select>
         </div>
-      )}
+      )} */}
 
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-3">

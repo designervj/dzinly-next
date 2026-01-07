@@ -155,6 +155,42 @@ export class WebsiteService {
     );
     return r.modifiedCount > 0;
   }
+
+  async getById(id: string) {
+    const c = await this.col();
+    try {
+      const objectId = new ObjectId(id);
+      return c.findOne({ _id: objectId });
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async update(id: string, updates: Partial<Omit<WebsiteDoc, '_id' | 'websiteId' | 'tenantId' | 'createdAt'>>) {
+    const c = await this.col();
+    try {
+      const objectId = new ObjectId(id);
+      const r = await c.findOneAndUpdate(
+        { _id: objectId },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return r;
+    } catch (error) {
+      throw new Error('Failed to update website');
+    }
+  }
+
+  async delete(id: string) {
+    const c = await this.col();
+    try {
+      const objectId = new ObjectId(id);
+      const r = await c.deleteOne({ _id: objectId });
+      return r.deletedCount > 0;
+    } catch (error) {
+      throw new Error('Failed to delete website');
+    }
+  }
 }
 
 export const websiteService = new WebsiteService();

@@ -179,7 +179,7 @@ const ProductTable = () => {
   return (
     <>
       <div>
-        <BreadCrumbPage />
+       
         <DataTableExt
           title="Products"
           data={products ?? []}

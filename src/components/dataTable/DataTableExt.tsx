@@ -35,6 +35,7 @@ import {
   Eye,
   Trash2,
   Edit2,
+  Layout,
 } from "lucide-react";
 import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
 
@@ -369,13 +370,18 @@ export function DataTableExt({
     }
   }
 
+  const pathname= usePathname();
+  ///admin/websites extract website 
+  const pageName= pathname.split("/")[2];
+
+  console.log("pathname",pageName);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-5">
         {/* <div className="text-2xl font-bold tracking-tight">{title} </div> */}
         {/* <div className="flex items-center gap-2"> */}
-           <div className="flex items-center gap-2 justify-between w-full">
-               <BreadCrumbPage/>
+        <div className="flex items-center gap-2 justify-between w-full">
+          <BreadCrumbPage />
           {onCreate ? (
             <Button size="sm" className="py-2 rounded-sm px-4 py-2" onClick={onCreate}>Create New</Button>
           ) : createHref ? (
@@ -646,12 +652,21 @@ export function DataTableExt({
                     })}
                   <TableCell className="py-2 text-right">
                     <div className="flex items-center justify-end gap-2">
+                     {pageName === "websites" && <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-green-500 hover:text-destructive"
+                        onClick={(e) => handleViewPage(e, row)}
+                        title="Builder"
+                      >
+                        <Layout className="h-4 w-4" />
+                      </Button>}
                       <Button
                         variant="ghost"
                         size="sm"
                         className="h-8 w-8 p-0 text-green-500 hover:text-destructive"
                         onClick={(e) => handleViewPage(e, row)}
-                        title="Delete"
+                        title="View"
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -660,7 +675,7 @@ export function DataTableExt({
                         size="sm"
                         className="h-8 w-8 p-0"
                         onClick={(e) => handleEdit(e, row)}
-                        title="View"
+                        title="Edit"
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>

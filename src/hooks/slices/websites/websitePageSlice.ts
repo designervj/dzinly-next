@@ -67,25 +67,52 @@ export const updateWebsitePage = createAsyncThunk<
   }
 });
 
+export const deleteWebsitePageByWebsiteId = createAsyncThunk<
+  { success: boolean; websiteId: string },
+  string,
+  { rejectValue: string }
+>("websitePage/deleteWebsitePageByWebsiteId", async (websiteId, { rejectWithValue }) => {
+  try {
+    const response = await fetch(`/api/pages/websites?websiteId=${websiteId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Failed to delete pages by website ID");
+    }
+    return {
+      success: true,
+      websiteId: websiteId,
+    };
+  } catch (err: any) {
+    return rejectWithValue(err.message || "Failed to delete pages by website ID");
+  }
+});
 export const deleteWebsitePage = createAsyncThunk<
   string,
   string,
   { rejectValue: string }
->("websitePage/deleteWebsitePage", async (id, { rejectWithValue }) => {
+>("websitePage/deleteWebsitePage", async (pageId, { rejectWithValue }) => {
   try {
-    await axios.delete(`/api/pages/websites?id=${id}`);
-    return id;
+    const response = await fetch(`/api/pages/websites?id=${pageId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Failed to delete page");
+    }
+    return pageId;
   } catch (err: any) {
-    return rejectWithValue(
-      err.response?.data?.message || "Failed to delete page"
-    );
+    return rejectWithValue(err.message || "Failed to delete page");
   }
 });
+
+
 import { WebsitePageModel } from "../../../components/admin/website/websitePage/WebsitePageType";
 
 interface WebsitePageState {
   websitePages: WebsitePageModel[];
-  currentpage:WebsitePageModel|{};
+  currentpage: WebsitePageModel | {};
   hasFetched: boolean;
   isLoading: boolean;
   error: string | null;
@@ -93,7 +120,7 @@ interface WebsitePageState {
 
 const initialState: WebsitePageState = {
   websitePages: [],
-  currentpage:{},
+  currentpage: {},
   hasFetched: false,
   isLoading: false,
   error: null,
@@ -103,8 +130,15 @@ const websitePageSlice = createSlice({
   name: "websitePage",
   initialState,
   reducers: {
-    updateCurrentPage:(state, action)=>{
-        state.currentpage=action.payload
+    updateCurrentPage: (state, action) => {
+      state.currentpage = action.payload
+    },
+    setAllWebsitePages: (state, action) => {
+      state.websitePages = action.payload
+      state.hasFetched=true
+    },
+    addNewDomain:(state,action)=>{
+      state.websitePages.push(action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -145,13 +179,26 @@ const websitePageSlice = createSlice({
       .addCase(deleteWebsitePage.fulfilled, (state, action) => {
         state.websitePages = state.websitePages.filter(
           (p) => p._id !== action.payload
-        );
-      });
+        )
+      })
+        //delete website page by website id
+        .addCase(deleteWebsitePageByWebsiteId.fulfilled, (state, action) => {
+          state.websitePages = state.websitePages.filter(
+            (p) => p.websiteId !== action.payload.websiteId
+          );
+         
+      }) 
+      .addCase(deleteWebsitePageByWebsiteId.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Failed to delete pages by website ID";
+      })
   },
 });
 
-export const {
-updateCurrentPage
+  export const {
+    updateCurrentPage,
+    setAllWebsitePages,
+    addNewDomain
 } = websitePageSlice.actions;
 
 export default websitePageSlice.reducer;

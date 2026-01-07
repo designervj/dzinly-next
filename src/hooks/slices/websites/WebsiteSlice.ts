@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Website } from "@/components/admin/AppShell";
+import { deleteWebsiteById, fetchWebsiteById } from "./WebsiteThunk";
 
 interface WebsitesState {
   websites: Website[];
@@ -15,24 +16,6 @@ const initialState: WebsitesState = {
   error: null,
 };
 
-// Thunk to fetch website by _id
-export const fetchWebsiteById = createAsyncThunk(
-  "websites/fetchById",
-  async (websiteId: string, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`/api/domain/website?id=${websiteId}`);
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch website");
-      }
-      
-      const data = await response.json();
-      return data.item as Website;
-    } catch (error: any) {
-      return rejectWithValue(error.message || "Failed to fetch website");
-    }
-  }
-);
 
 const websitesSlice = createSlice({
   name: "websites",
@@ -71,6 +54,24 @@ const websitesSlice = createSlice({
         }
       })
       .addCase(fetchWebsiteById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteWebsiteById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteWebsiteById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const deletedId = action.payload.deletedId;
+        // Remove from websites array
+        state.websites = state.websites.filter((w) => w._id !== deletedId);
+        // Clear currentWebsite if it was the deleted one
+        if (state.currentWebsite?._id === deletedId) {
+          state.currentWebsite = state.websites.length > 0 ? state.websites[0] : null;
+        }
+      })
+      .addCase(deleteWebsiteById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

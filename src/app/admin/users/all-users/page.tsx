@@ -15,58 +15,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DataTableExt } from "@/components/dataTable/DataTableExt";
 export default function Page() {
-  const users = [
-    {
-      id: 1,
-      name: "Deepak Rai",
-      email: "deepak@gmail.com",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Amit Sharma",
-      email: "amit@gmail.com",
-      role: "Editor",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      name: "Rohit Verma",
-      email: "rohit@gmail.com",
-      role: "Viewer",
-      status: "Active",
-    },
-  ];
 
    const { user, hasFetchedAllUsers, alluser } = useSelector(
     (state: RootState) => state.user
   );
+
+    const handleAdd = () => {}
+    const handleDelete = (row: IUser) => {}
+    const handleView = (row: IUser) => {}
+    const initialColumns = [
+    { key: "_id", label: "ID", hidden: true },
+    { key: "id", label: "ID", hidden: true },
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email" },
+    { key: "role", label: "Role" },
+    { key: "status", label: "Status" },
+    { key: "tenantId", label: "Tenant ID" },
+    { key: "createdAt", label: "Created At" },
+    { key: "updatedAt", label: "Updated At" },
+    { key: "passwordHash", label: "Password Hash" , hidden: true},
+    { key: "permissions", label: "Permissions", hidden:true },
+
+]
   return (
     <>
 
     {/* get all users */}
     <GetAllUsers/>
+    <DataTableExt
+          title=""
+          data={alluser ?? []}
+          onCreate={handleAdd}
+          initialColumns={initialColumns}
+          onDelete={(row) => handleDelete(row)}
+          onView={(row) => handleView(row)}
+        />
 
      <div className="min-h-screen">
       {/* PAGE HEADER */}
       <div className="flex items-center justify-between mb-6">
-        <div>
+        {/* <div>
         <BreadCrumbPage/>
            <p className="text-gray-500 mt-1">
             Manage users, roles and permissions
           </p>
-        </div>
+        </div> */}
 
-        <Button >
+
+
+        {/* <Button >
           <UserPlus size={18} />
           Add User
-        </Button>
+        </Button> */}
       </div>
 
       {/* SEARCH + FILTER */}
-      <div className="bg-white p-4 rounded-xl shadow-sm mb-6 flex items-center justify-between">
+      {/* <div className="bg-white p-4 rounded-xl shadow-sm mb-6 flex items-center justify-between">
         <div className="relative w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
@@ -88,10 +94,10 @@ export default function Page() {
         <SelectItem value="viewer">Viewer</SelectItem>
       </SelectContent>
     </Select>
-      </div>
+      </div> */}
 
       {/* USERS TABLE */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      {/* <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-100 text-left">
             <tr>
@@ -139,7 +145,7 @@ export default function Page() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
     </>
    

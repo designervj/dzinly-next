@@ -5,56 +5,37 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { getAllUser } from "@/hooks/slices/user/userSlice";
 import Link from "next/link";
-// import { cookies } from "next/headers";
+import { useRouter } from "next/navigation";
 
-// async function fetchCount(path: string) {
-//   try {
-//     const cookieStore = await cookies();
-//     const cookie = cookieStore.toString();
-//     const res = await fetch(path, { cache: "no-store", headers: { cookie } });
-//     if (!res.ok) return 0;
-//     const data = await res.json();
-//     const items = Array.isArray(data) ? data : data.items;
-//     return Array.isArray(items) ? items.length : 0;
-//   } catch {
-//     return 0;
-//   }
-// }
 
 export default function AdminIndex() {
   const {user, alluser,hasFetched }= useSelector((state:RootState)=>state.user)
    const dispatch= useDispatch<AppDispatch>()
-  
-  // const [pages, posts, products, orders, categories, tags] = await Promise.all([
-  //   fetchCount("/api/pages"),
-  //   fetchCount("/api/posts"),
-  //   fetchCount("/api/products"),
-  //   fetchCount("/api/orders"),
-  //   fetchCount("/api/categories"),
-  //   fetchCount("/api/blog_tags"),
-  // ]);
+  const router= useRouter()  
+
 
   useEffect(()=>{
-    if(!alluser&&
-      !hasFetched&&
-      user && user.tenantId){
-   dispatch(getAllUser())
+    if(user && user.tenantId){
+  // dispatch(getAllUser())
+   router.push("/admin/dashboard")
+
     }
-  },[alluser,hasFetched,user])
+  },[user])
 
 
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
-        <p className="text-sm text-muted-foreground">Quick overview</p>
-      </div>
-   { user && user.role==="superadmin" &&  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Link href={"/onboarding"} className="flex items-center justify-center w-40 rounded-lg bg-green-500 text-white hover:bg-white hover:text-green-500 p-2 border border-green-500">
-          Onboard Tenant
-        </Link>
-      </div>}
-    </div>
+    null
+  //   <div className="space-y-6">
+  //     <div>
+  //       <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
+  //       <p className="text-sm text-muted-foreground">Quick overview</p>
+  //     </div>
+  //  { user && user.role==="superadmin" &&  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  //       <Link href={"/onboarding"} className="flex items-center justify-center w-40 rounded-lg bg-green-500 text-white hover:bg-white hover:text-green-500 p-2 border border-green-500">
+  //         Onboard Tenant
+  //       </Link>
+  //     </div>}
+  //   </div>
   );
 }

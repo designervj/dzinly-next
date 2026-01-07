@@ -45,5 +45,16 @@ export async function POST(req: Request) {
       : {}),
   });
   
+  console.log("created domain ", created);
   return NextResponse.json(created, { status: 201 });
 }
+
+export async function PUT(req: Request) {
+  const session = await auth();
+  if (!session?.user?.tenantId || !session.user.tenantSlug) 
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  // const updateDate= await websiteService.updateDomain();
+
+ return NextResponse.json({});
+} ``

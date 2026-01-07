@@ -53,7 +53,7 @@ export default async function PagesAdmin() {
 
     return (
       <div>
-        <BreadCrumbPage />
+       
         <DataTableExt
           website={website}
           sysdomain={sysdomain}
@@ -63,7 +63,7 @@ export default async function PagesAdmin() {
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },
-            { key: "publishedAt", label: "Published" },
+         
             { key: "createdAt", label: "Created At" },
             { key: "updatedAt", label: "Updated At" },
           ]}

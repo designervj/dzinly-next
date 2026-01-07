@@ -1,10 +1,15 @@
 
-import { fetchWebsitePages } from "@/hooks/slices/websites/websitePageSlice";
+"use client";
+import { fetchWebsitePages, setAllWebsitePages } from "@/hooks/slices/websites/websitePageSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { WebsitePageModel } from "./WebsitePageType";
 
-const GetAllPage = () => {
+type props={
+ allPages: WebsitePageModel[]
+}
+const GetAllPage = ({allPages}:props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
@@ -14,12 +19,12 @@ const GetAllPage = () => {
 
   useEffect(() => {
     if (!hasFetched && 
-        websitePages && 
-        websitePages.length==0&&
+        !websitePages && 
+        allPages.length>0&&
         currentWebsite && currentWebsite._id) {
-      dispatch(fetchWebsitePages(currentWebsite._id));
+      dispatch(setAllWebsitePages(allPages));
     }
-  }, [hasFetched, websitePages,currentWebsite]);
+  }, [hasFetched, websitePages,currentWebsite,allPages]);
   return null;
 };
 

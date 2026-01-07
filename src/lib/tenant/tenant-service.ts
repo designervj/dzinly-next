@@ -55,10 +55,8 @@ export class TenantService {
       subscriptionStatus: 'active',
       customDomainVerified: false,
       branding: {
-        colors: {
-          primary: '#3b82f6',
-          secondary: '#f4e04f',
-        },
+          primaryColor: '#3b82f6',
+        secondaryColor: '#f4e04f',
       },
       paymentGateways: {},
       features: {

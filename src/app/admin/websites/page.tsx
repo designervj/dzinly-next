@@ -5,6 +5,7 @@ import { pageService } from "@/modules/website/page-service";
 import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 import GetAllPage from "@/components/admin/website/websitePage/GetAllPage";
+import { WebsitePageModel } from "@/components/admin/website/websitePage/WebsitePageType";
 
 export default async function PagesAdmin() {
   const session = await auth();
@@ -23,7 +24,7 @@ export default async function PagesAdmin() {
       currentWebsiteId
     );
 
-    const items = (data || []).map((p: any) => ({
+    const items: WebsitePageModel[] = (data || []).map((p: any) => ({
       ...p,
       _id: p._id?.toString(),
       tenantId: p.tenantId?.toString(),
@@ -54,10 +55,10 @@ export default async function PagesAdmin() {
 
     return (
       <div>
-       
-       <GetAllPage
-       allpages={items}
-       />
+
+        {items.length > 0 && <GetAllPage
+          allPages={items}
+        />}
         <DataTableExt
           website={website}
           sysdomain={sysdomain}
@@ -67,7 +68,7 @@ export default async function PagesAdmin() {
           initialColumns={[
             { key: "slug", label: "Slug" },
             { key: "status", label: "Status" },
-         
+
             { key: "createdAt", label: "Created At" },
             { key: "updatedAt", label: "Updated At" },
           ]}

@@ -78,36 +78,36 @@ export class BrandingService {
   }
 
   // Generate CSS variables from branding settings
-  static generateCSSVariables(branding: BrandingSettings): string {
-    const { colors, fonts } = branding;
+  // static generateCSSVariables(branding: BrandingSettings): string {
+  //   const { colors, fonts } = branding;
     
-    let css = ':root {\n';
+  //   let css = ':root {\n';
     
-    // Color variables
-    if (colors.primary) css += `  --primary: ${colors.primary};\n`;
-    if (colors.secondary) css += `  --secondary: ${colors.secondary};\n`;
-    if (colors.accent) css += `  --accent: ${colors.accent};\n`;
-    if (colors.background) css += `  --background: ${colors.background};\n`;
-    if (colors.foreground) css += `  --foreground: ${colors.foreground};\n`;
-    if (colors.muted) css += `  --muted: ${colors.muted};\n`;
-    if (colors.mutedForeground) css += `  --muted-foreground: ${colors.mutedForeground};\n`;
-    if (colors.border) css += `  --border: ${colors.border};\n`;
-    if (colors.input) css += `  --input: ${colors.input};\n`;
-    if (colors.ring) css += `  --ring: ${colors.ring};\n`;
+  //   // Color variables
+  //   if (colors.primary) css += `  --primary: ${colors.primary};\n`;
+  //   if (colors.secondary) css += `  --secondary: ${colors.secondary};\n`;
+  //   if (colors.accent) css += `  --accent: ${colors.accent};\n`;
+  //   if (colors.background) css += `  --background: ${colors.background};\n`;
+  //   if (colors.foreground) css += `  --foreground: ${colors.foreground};\n`;
+  //   if (colors.muted) css += `  --muted: ${colors.muted};\n`;
+  //   if (colors.mutedForeground) css += `  --muted-foreground: ${colors.mutedForeground};\n`;
+  //   if (colors.border) css += `  --border: ${colors.border};\n`;
+  //   if (colors.input) css += `  --input: ${colors.input};\n`;
+  //   if (colors.ring) css += `  --ring: ${colors.ring};\n`;
     
-    // Font variables
-    if (fonts?.heading) css += `  --font-heading: ${fonts.heading};\n`;
-    if (fonts?.body) css += `  --font-body: ${fonts.body};\n`;
+  //   // Font variables
+  //   if (fonts?.heading) css += `  --font-heading: ${fonts.heading};\n`;
+  //   if (fonts?.body) css += `  --font-body: ${fonts.body};\n`;
     
-    css += '}\n';
+  //   css += '}\n';
     
-    // Add custom CSS if provided
-    if (branding.customCSS) {
-      css += '\n' + branding.customCSS;
-    }
+  //   // Add custom CSS if provided
+  //   if (branding.customCSS) {
+  //     css += '\n' + branding.customCSS;
+  //   }
     
-    return css;
-  }
+  //   return css;
+  // }
 
   // Get default branding settings
   static getDefaultBrandingSettings(): BrandingSettings {
@@ -188,7 +188,7 @@ export class BrandingService {
     if (!branding) return;
 
     // Generate CSS
-    const css = this.generateCSSVariables(branding);
+    //const css = this.generateCSSVariables(branding);
     
     // Store the generated CSS for the tenant
     const db = await this.db;
@@ -196,7 +196,7 @@ export class BrandingService {
       { tenantId },
       {
         $set: {
-          css,
+          //css,
           branding,
           updatedAt: new Date(),
         },

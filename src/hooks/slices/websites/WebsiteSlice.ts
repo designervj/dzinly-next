@@ -23,6 +23,7 @@ const websitesSlice = createSlice({
   reducers: {
     setWebsites(state, action: PayloadAction<Website[]>) {
       state.websites = action.payload;
+  
       // If currentWebsite is not set, pick the first one
       if (!state.currentWebsite && action.payload.length > 0) {
         state.currentWebsite = action.payload[0];

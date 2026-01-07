@@ -9,15 +9,19 @@ export interface TenantModel {
   customDomainVerified: boolean;
   plan: 'trial' | 'basic' | 'pro' | 'enterprise';
   subscriptionStatus: 'active' | 'suspended' | 'cancelled';
-  branding: BrandingSettings;
-  paymentGateways: Record<string, unknown>;
-  features: {
+  branding?:{
+    primaryColor?:string,
+    secondaryColor?:string,
+    accentColor?:string
+  }
+  paymentGateways?: Record<string, unknown>;
+  features?: {
     websiteEnabled: boolean;
     ecommerceEnabled: boolean;
     blogEnabled: boolean;
     invoicesEnabled: boolean;
   };
-  settings: {
+  settings?: {
     locale: string;
     currency: string;
     timezone: string;
@@ -40,10 +44,9 @@ export const demoTenant: TenantModel = {
   plan: 'trial',
   subscriptionStatus: 'active',
   branding: {
-    colors: {
-      primary: '#3b82f6',
-      secondary: '#f4e04f',
-    },
+    primaryColor: '#3b82f6',
+    secondaryColor: '#f4e04f',
+    accentColor: '#f4e04f',
   },
   paymentGateways: {},
   features: {

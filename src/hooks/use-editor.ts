@@ -170,7 +170,7 @@ export function useEditor(containerId: string) {
             console.log("Save template clicked!");
             const html = editor.getHtml();
             const css = editor.getCss();
-          
+
             alert("Template saved! Check console for details.");
           },
         });
@@ -202,7 +202,7 @@ export function useEditor(containerId: string) {
 
         // Add fallback methods if needed
         if (typeof (editor as any).setJs !== "function") {
-        
+
           (editor as any).setJs = (js: string) => {
             // Store JS in editor's storage
             editor.StorageManager.store({
@@ -337,17 +337,17 @@ export function useEditor(containerId: string) {
               return `
         <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
           ${products
-            .slice(0, limit)
-            .map(
-              (p: any) => `
+                  .slice(0, limit)
+                  .map(
+                    (p: any) => `
             <div class="product-card" style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; text-align: center;">
               <img src="${p.thumbnail}" alt="${p.title}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 4px; margin-bottom: 12px;">
               <h3 style="font-size: 16px; margin: 8px 0;">${p.title}</h3>
               <p style="color: #666; margin: 4px 0; font-size: 14px;">$${p.price}</p>
             </div>
           `
-            )
-            .join("")}
+                  )
+                  .join("")}
         </div>
       `;
             },
@@ -374,21 +374,19 @@ export function useEditor(containerId: string) {
         <div style="font-family: Arial, sans-serif;">
           <div class="category-tabs" style="display: flex; gap: 8px; border-bottom: 2px solid #e0e0e0; margin-bottom: 20px;">
             ${this.categories
-              .map(
-                (cat: string) => `
+                  .map(
+                    (cat: string) => `
               <button 
                 class="tab-btn" 
                 data-category="${cat}"
                 style="
                   padding: 12px 24px;
-                  background: ${
-                    cat === this.activeCategory ? "#007bff" : "transparent"
-                  };
+                  background: ${cat === this.activeCategory ? "#007bff" : "transparent"
+                      };
                   color: ${cat === this.activeCategory ? "white" : "#333"};
                   border: none;
-                  border-bottom: 3px solid ${
-                    cat === this.activeCategory ? "#007bff" : "transparent"
-                  };
+                  border-bottom: 3px solid ${cat === this.activeCategory ? "#007bff" : "transparent"
+                      };
                   cursor: pointer;
                   font-size: 14px;
                   text-transform: capitalize;
@@ -398,8 +396,8 @@ export function useEditor(containerId: string) {
                 ${cat}
               </button>
             `
-              )
-              .join("")}
+                  )
+                  .join("")}
           </div>
           <div class="products-container">
             <div style="text-align: center; padding: 40px;">Loading products...</div>
@@ -509,10 +507,10 @@ export function useEditor(containerId: string) {
 
       // Add custom toolbar button only if it doesn't already exist
       const defaultToolbar = component.get('toolbar');
-      const hasAiChatButton = defaultToolbar.some((btn: any) => 
+      const hasAiChatButton = defaultToolbar.some((btn: any) =>
         btn.attributes?.title === 'AI Chat'
       );
-      
+
       if (!hasAiChatButton) {
         const customToolbar = [
           ...defaultToolbar,
@@ -526,11 +524,11 @@ export function useEditor(containerId: string) {
             </svg>`,
             command: (editor: any) => {
               console.log('AI Chat button clicked!', component);
-              
+
               // Get component HTML
               const componentHtml = component.toHTML();
               // console.log('Component HTML:', componentHtml);
-              
+
               // Store component with its HTML
               setSelectedComponentForAi({
                 component,
@@ -546,16 +544,17 @@ export function useEditor(containerId: string) {
       }
     });
 
-    editor.on("component:update", (component: any) => {
-      if (
-        state.selectedElement &&
-        component &&
-        component.cid === state.selectedElement.cid
-      ) {
-        // Update styles when the currently selected component is updated
-        updateStylesFromComponent(component);
-      }
-    });
+    // Commented out to prevent excessive state updates
+    // editor.on("component:update", (component: any) => {
+    //   if (
+    //     state.selectedElement &&
+    //     component &&
+    //     component.cid === state.selectedElement.cid
+    //   ) {
+    //     // Update styles when the currently selected component is updated
+    //     updateStylesFromComponent(component);
+    //   }
+    // });
 
     editor.on("component:deselected", () => {
       setState((prev) => ({
@@ -654,8 +653,8 @@ export function useEditor(containerId: string) {
       }
     });
 
-    // Component changes
-    editor.on("component:update", () => updateLayers(editor));
+    // Component changes - commented out component:update to prevent excessive updates
+    // editor.on("component:update", () => updateLayers(editor));
     editor.on("component:add", () => updateLayers(editor));
     editor.on("component:remove", () => updateLayers(editor));
   };
@@ -948,17 +947,17 @@ export function useEditor(containerId: string) {
     ${html}
   `;
       // console.log("Saving page", page._id, html);
-      const response = await dispatch(
-        savePageThunk({
-          id: page._id,
-          tenantId: page.tenantId,
-          content: fullHtml,
-        })
-      ).unwrap();
-      console.log("console.log----use editor", response)
-      if (response && response.ok) {
-        toast.success("Page content updated successfully!");
-      }
+      // const response = await dispatch(
+      //   savePageThunk({
+      //     id: page._id,
+      //     tenantId: page.tenantId,
+      //     content: fullHtml,
+      //   })
+      // ).unwrap();
+      // console.log("console.log----use editor", response)
+      // if (response && response.ok) {
+      //   toast.success("Page content updated successfully!");
+      // }
       // Optionally handle response or errors here
     },
 
@@ -1370,19 +1369,16 @@ export function useEditor(containerId: string) {
         // Generate different code based on action type
         switch (action) {
           case "toggle-class":
-            jsCode = `document.querySelector('${targetSelector}').classList.toggle('${
-              options?.class || "active"
-            }');`;
+            jsCode = `document.querySelector('${targetSelector}').classList.toggle('${options?.class || "active"
+              }');`;
             break;
           case "add-class":
-            jsCode = `document.querySelector('${targetSelector}').classList.add('${
-              options?.class || "active"
-            }');`;
+            jsCode = `document.querySelector('${targetSelector}').classList.add('${options?.class || "active"
+              }');`;
             break;
           case "remove-class":
-            jsCode = `document.querySelector('${targetSelector}').classList.remove('${
-              options?.class || "active"
-            }');`;
+            jsCode = `document.querySelector('${targetSelector}').classList.remove('${options?.class || "active"
+              }');`;
             break;
           case "show":
             if (options?.animation === "none") {
@@ -1390,17 +1386,15 @@ export function useEditor(containerId: string) {
             } else {
               jsCode = `
             const el = document.querySelector('${targetSelector}');
-            el.style.transition = 'all ${options?.duration || 300}ms ${
-                options?.easing || "ease"
-              }';
+            el.style.transition = 'all ${options?.duration || 300}ms ${options?.easing || "ease"
+                }';
             el.style.display = 'block';
             setTimeout(() => {
               el.style.opacity = '1';
-              ${
-                options?.animation === "scale"
+              ${options?.animation === "scale"
                   ? "el.style.transform = 'scale(1)';"
                   : ""
-              }
+                }
             }, 10);
           `;
             }
@@ -1411,18 +1405,15 @@ export function useEditor(containerId: string) {
             } else {
               jsCode = `
             const el = document.querySelector('${targetSelector}');
-            el.style.transition = 'all ${options?.duration || 300}ms ${
-                options?.easing || "ease"
-              }';
+            el.style.transition = 'all ${options?.duration || 300}ms ${options?.easing || "ease"
+                }';
             el.style.opacity = '0';
-            ${
-              options?.animation === "scale"
-                ? "el.style.transform = 'scale(0.8)';"
-                : ""
-            }
-            setTimeout(() => { el.style.display = 'none'; }, ${
-              options?.duration || 300
-            });
+            ${options?.animation === "scale"
+                  ? "el.style.transform = 'scale(0.8)';"
+                  : ""
+                }
+            setTimeout(() => { el.style.display = 'none'; }, ${options?.duration || 300
+                });
           `;
             }
             break;
@@ -1430,43 +1421,36 @@ export function useEditor(containerId: string) {
             jsCode = `
           const el = document.querySelector('${targetSelector}');
           if (el.style.display === 'none' || getComputedStyle(el).display === 'none') {
-            ${
-              options?.animation === "none"
+            ${options?.animation === "none"
                 ? "el.style.display = 'block';"
                 : `
-              el.style.transition = 'all ${options?.duration || 300}ms ${
-                    options?.easing || "ease"
-                  }';
+              el.style.transition = 'all ${options?.duration || 300}ms ${options?.easing || "ease"
+                }';
               el.style.display = 'block';
               setTimeout(() => {
                 el.style.opacity = '1';
-                ${
-                  options?.animation === "scale"
-                    ? "el.style.transform = 'scale(1)';"
-                    : ""
+                ${options?.animation === "scale"
+                  ? "el.style.transform = 'scale(1)';"
+                  : ""
                 }
               }, 10);
               `
-            }
+              }
           } else {
-            ${
-              options?.animation === "none"
+            ${options?.animation === "none"
                 ? "el.style.display = 'none';"
                 : `
-              el.style.transition = 'all ${options?.duration || 300}ms ${
-                    options?.easing || "ease"
-                  }';
+              el.style.transition = 'all ${options?.duration || 300}ms ${options?.easing || "ease"
+                }';
               el.style.opacity = '0';
-              ${
-                options?.animation === "scale"
+              ${options?.animation === "scale"
                   ? "el.style.transform = 'scale(0.8)';"
                   : ""
-              }
-              setTimeout(() => { el.style.display = 'none'; }, ${
-                options?.duration || 300
-              });
+                }
+              setTimeout(() => { el.style.display = 'none'; }, ${options?.duration || 300
+                });
               `
-            }
+              }
           }
         `;
             break;
@@ -1501,12 +1485,10 @@ export function useEditor(containerId: string) {
             const mouseEnterHandler = `function(event) { ${jsCode} }`;
             const mouseLeaveHandler = `function(event) {
               // Reverse the action for mouseleave if needed
-              ${
-                action === "add-class"
-                  ? `document.querySelector('${targetSelector}').classList.remove('${
-                      options?.class || "active"
-                    }');`
-                  : action === "show"
+              ${action === "add-class"
+                ? `document.querySelector('${targetSelector}').classList.remove('${options?.class || "active"
+                }');`
+                : action === "show"
                   ? `document.querySelector('${targetSelector}').style.display = 'none';`
                   : ""
               }

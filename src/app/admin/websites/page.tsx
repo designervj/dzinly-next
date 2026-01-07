@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { pageService } from "@/modules/website/page-service";
 import { formatDateDisplay } from "@/components/projects/FunctionDisplayDate";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import GetAllPage from "@/components/admin/website/websitePage/GetAllPage";
 
 export default async function PagesAdmin() {
   const session = await auth();
@@ -54,6 +55,9 @@ export default async function PagesAdmin() {
     return (
       <div>
        
+       <GetAllPage
+       allpages={items}
+       />
         <DataTableExt
           website={website}
           sysdomain={sysdomain}

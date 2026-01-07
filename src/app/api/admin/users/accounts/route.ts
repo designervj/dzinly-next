@@ -9,9 +9,37 @@ import { getDatabase } from "@/lib/db/mongodb";
 // GET - Retrieve all tenants or a specific tenant by ID
 export async function GET(request: NextRequest) {
   try {
-   const db = await getDatabase();
-   const tenants = await db.collection("tenants").find().toArray();
-    console.log("tenants---",tenants)
+    const db = await getDatabase();
+    const accountId = request.nextUrl.searchParams.get("accountId");
+
+    // If accountId is provided, fetch single account
+    if (accountId) {
+      // Validate ObjectId format
+      if (!ObjectId.isValid(accountId)) {
+        return NextResponse.json(
+          { error: "Invalid account ID format" },
+          { status: 400 }
+        );
+      }
+
+      const tenant = await db.collection("tenants").findOne({
+        _id: new ObjectId(accountId)
+      });
+
+      if (!tenant) {
+        return NextResponse.json(
+          { error: "Account not found" },
+          { status: 404 }
+        );
+      }
+
+      console.log("tenant---", tenant);
+      return NextResponse.json({ tenant });
+    }
+
+    // Otherwise, fetch all accounts
+    const tenants = await db.collection("tenants").find().toArray();
+    console.log("tenants---", tenants);
     return NextResponse.json({ tenants, count: tenants.length });
   } catch (error) {
     console.error("Error fetching tenants:", error);
@@ -95,7 +123,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error: any) {
     console.error("Error creating tenant:", error);
-    
+
     // Handle duplicate slug error
     if (error.message === "Tenant slug already exists") {
       return NextResponse.json(

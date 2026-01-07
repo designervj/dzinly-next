@@ -44,6 +44,7 @@ export class PageService {
         { websiteId: wid },
         { websiteId: { $exists: false } },
       ];
+      console.log("query",query)
     return col.findOne(query);
   }
 
@@ -83,10 +84,34 @@ export class PageService {
         ? new ObjectId(websiteId)
         : websiteId
       : undefined;
+
+    // Build the query properly
     const query: any = { tenantId: tid };
-    if (wid)
-      query.$or = [{ websiteId: wid }, { websiteId: { $exists: false } }];
-    return collection
+
+    if (wid) {
+      // Add $or condition for websiteId matching or not existing
+      query.$or = [
+        { websiteId: wid },
+        { websiteId: { $exists: false } }
+      ];
+    }
+
+    // Debug logging
+    console.log("🔍 listPages Query:", JSON.stringify({
+      tenantId: tid.toString(),
+      websiteId: wid?.toString(),
+      query: {
+        ...query,
+        $or: query.$or?.map((condition: any) => ({
+          ...condition,
+          websiteId: condition.websiteId instanceof ObjectId
+            ? condition.websiteId.toString()
+            : condition.websiteId
+        }))
+      }
+    }, null, 2));
+
+    const results = await collection
       .aggregate([
         { $match: query },
 
@@ -111,6 +136,10 @@ export class PageService {
         { $sort: { createdAt: -1 } },
       ])
       .toArray();
+
+    console.log(`✅ listPages Results: Found ${results.length} pages`);
+
+    return results;
   }
 
   async createPage(

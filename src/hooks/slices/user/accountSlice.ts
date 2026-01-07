@@ -16,14 +16,30 @@ export const getAllAccounts = createAsyncThunk<TenantModel[]>(
   }
 );
 
+// Thunk to fetch a single account by ID
+export const fetchAccount = createAsyncThunk<TenantModel, string>(
+  "account/fetchAccount",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/api/admin/users/accounts?accountId=${id}`);
+      // API returns the tenant object
+      return response.data.tenant;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 interface AccountState {
   allAccounts: TenantModel[];
+  currentAccount: TenantModel | null;
   isLoading: boolean;
   hasFetched: boolean;
 }
 
 const initialState: AccountState = {
   allAccounts: [],
+  currentAccount: null,
   isLoading: false,
   hasFetched: false,
 };
@@ -72,6 +88,20 @@ const accountSlice = createSlice({
       )
       .addCase(getAllAccounts.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(fetchAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        fetchAccount.fulfilled,
+        (state, action: PayloadAction<TenantModel>) => {
+          state.isLoading = false;
+          state.currentAccount = action.payload;
+        }
+      )
+      .addCase(fetchAccount.rejected, (state) => {
+        state.isLoading = false;
+        state.currentAccount = null;
       });
   },
 });

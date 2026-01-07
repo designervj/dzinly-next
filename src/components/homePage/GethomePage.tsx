@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/store/store'
 import { setPageEdit } from '@/hooks/slices/pageEditSlice'
 import EditButton from '@/app/(frontend)/(clientpages)/EditButton'
+import { fetchAccount } from '@/hooks/slices/user/accountSlice'
 
 
 type Props = {
@@ -18,6 +19,7 @@ const GethomePage = ({ homePageData }: Props) => {
       && !pageHome && 
       homePageData &&homePageData.content) {
       dispatch(setPageEdit(homePageData));
+      dispatch(fetchAccount(homePageData.tenantId))
     }
     
   }, [pageHome, hasfetchPage, homePageData]);

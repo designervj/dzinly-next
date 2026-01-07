@@ -40,9 +40,8 @@ export default async function HomeTemplate({ params }: any) {
       return <RootClientPage />;
     }
 
-    const html = t.item.content;
-    const name = "Himanshu";
-    const processedHtml = html.replace(/\{\{name\}\}/g, name);
+   
+    
 
     return (
       <>

@@ -32,13 +32,7 @@ export function createEditorConfig(
     height: "100%",
     width: "100%",
     fromElement: false,
-    storageManager: {
-      type: "local",
-      autosave: true,
-      autoload: true,
-      stepsBeforeSave: 1,
-      id: "gjs-",
-    },
+    storageManager: false,
     deviceManager: {
       devices: defaultDevices,
     },
@@ -88,7 +82,7 @@ export function createEditorConfig(
             { name: "Border Style", property: "border-style", type: "select" },
           ],
         },
-        
+
       ],
       appendTo: "#styles-container",
     },

@@ -39,7 +39,7 @@ export interface BrandingSettings {
     height?: number;
   };
   favicon?: string;
-  colors: {
+  colors?: {
     primary: string;
     secondary: string;
     accent?: string;

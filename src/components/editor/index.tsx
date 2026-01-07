@@ -20,6 +20,22 @@ import {
 } from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
 
 export default function GrapesJSEditor() {
+  const mytheme = {
+    "theme": {
+      "colors": {
+        "primary": "#6D1F4A",
+        "secondary": "#E9B949",
+        "tertiary": "#0EA5E9"
+      },
+      "cssVariables": {
+        "--color-primary": "#6D1F4A",
+        "--color-secondary": "#E9B949",
+        "--color-tertiary": "#0EA5E9",
+        "--color-primary-soft": "rgba(109, 31, 74, 0.08)",
+
+      }
+    },
+  }
   const containerRef = useRef<HTMLDivElement>(null);
   const {
     state,
@@ -40,9 +56,12 @@ export default function GrapesJSEditor() {
   const [favoriteBlocks, setFavoriteBlocks] = useState<string[]>([]);
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = require("react-redux").useDispatch();
-  const { page } = useSelector((state: RootState) => state.pageEdit);
+  const { page, mockPage, themePage } = useSelector((state: RootState) => state.pageEdit);
 
-  console.log("Page: ==>>>>",page)
+  console.log("Page: ==>>>>", page)
+  console.log("MockPage: ==>>>>", mockPage)
+  console.log("ThemePage: ==>>>>", themePage)
+
 
   function extractCssFromHtml(html: string): string {
     const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
@@ -79,6 +98,48 @@ export default function GrapesJSEditor() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.editor, page?.content]);
+  useEffect(() => {
+    if (!state.editor) return;
+
+    // Priority: mockPage > page.content
+    if (mockPage?.html && mockPage?.css) {
+      // Apply HTML and CSS
+      state.editor.setComponents(mockPage.html);
+      setEditorHtml(mockPage.html);
+
+      // Apply theme CSS variables and global CSS if available
+      if (themePage) {
+        // Generate CSS variables string
+        const cssVariablesString = Object.entries(themePage.cssVariables)
+          .map(([key, value]) => `${key}: ${value};`)
+          .join('\n    ');
+
+        // Create a combined CSS with variables and global CSS
+        const themeCSS = `:root {
+    ${cssVariablesString}
+  }
+  
+${themePage.globalCSS}`;
+
+        // Append theme CSS to the editor styles
+        const combinedCSS = `${themeCSS}\n\n${mockPage.css}`;
+        state.editor.setStyle(combinedCSS);
+        setEditorCss(combinedCSS);
+
+        console.log('Theme applied to canvas:', {
+          variables: Object.keys(themePage.cssVariables).length,
+          hasGlobalCSS: !!themePage.globalCSS
+        });
+      } else {
+        // No theme, just apply page CSS
+        state.editor.setStyle(mockPage.css);
+        setEditorCss(mockPage.css);
+      }
+    } else if (page?.content) {
+      state.editor.setComponents(page.content);
+      setEditorHtml(page.content);
+    }
+  }, [state.editor, mockPage?.html, mockPage?.css, themePage, page?.content]);
 
   useEffect(() => {
     if (!state.editor) return;
@@ -332,11 +393,12 @@ export default function GrapesJSEditor() {
     setEditorCss(state.editor.getCss());
     setEditorJs(state.editor.getJs ? state.editor.getJs() : "");
 
-    state.editor.on("component:update", () => {
-      setEditorHtml(state.editor!.getHtml());
-      setEditorCss(state.editor!.getCss());
-      setEditorJs(state.editor!.getJs ? state.editor!.getJs() : "");
-    });
+    // Commented out to prevent excessive state updates
+    // state.editor.on("component:update", () => {
+    //   setEditorHtml(state.editor!.getHtml());
+    //   setEditorCss(state.editor!.getCss());
+    //   setEditorJs(state.editor!.getJs ? state.editor!.getJs() : "");
+    // });
 
     state.editor.on("component:selected", (component: any) => {
       if (component?.get) {
@@ -434,9 +496,8 @@ export default function GrapesJSEditor() {
         <div className="relative flex flex-1 overflow-hidden">
           {/* Canvas */}
           <div
-            className={`${
-              showSidebar ? "w-[90%]" : "w-full"
-            } transition-all duration-300 ease-in-out relative`}
+            className={`${showSidebar ? "w-[90%]" : "w-full"
+              } transition-all duration-300 ease-in-out relative`}
           >
             {state.isLoading && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/80">

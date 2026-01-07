@@ -6,10 +6,15 @@ import { AppDispatch, RootState } from '@/store/store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { pageService } from '@/modules/website/page-service';
 import { WebsitePageModel } from '@/components/admin/website/websitePage/WebsitePageType';
+import { TenantModel } from '@/models/tenant';
+import { fetchAccount } from './user/accountSlice';
+import { MockPageData, ThemeModel } from '@/app/demo/page';
 interface PageEditState {
   page: WebsitePageModel | null;
+  mockPage:MockPageData | null;
   updatePage: WebsitePageModel | null;
-
+  themePage:ThemeModel|null
+   tenant:TenantModel|null,
   hasfetchPage: boolean,
   isLoading: boolean
   error: string
@@ -18,7 +23,9 @@ interface PageEditState {
 const initialState: PageEditState = {
   page: null,
   updatePage: null,
-
+  mockPage:null,
+  themePage:null,
+  tenant:null,
   hasfetchPage: false,
   isLoading: false,
   error: ''
@@ -118,7 +125,11 @@ export const pageEditSlice = createSlice({
       state.updatePage = action.payload
 
     },
-
+    setMockPage: (state, action) => {
+      const {page, theme}=action.payload
+      state.mockPage = page
+      state.themePage=theme
+    },
     clearPageEdit: (state) => {
       state.page = null;
     },
@@ -153,7 +164,22 @@ export const pageEditSlice = createSlice({
       .addCase(savePageThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Failed to save page';
-      });
+      })
+
+      // update tenant thunk
+      .addCase(fetchAccount.pending, (state) => {
+        state.isLoading = true;
+        state.error = '';
+      })
+      .addCase(fetchAccount.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tenant = action.payload;
+        state.error = '';
+      })
+      .addCase(fetchAccount.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Failed to update tenant';
+      }); 
   },
 });
 
@@ -162,5 +188,5 @@ export const pageEditSlice = createSlice({
 
 
 
-export const { setPageEdit, clearPageEdit, updatePage } = pageEditSlice.actions;
+export const { setPageEdit, clearPageEdit, updatePage,setMockPage } = pageEditSlice.actions;
 export default pageEditSlice.reducer;

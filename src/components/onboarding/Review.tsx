@@ -42,7 +42,7 @@ export const Review = ({ tenantData, userData, websiteData, handleSave }: Review
               <span className="font-medium">{tenantData.email || "-"}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Tenant Type:</span>
+              <span className="text-gray-600">Account Type:</span>
               <span className="font-medium capitalize">
                 {tenantData.tenantType.replace("_", " ")}
               </span>

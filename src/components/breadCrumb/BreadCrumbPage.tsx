@@ -27,8 +27,8 @@ const BreadCrumbPage = () => {
 
     return (
         <>
-            <div className="flex items-center gap-3 ">
-                <h1 className="text-2xl font-bold tracking-tight border-r pe-4">{urlPath[urlPath.length - 1]?.charAt(0).toUpperCase() + urlPath[urlPath.length - 1]?.slice(1)}</h1>
+            <div className=" items-center gap-3 ">
+               
 
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -46,7 +46,7 @@ const BreadCrumbPage = () => {
                         {/* Websites */}
                         {urlPath.length > 2 && <BreadcrumbItem>
                             <BreadcrumbLink>
-                                <Link href={`/admin/${urlPath[urlPath.length - 2]}`} className="text-muted-foreground font-normal">{urlPath[urlPath.length - 2]}</Link>
+                                <Link href={`/admin/${urlPath[urlPath.length - 2]}`} className="text-muted-foreground font-normal capitalize">{urlPath[urlPath.length - 2]}</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         }
@@ -58,7 +58,7 @@ const BreadCrumbPage = () => {
                            <span className="mx-0 select-none">-</span>
                      <BreadcrumbItem>
                             <BreadcrumbLink>
-                                <Link href={`/admin/${urlPath[urlPath.length - 1]}`} className="text-muted-foreground font-normal">{urlPath[urlPath.length - 1]}</Link>
+                                <Link href={`/admin/${urlPath[urlPath.length - 1]}`} className="text-muted-foreground font-normal capitalize">{urlPath[urlPath.length - 1]}</Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     </>
@@ -66,6 +66,10 @@ const BreadCrumbPage = () => {
                         }
                     </BreadcrumbList>
                 </Breadcrumb>
+
+                 {/* <h1 className="text-2xl font-bold tracking-tight border-r  pe-4">{urlPath[urlPath.length - 1]?.charAt(0).toUpperCase() + urlPath[urlPath.length - 1]?.slice(1)}</h1> */}
+                 <h1 className="text-2xl font-bold tracking-tight  pe-4">{urlPath[urlPath.length - 1]?.charAt(0).toUpperCase() + urlPath[urlPath.length - 1]?.slice(1)}</h1>
+
             </div>
         </>
     )

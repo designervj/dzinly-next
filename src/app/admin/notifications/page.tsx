@@ -63,12 +63,12 @@ export default function page() {
           <p className="text-muted-foreground">Stay updated with important system events and alerts.</p>
         </div>
         <div className="flex gap-2">
-            <Button variant="outline" size="sm">
+            <Button size="sm">
                 <CheckCheck className="mr-2 h-4 w-4" /> Mark all as read
             </Button>
-            <Button variant="ghost" size="icon">
+            {/* <Button variant="outline" className="py-2">
                 <MoreVertical className="h-4 w-4 text-muted-foreground" />
-            </Button>
+            </Button> */}
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function page() {
                 </TabsTrigger>
                 <TabsTrigger value="archived">Archived</TabsTrigger>
             </TabsList>
-            <Button variant="ghost" size="sm" className="text-muted-foreground">
+            <Button variant="outline" size="sm" className="text-muted-foreground">
                 <Filter className="mr-2 h-3.5 w-3.5" /> Filter
             </Button>
         </div>

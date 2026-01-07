@@ -3,13 +3,16 @@
 import React from "react";
 import { Mail, User, Phone, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function Page() {
   return (
     <div className="min-h-screen ">
       {/* PAGE HEADER */}
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Forms</h1>
+        {/* <h1 className="text-3xl font-semibold">Forms</h1> */}
+        <BreadCrumbPage />
+        
         <p className="text-gray-500 mt-1">
           Create and manage your form submissions
         </p>

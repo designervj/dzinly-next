@@ -47,8 +47,6 @@ export default async function HomeTemplate({ params }: any) {
     return (
       <>
         <GethomePage homePageData={t.item} />
-    
-       
       </>
     );
 

@@ -22,6 +22,7 @@ const GethomePage = ({ homePageData }: Props) => {
     
   }, [pageHome, hasfetchPage, homePageData]);
 
+
   //
 
   // Debug: Log when content changes

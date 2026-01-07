@@ -67,7 +67,7 @@ export default function GrapesJSEditor() {
   // update the page content into editor
   useEffect(() => {
     if (state.editor && page?.content) {
-      debugger;
+      // debugger;
       //  const css= extractCssFromHtml(page.content)
       //   if (css) {
       //   state.editor.setStyle(css);

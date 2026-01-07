@@ -38,6 +38,9 @@ import {
   Layout,
 } from "lucide-react";
 import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
+import { AppDispatch, RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageEdit } from "@/hooks/slices/pageEditSlice";
 
 export type ColumnConfig = {
   key: string;
@@ -77,11 +80,14 @@ function inferType(values: any[]): "string" | "number" | "date" | "boolean" {
   return "string";
 }
 
-
 function formatValue(v: any, key?: string) {
   if (v == null) return "-";
   // Custom date formatting for createdAt/updatedAt
-  if (key && (key.toLowerCase().includes("created") || key.toLowerCase().includes("updated"))) {
+  if (
+    key &&
+    (key.toLowerCase().includes("created") ||
+      key.toLowerCase().includes("updated"))
+  ) {
     const date = new Date(v);
     if (!isNaN(date.getTime())) {
       const now = new Date();
@@ -91,7 +97,11 @@ function formatValue(v: any, key?: string) {
       const isYesterday = date.toDateString() === yesterday.toDateString();
       if (isToday) return "Today";
       if (isYesterday) return "Yesterday";
-      return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
     }
   }
   if (v instanceof Date) return v.toISOString();
@@ -109,7 +119,7 @@ export function DataTableExt({
   onView,
   website,
   sysdomain,
-  opentab
+  opentab,
 }: DataTableExtProps) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -129,6 +139,7 @@ export function DataTableExt({
   const [dateFilters, setDateFilters] = useState<
     Record<string, { from?: string; to?: string }>
   >({});
+  const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
 
@@ -327,7 +338,7 @@ export function DataTableExt({
   const handleEdit = (e: React.MouseEvent, row: any) => {
     e.stopPropagation();
     (onView ?? ((row: any) => router.push(`${lastSegment}/${row._id}`)))(row);
-  }
+  };
 
   function handleDelete(e: React.MouseEvent, row: any) {
     e.stopPropagation();
@@ -338,6 +349,26 @@ export function DataTableExt({
     }
   }
 
+   const { page: pageHome, hasfetchPage, isLoading, error } = useSelector((state: RootState) => state.pageEdit);
+
+   console.log("In DataTable",pageHome)
+
+  function handleBuilderEdit(
+    e: React.MouseEvent,
+    row: {
+      slug?: string;
+      primaryDomain?: string[];
+      content?: string;
+      website?: any;
+    }
+  ) {
+    const copied = structuredClone(row);
+    delete copied.website;
+    dispatch(setPageEdit(copied));
+    router.push("/builder")
+    // window.open("/builder", "_blank");
+  }
+
   function handleViewPage(
     e: React.MouseEvent,
     row: {
@@ -345,7 +376,6 @@ export function DataTableExt({
       primaryDomain?: string[];
     }
   ) {
-
     e.preventDefault();
     if (path.includes("domain") || path.includes("/admin/websites")) {
       const isLocalHost = window.location.hostname.includes("localhost");
@@ -370,11 +400,11 @@ export function DataTableExt({
     }
   }
 
-  const pathname= usePathname();
-  ///admin/websites extract website 
-  const pageName= pathname.split("/")[2];
+  const pathname = usePathname();
+  ///admin/websites extract website
+  const pageName = pathname.split("/")[2];
 
-  console.log("pathname",pageName);
+  console.log("pathname", pageName);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-5">
@@ -383,10 +413,18 @@ export function DataTableExt({
         <div className="flex items-center gap-2 justify-between w-full">
           <BreadCrumbPage />
           {onCreate ? (
-            <Button size="sm" className="py-2 rounded-sm px-4 py-2" onClick={onCreate}>Create New</Button>
+            <Button
+              size="sm"
+              className="py-2 rounded-sm px-4 py-2"
+              onClick={onCreate}
+            >
+              Create New
+            </Button>
           ) : createHref ? (
             <Link href={createHref} className="text-sm">
-              <Button size="sm" className="py-2 rounded-sm px-4 py-2">Create New</Button>
+              <Button size="sm" className="py-2 rounded-sm px-4 py-2">
+                Create New
+              </Button>
             </Link>
           ) : null}
         </div>
@@ -652,15 +690,17 @@ export function DataTableExt({
                     })}
                   <TableCell className="py-2 text-right">
                     <div className="flex items-center justify-end gap-2">
-                     {pageName === "websites" && <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 text-green-500 hover:text-destructive"
-                        onClick={(e) => handleViewPage(e, row)}
-                        title="Builder"
-                      >
-                        <Layout className="h-4 w-4" />
-                      </Button>}
+                      {pageName === "websites" && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0 text-green-500 hover:text-destructive"
+                          onClick={(e) => handleBuilderEdit(e, row)}
+                          title="Builder"
+                        >
+                          <Layout className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"

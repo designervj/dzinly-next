@@ -5,6 +5,18 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
 
 // Field configuration type
 export type FieldConfig = {
@@ -177,13 +189,13 @@ export default function PageCreator({
 
     return (
       <div key={name} className="space-y-2">
-        <label className="text-sm block font-semibold text-gray-700">
+        <Label className="text-sm block font-semibold text-gray-700">
           {label}
-        </label>
+        </Label>
 
         {type === "text" && (
-          <input
-            className="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
+          <Input
+            // className="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400"
             value={formData[name] || ""}
             onChange={(e) => handleChange(name, e.target.value)}
             placeholder={placeholder}
@@ -192,7 +204,7 @@ export default function PageCreator({
 
         {type === "textarea" && (
           <textarea
-            className="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 resize-none"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:ring-2  focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 resize-none"
             value={formData[name] || ""}
             onChange={(e) => handleChange(name, e.target.value)}
             placeholder={placeholder}
@@ -200,19 +212,25 @@ export default function PageCreator({
           />
         )}
 
-        {type === "select" && options && (
-          <select
-            className="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white hover:border-gray-400 cursor-pointer"
-            value={formData[name] || ""}
-            onChange={(e) => handleChange(name, e.target.value)}
-          >
-            {options.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        )}
+       {type === "select" && options && (
+  <Select
+    value={formData[name] || ""}
+    onValueChange={(value) => handleChange(name, value)}
+  >
+    <SelectTrigger className="w-full">
+      <SelectValue placeholder="Select an option" />
+    </SelectTrigger>
+
+    <SelectContent>
+      {options.map((opt) => (
+        <SelectItem key={opt.value} value={opt.value}>
+          {opt.label}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+)}
+
       </div>
     );
   };
@@ -224,20 +242,22 @@ export default function PageCreator({
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header with action buttons */}
-      <div className="flex items-center justify-between mb-6 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-        <h2 className="text-xl font-bold text-gray-800">Create New Page</h2>
+      <div className="flex items-center justify-between mb-6 p-0 rounded-xl">
+        {/* <h2 className="text-xl font-bold text-gray-800">Create New Page </h2> */}
+          <BreadCrumbPage/>
         <div className="flex gap-3">
-          <button
+          <Button
             type="button"
-            className="px-5 py-2.5 rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 text-gray-700 font-medium hover:from-gray-300 hover:to-gray-400 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 active:scale-95"
+            variant="secondary"
+            // className="px-5 py-2.5 rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 text-gray-700 font-medium hover:from-gray-300 hover:to-gray-400 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 active:scale-95"
             onClick={handleCancel}
           >
             Cancel
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
-            className="px-5 py-2.5 rounded-lg bg-gradient-to-br from-green-600 to-green-700 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 active:scale-95 disabled:transform-none"
+            // className="px-5 py-2.5 rounded-lg bg-gradient-to-br from-green-600 to-green-700 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 active:scale-95 disabled:transform-none"
             disabled={saving}
             onClick={onSubmit}
           >
@@ -257,7 +277,7 @@ export default function PageCreator({
                 Create
               </span>
             )}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -291,7 +311,7 @@ export default function PageCreator({
         </div>
 
         {/* Right side - Metadata */}
-        <div className="lg:w-4/12 p-6 space-y-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
+        <div className="lg:w-4/12 p-6 space-y-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
           {rightFields.map((field) => renderField(field))}
         </div>
       </div>

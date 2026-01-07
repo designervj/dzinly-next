@@ -249,7 +249,7 @@ export default function OnboardingTenants() {
   };
 
   return (
-    <div className="min-h-screen bg-white p-0">
+    <div className="min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">

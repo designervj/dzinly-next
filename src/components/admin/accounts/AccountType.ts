@@ -23,7 +23,7 @@ export interface Settings {
 }
 
 export interface TenantModel {
-  _id: ObjectId;
+  _id: ObjectId | string;
   slug: string;
   name: string;
   email: string;

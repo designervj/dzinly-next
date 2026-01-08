@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
+import { IUser } from "@/models/user";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -324,3 +325,17 @@ export async function uploadBase64ToS3(base64: string) {
 
   return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${key}`;
 }
+
+
+export function hasPermission(
+  user: IUser | null | undefined,
+  permission: string
+): boolean {
+  if (!user) return false;
+
+  // Superadmin can do everything
+  if (user.role === "superadmin") return true;
+
+  return user.permissions?.includes(permission) ?? false;
+}
+

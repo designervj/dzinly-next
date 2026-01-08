@@ -60,6 +60,7 @@ export type DataTableExtProps = {
   website?: string[];
   sysdomain?: string;
   opentab?: (row: any) => void;
+  onEdit?: (row: any) => void;
 };
 
 type SortDir = "asc" | "desc";
@@ -119,7 +120,6 @@ export function DataTableExt({
   onView,
   website,
   sysdomain,
-  opentab,
 }: DataTableExtProps) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -337,6 +337,7 @@ export function DataTableExt({
 
   const handleEdit = (e: React.MouseEvent, row: any) => {
     e.stopPropagation();
+
     (onView ?? ((row: any) => router.push(`${lastSegment}/${row._id}`)))(row);
   };
 
@@ -349,9 +350,14 @@ export function DataTableExt({
     }
   }
 
-   const { page: pageHome, hasfetchPage, isLoading, error } = useSelector((state: RootState) => state.pageEdit);
+  const {
+    page: pageHome,
+    hasfetchPage,
+    isLoading,
+    error,
+  } = useSelector((state: RootState) => state.pageEdit);
 
-   console.log("In DataTable",pageHome)
+  console.log("In DataTable", pageHome);
 
   function handleBuilderEdit(
     e: React.MouseEvent,
@@ -365,7 +371,7 @@ export function DataTableExt({
     const copied = structuredClone(row);
     delete copied.website;
     dispatch(setPageEdit(copied));
-    router.push("/builder")
+    router.push("/builder");
     // window.open("/builder", "_blank");
   }
 

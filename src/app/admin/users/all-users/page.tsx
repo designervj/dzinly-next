@@ -16,16 +16,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTableExt } from "@/components/dataTable/DataTableExt";
-export default function Page() {
+import { useRouter } from "next/navigation";
+import { hasPermission } from "@/lib/utils";
+import { toast } from "sonner";
 
-   const { user, hasFetchedAllUsers, alluser } = useSelector(
+export default function Page() {
+  const { user, hasFetchedAllUsers, alluser } = useSelector(
     (state: RootState) => state.user
   );
 
-    const handleAdd = () => {}
-    const handleDelete = (row: IUser) => {}
-    const handleView = (row: IUser) => {}
-    const initialColumns = [
+  const router = useRouter();
+
+  const handleAdd = () => {
+    const check = hasPermission(user, "user:create");
+    if (check) {
+      router.push("/admin/users/all-users/create");
+    } else {
+      toast.error("You are not Allowed");
+    }
+  };
+
+  const handleView = (row: IUser) => {
+    const check = hasPermission(user, "user:update");
+    if (check) {
+      router.push(`/admin/users/all-users/${row._id}`);
+    } else {
+      toast.error("You are not Allowed");
+    }
+  };
+
+  const handleDelete = (row: IUser) => {};
+  // const handleView = (row: IUser) => {
+
+  // };
+  const initialColumns = [
     { key: "_id", label: "ID", hidden: true },
     { key: "id", label: "ID", hidden: true },
     { key: "name", label: "Name" },
@@ -35,44 +59,40 @@ export default function Page() {
     { key: "tenantId", label: "Tenant ID" },
     { key: "createdAt", label: "Created At" },
     { key: "updatedAt", label: "Updated At" },
-    { key: "passwordHash", label: "Password Hash" , hidden: true},
-    { key: "permissions", label: "Permissions", hidden:true },
-
-]
+    { key: "passwordHash", label: "Password Hash", hidden: true },
+    { key: "permissions", label: "Permissions", hidden: true },
+  ];
   return (
     <>
+      {/* get all users */}
+      <GetAllUsers />
+      <DataTableExt
+        title=""
+        data={alluser ?? []}
+        onCreate={handleAdd}
+        initialColumns={initialColumns}
+        onDelete={(row) => handleDelete(row)}
+        onView={(row) => handleView(row)}
+      />
 
-    {/* get all users */}
-    <GetAllUsers/>
-    <DataTableExt
-          title=""
-          data={alluser ?? []}
-          onCreate={handleAdd}
-          initialColumns={initialColumns}
-          onDelete={(row) => handleDelete(row)}
-          onView={(row) => handleView(row)}
-        />
-
-     <div className="min-h-screen">
-      {/* PAGE HEADER */}
-      <div className="flex items-center justify-between mb-6">
-        {/* <div>
+      <div className="min-h-screen">
+        {/* PAGE HEADER */}
+        <div className="flex items-center justify-between mb-6">
+          {/* <div>
         <BreadCrumbPage/>
            <p className="text-gray-500 mt-1">
             Manage users, roles and permissions
           </p>
         </div> */}
 
-
-
-        {/* <Button >
+          {/* <Button >
           <UserPlus size={18} />
           Add User
         </Button> */}
-      </div>
+        </div>
 
-      {/* SEARCH + FILTER */}
-      {/* <div className="bg-white p-4 rounded-xl shadow-sm mb-6 flex items-center justify-between">
+        {/* SEARCH + FILTER */}
+        {/* <div className="bg-white p-4 rounded-xl shadow-sm mb-6 flex items-center justify-between">
         <div className="relative w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
@@ -96,8 +116,8 @@ export default function Page() {
     </Select>
       </div> */}
 
-      {/* USERS TABLE */}
-      {/* <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        {/* USERS TABLE */}
+        {/* <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-100 text-left">
             <tr>
@@ -146,8 +166,7 @@ export default function Page() {
           </tbody>
         </table>
       </div> */}
-    </div>
+      </div>
     </>
-   
   );
 }

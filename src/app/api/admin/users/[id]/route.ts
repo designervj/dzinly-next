@@ -1,6 +1,4 @@
-import { auth } from "@/auth";
 import { getDatabase } from "@/lib/db/mongodb";
-import bcrypt from "bcryptjs";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 

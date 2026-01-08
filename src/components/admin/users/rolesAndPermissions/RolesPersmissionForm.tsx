@@ -37,7 +37,7 @@ const ALL_PERMISSIONS = [
   "websites:read",
   "websites:create",
   "websites:update",
-  "website:delete",
+  "websites:delete",
 
   // Media
   "media:read",
@@ -79,6 +79,8 @@ const ALL_PERMISSIONS = [
   "ai:create",
   "ai:update",
   "ai:delete",
+
+  "inventory:read",
 ] as const;
 
 type Action = "read" | "create" | "update" | "delete";

@@ -2,7 +2,10 @@
 
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 import { Button } from "@/components/ui/button";
-import { addRoles, updateRolePermissions } from "@/hooks/slices/RolePermission/rolePermissionSlice";
+import {
+  addRoles,
+  updateRolePermissions,
+} from "@/hooks/slices/RolePermission/rolePermissionSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { Plus, X, Eye, Edit2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,37 +25,7 @@ interface RolesProps {
 
 type ModalMode = "view" | "edit" | "create" | null;
 
-export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
-  const [roles, setRoles] = useState(totalroles);
-  const [modalMode, setModalMode] = useState<ModalMode>(null);
-  const [selectedRole, setSelectedRole] = useState<Roles | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    code: "",
-    permissions: [] as string[],
-  });
-  const dispatch = useDispatch<AppDispatch>();
-  const { rolesPermissions, hasFetched } = useSelector(
-    (state: RootState) => state.rolePermission
-  );
-  const router = useRouter();
-  // upadate the redux
-
-  useEffect(() => {
-    if (
-      rolesPermissions &&
-      rolesPermissions.length == 0 &&
-      totalroles &&
-      !hasFetched
-    ) {
-      dispatch(updateRolePermissions(totalroles));
-    }
-  }, [rolesPermissions, hasFetched]);
-
-  // All available permissions - can be fetched from API
-
-
- const allPermissions = [
+export const allPermissions = [
   // Dashboard
   "dashboard:read",
   "dashboard:create",
@@ -70,7 +43,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   "websites:read",
   "websites:create",
   "websites:update",
-  "website:delete",
+  "websites:delete",
 
   // Media
   "media:read",
@@ -111,8 +84,41 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   "ai:create",
   "ai:update",
   "ai:delete",
+
+  "inventory:read",
+  "inventory:create",
+  "inventory:update",
+  "inventory:delete",
 ];
 
+export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
+  const [roles, setRoles] = useState(totalroles);
+  const [modalMode, setModalMode] = useState<ModalMode>(null);
+  const [selectedRole, setSelectedRole] = useState<Roles | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    code: "",
+    permissions: [] as string[],
+  });
+  const dispatch = useDispatch<AppDispatch>();
+  const { rolesPermissions, hasFetched } = useSelector(
+    (state: RootState) => state.rolePermission
+  );
+  const router = useRouter();
+  // upadate the redux
+
+  useEffect(() => {
+    if (
+      rolesPermissions &&
+      rolesPermissions.length == 0 &&
+      totalroles &&
+      !hasFetched
+    ) {
+      dispatch(updateRolePermissions(totalroles));
+    }
+  }, [rolesPermissions, hasFetched]);
+
+  // All available permissions - can be fetched from API
 
   // Categorize permissions
   const categorizePermissions = (permissions: string[]) => {
@@ -176,7 +182,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
       );
       const updated = await res.json();
       if (updated.ok) {
-        dispatch(addRoles(updated.roles))
+        dispatch(addRoles(updated.roles));
         const newRole = updated.roles;
         setRoles(
           roles.map((r) =>
@@ -192,35 +198,34 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
   const selectedCategorized = selectedRole
     ? categorizePermissions(selectedRole.permissions)
     : {};
-  const formCategorized = categorizePermissions(formData.permissions);
 
+  const formCategorized = categorizePermissions(formData.permissions);
 
   const handleCreateNewRole = () => {
     router.push("/admin/users/roles-permissions/createnew");
   };
+
+
+
   return (
     <>
       <div className="min-h-screen">
         <div className="max-w-7xl mx-auto">
-        
           <div className="flex justify-between items-start mb-8">
             <div>
-
-               <BreadCrumbPage/>
+              <BreadCrumbPage />
               <p className="text-sm text-gray-500 mt-1">
                 Review your members roles and allocate permissions
               </p>
             </div>
 
-       
-              {/* <a href="admin/users/roles-permissions/createnew"><Button >Create New Role</Button></a> */}
-           
-           <Button onClick={handleCreateNewRole}>Create New Role</Button>
+            {/* <a href="admin/users/roles-permissions/createnew"><Button >Create New Role</Button></a> */}
+
+            <Button onClick={handleCreateNewRole}>Create New Role</Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               
-              {/* <div
+            {/* <div
             
               className="bg-white rounded-lg border border-gray-200 border-dashed p-6 flex flex-col items-center justify-center min-h-[200px] cursor-pointer hover:bg-gray-50"
             >
@@ -270,8 +275,6 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                 </div>
               </div>
             ))}
-
-          
           </div>
         </div>
 
@@ -317,7 +320,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Permissions 
+                        Permissions
                       </label>
                       <div className="space-y-4">
                         {Object.entries(selectedCategorized).map(
@@ -378,7 +381,7 @@ export const RolesAndPermissions = ({ totalroles }: RolesProps) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Permissions 
+                        Permissions
                       </label>
                       <div className="space-y-4">
                         {Object.entries(categorizedPermissions).map(

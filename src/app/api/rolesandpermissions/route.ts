@@ -25,8 +25,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req).json();
-    const searchParams = (await req).nextUrl.searchParams;
+    const body = await req.json();
+    const searchParams = req.nextUrl.searchParams;
 
     const id = searchParams.get("id");
     const type = searchParams.get("type");
@@ -42,13 +42,22 @@ export async function POST(req: NextRequest) {
     const db = await getDatabase();
     const rolesColl = await db.collection("rolesandpermissions");
     let res;
-    if (type == "edit") {
-      const getSingle = await rolesColl.findOne({ _id: new ObjectId(id!) });
-      let filter;
+    if (type == "edit" && id) {
+      const getSingle = await rolesColl.findOne({ _id: new ObjectId(id) });
+      console.log(getSingle, body);
+      let filter: string[] = [];
       if (getSingle) {
-        filter = permissions.filter((d: string) => {
-          return !getSingle.permissions.includes(d);
-        });
+        let map: any = {};
+        for (let i of getSingle.permissions) {
+          map[i] = (map[i] || 0) + 1;
+        }
+
+        for (let i of permissions) {
+          map[i] = (map[i] || 0) + 1;
+        }
+
+        let t = Object.entries(map);
+        filter = t.filter(([key, value]) => value == 1).map((d) => d[0]);
       }
 
       if (
@@ -80,15 +89,11 @@ export async function POST(req: NextRequest) {
           {
             $set: {
               role: name,
-            },
-            $addToSet: {
-              permissions: {
-                $each: filter,
-              },
+              permissions,
             },
           }
         );
-     
+
         res = {
           name,
           permissions,

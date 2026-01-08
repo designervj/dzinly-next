@@ -17,7 +17,7 @@ export default async function PagesAdmin() {
   }
 
   const currentWebsiteId = (await cookies()).get("current_website_id")?.value;
-
+  console.log("currentWebsiteId", currentWebsiteId);
   try {
     const data = await pageService.listPages(
       session.user.tenantId as string,

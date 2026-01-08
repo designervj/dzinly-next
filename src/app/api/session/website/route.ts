@@ -42,3 +42,19 @@ export async function POST(req: Request) {
   });
   return res;
 }
+
+export async function DELETE() {
+  const session = await auth();
+  if (!session?.user?.tenantId)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const res = NextResponse.json({ ok: true, message: "All cookies deleted" });
+
+  // Delete current_website_id cookie
+  res.cookies.delete("current_website_id");
+
+  // You can add more specific cookies to delete here if needed
+  // res.cookies.delete("other_cookie_name");
+
+  return res;
+}

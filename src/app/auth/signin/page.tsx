@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { setUser } from "@/hooks/slices/user/userSlice";
-import { ShieldCheck, ArrowRight, Lock, Mail, Globe, Eye, EyeOff } from "lucide-react"; 
+import { ShieldCheck, ArrowRight, Lock, Mail, Globe, Eye, EyeOff } from "lucide-react";
 
 function SignInForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,24 +58,24 @@ function SignInForm() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground">
-      
+
       {/* LEFT PANEL: Branding & Info 
           Uses bg-primary (Plum) and text-secondary (Gold) for contrast 
       */}
       <div className="hidden md:flex md:w-1/2 bg-primary relative overflow-hidden p-12 flex-col justify-between border-r border-border">
         {/* Decorative Background - Using Secondary (Gold/Sand) for glow */}
-     
+
 
         <div className="relative z-10">
           {/* Logo brightness inverted to look white on the dark primary background */}
           <img src="/dzinlylogo.svg" alt="Dzinly" className="w-52 brightness-0 invert my-10" />
-          
+
           <h2 className="text-4xl lg:text-[72px] font-bold text-primary-foreground leading-tight mb-6">
             Enterprise <br />
             {/* Using Secondary Color for Emphasis */}
             <span className="text-secondary">Admin Portal</span>
           </h2>
-          
+
           <p className="text-primary-foreground/80 text-lg max-w-md">
             Secure access to your franchise management tools, white-label settings, and global analytics.
           </p>

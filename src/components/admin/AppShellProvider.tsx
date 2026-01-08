@@ -30,7 +30,7 @@ export async function AppShellProvider({ children }: AppShellProviderProps) {
   // Get websites for the current tenant
   let websites: Website[] = [];
   let currentWebsite: Website | null = null;
-  debugger
+
   if (user?.tenantId) {
     try {
       const websiteDocs = await websiteService.listByTenant(user.tenantId);

@@ -17,12 +17,14 @@ import tabContentReducer from "../hooks/slices/canvas/tabSlice"
 import accountReducer from "../hooks/slices/user/accountSlice"
 import packageReducer from "../hooks/slices/package/packageSlice"
 import websitePageReducer from "../hooks/slices/websites/websitePageSlice"
+import themePresetReducer from "../hooks/slices/branding/theme-preset-slice"
 
 export const store = configureStore({
   reducer: {
 
     user:userSlice,
     pageEdit: pageEditReducer,
+    themePreset:themePresetReducer,
     category: categoryReducer,
     brand:brandReducer,
     segment:segmentReducer,

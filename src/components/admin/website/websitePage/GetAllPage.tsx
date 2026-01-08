@@ -17,6 +17,7 @@ const GetAllPage = ({allPages}:props) => {
     (state: RootState) => state.websitePage
   );
 
+  console.log("AlLL p[ahesbbs", allPages)
   useEffect(() => {
     if (!hasFetched && 
         !websitePages && 

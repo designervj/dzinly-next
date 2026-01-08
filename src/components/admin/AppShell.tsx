@@ -785,7 +785,7 @@ const currentWebsiteSections: NavSection[] = [
     id: "users",
     label: "Users",
     items: [
-       {
+      {
         label: "Accounts",
         href: "/admin/users/accounts",
         icon: Users,
@@ -864,11 +864,11 @@ const currentWebsiteSections: NavSection[] = [
       },
     ],
   },
-   {
+  {
     id: "Packages",
     label: "Packages",
     items: [
-       {
+      {
         label: "Packages",
         href: "/admin/users/packages",
         icon: Package,
@@ -890,7 +890,7 @@ const currentWebsiteSections: NavSection[] = [
           "packageaddon:create",
         ],
       },
-   
+
     ],
   },
   {
@@ -1249,8 +1249,8 @@ function Sidebar({
                   ) : (
                     <>
                       {currentUser &&
-                      currentUser.role &&
-                      currentUser.role === "customer" ? (
+                        currentUser.role &&
+                        currentUser.role === "customer" ? (
                         <CustomerSideBar />
                       ) : (
                         filteredWebsiteSections.map((section) => {
@@ -1756,15 +1756,52 @@ function Topbar({
 }: TopbarProps) {
   const dispatch = useDispatch();
 
+  const deleteAllCookies = async () => {
+    // Call API to delete server-side cookies (httpOnly cookies)
+    try {
+      await fetch("/api/session/website", {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.warn("Failed to delete server-side cookies:", err);
+    }
+
+    // Delete client-side cookies
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+
+      // Delete cookie for current path
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+
+      // Delete cookie for root domain
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" + window.location.hostname;
+
+      // Delete cookie for parent domain (if applicable)
+      const domain = window.location.hostname.split('.').slice(-2).join('.');
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=." + domain;
+    }
+  };
+
   const handleSignOut = async () => {
     try {
-      // resetRedux(); // Uncomment if you have this function
+      // Delete all cookies first (both server-side and client-side)
+      await deleteAllCookies();
+
+      // Clear Redux state
       dispatch(clearAttributes());
       dispatch(clearBrands());
       dispatch(clearSegments());
       dispatch(clearCategories());
+
+      // Clear browser storage
       localStorage.clear();
       sessionStorage.clear();
+
+      // Sign out
       await signOut({ callbackUrl: "/", redirect: true });
     } catch (error) {
       console.error("Error during sign out:", error);
@@ -1911,7 +1948,7 @@ export function AppShell({
   websites = [],
   currentWebsite = null,
   user = null,
-  onWebsiteChange = () => {},
+  onWebsiteChange = () => { },
 }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);

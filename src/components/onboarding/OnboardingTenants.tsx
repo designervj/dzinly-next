@@ -8,6 +8,7 @@ import { WebsiteDetails } from "./WebsiteDetails";
 import { Review } from "./Review";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
 
 export interface websiteData {
   name: string;
@@ -251,8 +252,10 @@ export default function OnboardingTenants() {
   return (
     <div className="min-h-screen">
       <div className="max-w-6xl mx-auto">
+         <BreadCrumbPage/>
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col lg:flex-row">
+            
             {/* Main Content */}
             <div className="flex-1 p-8 lg:p-12">
               {renderStepContent()}

@@ -13,5 +13,5 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   lastLoginAt?: Date;
-  tenantSlug: string;
+  tenantSlug?: string;
 }

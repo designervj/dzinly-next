@@ -31,16 +31,16 @@ export const authConfig: NextAuthConfig = {
           // tenant._id,
           credentials.email as string
         );
-
+    console.log("user",user)
         if (!user || !user.role) {
           return null;
         }
           
-     
+   
              if(user.role=="superadmin"){
           tenantdata = await tenantService.getTenantBySlug(inputTenantSlug);
         }else{
-          tenantdata = await tenantService.getTenantByEmail(credentials.email as string);
+          tenantdata = await tenantService.getTenantById(user.tenantId??"" as string);
         }
         // Verify password
         const isValid = await userService.verifyPassword(

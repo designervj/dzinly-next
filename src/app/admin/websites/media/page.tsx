@@ -8,6 +8,8 @@ import {
   FileText,
 } from "lucide-react";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Page() {
   const mediaItems = [
@@ -34,10 +36,12 @@ export default function Page() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md rounded-sm text-sm font-medium hover:bg-blue-700">
-          <Upload size={18} />
-          Upload Media
-        </button>
+        <Link href="/admin/websites/media/upload-media">
+          <Button>
+            <Upload size={18} />
+             Upload Media
+          </Button>
+        </Link>
       </div>
 
       {/* MEDIA GRID */}

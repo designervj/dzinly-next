@@ -231,7 +231,7 @@ export default function PageEditor({
       setMsg(ok ? "Saved successfully" : "Save failed");
       if (ok) {
         toast.message("Updated successfully");
-        router.refresh();
+        router.push("/admin/websites/pages")
       } else {
         toast.error("Save failed");
       }

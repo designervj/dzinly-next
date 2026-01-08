@@ -32,8 +32,7 @@ export default function BuilderClient() {
     return slug?.split('/').pop();
   }, [pathname]);
 
-  console.log("pathname---", pathname)
-  console.log("cropSlug---", cropSlug)
+
   useEffect(() => {
     if (!hasfetchPage
       && !pageHome

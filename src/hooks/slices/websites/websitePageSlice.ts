@@ -7,7 +7,12 @@ export const fetchWebsitePages = createAsyncThunk<
   { rejectValue: string }
 >("websitePage/fetchWebsitePages", async (websiteId, { rejectWithValue }) => {
   try {
-    const response = await fetch(`/api/pages/websites?websiteId=${websiteId}`);
+    const response = await fetch(`/api/pages/websites?id=${websiteId}`,{
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || "Failed to fetch pages");
@@ -135,9 +140,9 @@ const websitePageSlice = createSlice({
     },
     setAllWebsitePages: (state, action) => {
       state.websitePages = action.payload
-      state.hasFetched=true
+      state.hasFetched = true
     },
-    addNewDomain:(state,action)=>{
+    addNewDomain: (state, action) => {
       state.websitePages.push(action.payload)
     }
   },
@@ -181,13 +186,13 @@ const websitePageSlice = createSlice({
           (p) => p._id !== action.payload
         )
       })
-        //delete website page by website id
-        .addCase(deleteWebsitePageByWebsiteId.fulfilled, (state, action) => {
-          state.websitePages = state.websitePages.filter(
-            (p) => p.websiteId !== action.payload.websiteId
-          );
-         
-      }) 
+      //delete website page by website id
+      .addCase(deleteWebsitePageByWebsiteId.fulfilled, (state, action) => {
+        state.websitePages = state.websitePages.filter(
+          (p) => p.websiteId !== action.payload.websiteId
+        );
+
+      })
       .addCase(deleteWebsitePageByWebsiteId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || "Failed to delete pages by website ID";
@@ -195,10 +200,10 @@ const websitePageSlice = createSlice({
   },
 });
 
-  export const {
-    updateCurrentPage,
-    setAllWebsitePages,
-    addNewDomain
+export const {
+  updateCurrentPage,
+  setAllWebsitePages,
+  addNewDomain
 } = websitePageSlice.actions;
 
 export default websitePageSlice.reducer;

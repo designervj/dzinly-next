@@ -6,10 +6,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { WebsitePageModel } from "./WebsitePageType";
 
-type props={
- allPages: WebsitePageModel[]
-}
-const GetAllPage = ({allPages}:props) => {
+// type props={
+//  allPages: WebsitePageModel[]
+// }
+const GetAllPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
@@ -17,15 +17,22 @@ const GetAllPage = ({allPages}:props) => {
     (state: RootState) => state.websitePage
   );
 
-  console.log("AlLL p[ahesbbs", allPages)
-  useEffect(() => {
+  // console.log("AlLL p[ahesbbs", allPages)
+  // useEffect(() => {
+  //   if (!hasFetched && 
+  //       !websitePages && 
+  //       allPages.length>0&&
+  //       currentWebsite && currentWebsite._id) {
+  //     dispatch(setAllWebsitePages(allPages));
+  //   }
+  // }, [hasFetched, websitePages,currentWebsite,allPages]);
+    useEffect(() => {
     if (!hasFetched && 
-        !websitePages && 
-        allPages.length>0&&
         currentWebsite && currentWebsite._id) {
-      dispatch(setAllWebsitePages(allPages));
+          console.log("currentWebsite", currentWebsite)
+      dispatch(fetchWebsitePages(currentWebsite._id));
     }
-  }, [hasFetched, websitePages,currentWebsite,allPages]);
+  }, [hasFetched, websitePages,currentWebsite]);
   return null;
 };
 

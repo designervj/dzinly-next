@@ -357,7 +357,7 @@ export function DataTableExt({
     error,
   } = useSelector((state: RootState) => state.pageEdit);
 
-  console.log("In DataTable", pageHome);
+
 
   function handleBuilderEdit(
     e: React.MouseEvent,
@@ -371,7 +371,7 @@ export function DataTableExt({
     const copied = structuredClone(row);
     delete copied.website;
     dispatch(setPageEdit(copied));
-    router.push("/builder");
+    router.push(`/${copied.slug}`);
     // window.open("/builder", "_blank");
   }
 

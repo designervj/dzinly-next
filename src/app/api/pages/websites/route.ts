@@ -7,27 +7,38 @@ export async function GET(req: Request) {
 
   const id = searchParams.get("id");
   const slug = searchParams.get("slug");
-  // If neither ID nor slug is provided
-  if (!id && !slug) {
+
+  // websiteId is required
+  if (!id) {
     return NextResponse.json(
-      { error: "Please provide either id or slug" },
+      { error: "Please provide websiteId (id)" },
       { status: 400 }
     );
   }
-  let result;
 
-  const db = await getDatabase()
-  const collection = await db.collection("pages")
-  const webs = new ObjectId(String(id))
-  result = await collection.findOne({ slug: "/" + slug, websiteId: webs })
-  if (!result) {
-    return NextResponse.json(
-      { error: "No page found" },
-      { status: 404 }
-    );
+  let result;
+  const db = await getDatabase();
+  const collection = await db.collection("pages");
+  const webs = new ObjectId(String(id));
+
+  // If both slug and websiteId are provided, find one specific page
+  if (slug) {
+    result = await collection.findOne({ slug: slug, websiteId: webs });
+
+    if (!result) {
+      return NextResponse.json(
+        { error: "No page found with the given slug and websiteId" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(result);
   }
 
-  return NextResponse.json({ item: result });
+  // If only websiteId is provided, return all pages for that website
+  result = await collection.find({ websiteId: webs }).toArray();
+
+  return NextResponse.json(result);
 }
 
 export async function DELETE(req: Request) {

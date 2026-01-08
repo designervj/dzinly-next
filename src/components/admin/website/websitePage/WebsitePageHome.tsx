@@ -7,7 +7,7 @@ const WebsitePageHome = () => {
   return (
     <>
     <WebsitePageTable/>
-    {/* <GetAllPage/> */}
+    <GetAllPage/>
     </>
   )
 }

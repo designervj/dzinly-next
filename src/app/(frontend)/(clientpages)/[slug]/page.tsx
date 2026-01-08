@@ -1,56 +1,39 @@
-import { auth } from "@/auth";
-import { headers } from "next/headers";
-const API_BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:55803";
+"use client"
 
-export default async function PageTemplate({ params }: any) {
-  const headersList = await headers();
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
-  const host = headersList.get("host");
+export default function PageTemplate() {
+  const { page, isLoading, error } = useSelector((state: RootState) => state.pageEdit);
 
-  const main = await fetch(`${API_BASE_URL}/api/domain/${host}`);
-
-  const domainData = await main.json();
-
-  const param = await params;
-
-  const slugs = !param.hasOwnProperty("slug") ? "home" : param.slug;
-
-  const query = new URLSearchParams({
-    id: domainData.item, // page ID
-    slug: slugs, // page slug
-  }).toString();
-
-  if (!domainData.item) {
-    return <>404 Not Found</>;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Loading page...</div>
+      </div>
+    );
   }
 
-  const session = await auth();
-
-  const res = await fetch(`${API_BASE_URL}/api/pages/websites?${query}`);
-
-  const t = await res.json();
-
-  // Check if the response has the expected structure
-  if (!t || !t.item || !t.item.content ||!t.item.websiteId) {
-    return <div>Page not found or content unavailable</div>;
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-red-500">Error: {error}</div>
+      </div>
+    );
   }
 
-  const html = t.item.content;
-
-  const EditButton = (await import("../EditButton")).default;
-
-  const name = "Himanshu";
-
-  const processedHtml = html.replace(/\{\{name\}\}/g, name);
+  if (!page) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Page not found</div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      {session &&
-        session.user &&
-        (session.user.role == "owner" || session?.user.role == "superadmin") && (
-          <EditButton pageData={t.item} />
-        )}
-      <div dangerouslySetInnerHTML={{ __html: processedHtml }} />
+      {/* Render the page content from Redux */}
+      <div dangerouslySetInnerHTML={{ __html: page.content }} />
     </div>
   );
 }

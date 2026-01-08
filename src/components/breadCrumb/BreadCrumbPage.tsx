@@ -44,7 +44,7 @@ const BreadCrumbPage = () => {
                         {/* <span className="mx-0 select-none">-</span> */}
 
                         {/* Websites */}
-                        {urlPath.length > 2 && <BreadcrumbItem>
+                        {urlPath &&urlPath.length > 2 && <BreadcrumbItem>
                             <BreadcrumbLink>
                                 <Link href={`/admin/${urlPath[urlPath.length - 2]}`} className="text-muted-foreground font-normal capitalize">{urlPath[urlPath.length - 2]}</Link>
                             </BreadcrumbLink>
@@ -53,7 +53,7 @@ const BreadCrumbPage = () => {
                  
 
                         {/* Current */}
-                    {urlPath.length > 1  && 
+                    {urlPath &&urlPath.length > 1  && 
                     <>
                            <span className="mx-0 select-none">-</span>
                      <BreadcrumbItem>

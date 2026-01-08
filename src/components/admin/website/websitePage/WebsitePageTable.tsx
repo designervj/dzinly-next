@@ -83,14 +83,15 @@ const WebsitePageTable = () => {
     }
   }
 
+ 
   return (
     <div>
       <DataTableExt
-        title="Pages"
+        title=""
         data={filteredPages}
-        createHref="/admin/pages/new"
+       createHref="/admin/websites/pages/create"
+       onDelete={handleDelete}
         initialColumns={initialColumns}
-        onDelete={handleDelete}
         onView={handleView}
         opentab={handleViewTab}
       />

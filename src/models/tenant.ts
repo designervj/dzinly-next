@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { BrandingSettings } from '@/types';
 
 export interface TenantModel {
-  _id: ObjectId;
+  _id: ObjectId | string;
   slug: string;
   name: string;
   email: string;

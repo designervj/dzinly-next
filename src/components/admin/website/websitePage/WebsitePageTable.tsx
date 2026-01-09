@@ -1,22 +1,26 @@
 "use client"
 import { AppDispatch, RootState } from '@/store/store'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DataTableExt } from '../../../dataTable/DataTableExt'
 
-import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
 import { WebsitePageModel } from './WebsitePageType'
 import { deleteWebsitePage, updateCurrentPage } from '@/hooks/slices/websites/websitePageSlice'
+import { DeleteConfirmationModal } from '@/components/dataTable/delete-confirmation-modal'
+import { toast } from 'sonner'
 
 const WebsitePageTable = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const { websitePages } = useSelector((state: RootState) => state.websitePage);
-  const { toast } = useToast();
+ 
   const router = useRouter();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteWebsitePageId, setDeleteWebsitePageId] = useState<WebsitePageModel | null>(null);
+   const [isDeleting, setIsDeleting] = useState(false);
 
   const filteredPages = useMemo(() => {
     if (
@@ -25,28 +29,38 @@ const WebsitePageTable = () => {
       websitePages &&
       websitePages.length > 0
     ) {
-      const list = websitePages.filter(
-        (item) => item.tenantId === currentWebsite._id
-      );
-      return list.length > 0 ? list : websitePages;
+      return websitePages;
     }
     return [];
   }, [currentWebsite, websitePages]);
 
-  const handleDelete = async (row: any) => {
-    const id = row?._id ?? row?.id;
-    console.log("iiiiiii", id)
+  const handleDelete = async (row: WebsitePageModel) => {
+    const id = row?._id ;
+
+    setDeleteWebsitePageId(row);
     if (!id) {
-      toast({ title: 'Delete failed', description: 'Missing id' });
+      toast( 'Missing id' );
       return;
     }
-    const ok = confirm(`Delete page "${row?.title ?? id}"?`);
-    if (!ok) return;
+    setDeleteModalOpen(true);
+    // const ok = confirm(`Delete page "${row?.title ?? id}"?`);
+    // if (!ok) return;
 
-    dispatch(deleteWebsitePage(id));
+    // dispatch(deleteWebsitePage(id));
 
   };
 
+    const handleConfirmDelete = async () => {
+      if (!deleteWebsitePageId) return;
+      const id = deleteWebsitePageId?._id;
+      if (!id) return;
+     const response=  await dispatch(deleteWebsitePage(id)).unwrap();
+       if(response){
+        toast( 'Page deleted successfully' );
+       }
+     setDeleteModalOpen(false);
+      setDeleteWebsitePageId(null);
+    }
   const handleView = (row: WebsitePageModel) => {
     const id = row?._id;
     console.log("id. website --", id)
@@ -95,6 +109,16 @@ const WebsitePageTable = () => {
         onView={handleView}
         opentab={handleViewTab}
       />
+
+      <DeleteConfirmationModal
+              open={deleteModalOpen}
+              onOpenChange={setDeleteModalOpen}
+              onConfirm={handleConfirmDelete}
+              title="Delete Website Page"
+              itemName={deleteWebsitePageId?.title??""}
+              description={`This will permanently delete the website page "${deleteWebsitePageId?.slug}". This action cannot be undone.`}
+              isLoading={isDeleting}
+            />
     </div>
   );
 };

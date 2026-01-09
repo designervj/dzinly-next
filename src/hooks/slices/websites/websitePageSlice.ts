@@ -142,6 +142,9 @@ const websitePageSlice = createSlice({
       state.websitePages = action.payload
       state.hasFetched = true
     },
+    updateWebsitePages: (state, action) => {
+      state.websitePages.push(action.payload)
+    },
     addNewDomain: (state, action) => {
       state.websitePages.push(action.payload)
     }
@@ -203,7 +206,8 @@ const websitePageSlice = createSlice({
 export const {
   updateCurrentPage,
   setAllWebsitePages,
-  addNewDomain
+  addNewDomain,
+  updateWebsitePages
 } = websitePageSlice.actions;
 
 export default websitePageSlice.reducer;

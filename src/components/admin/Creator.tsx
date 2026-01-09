@@ -1,9 +1,9 @@
 
 "use client";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { useState, useTransition, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import BreadCrumbPage from "../breadCrumb/BreadCrumbPage";
+import { updateWebsitePage, updateWebsitePages } from "@/hooks/slices/websites/websitePageSlice";
 
 // Field configuration type
 export type FieldConfig = {
@@ -45,6 +46,7 @@ export default function PageCreator({
 
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   // Single state object for all form data
   const [formData, setFormData] = useState(() => {
     const initialData: Record<string, any> = {};
@@ -111,13 +113,15 @@ export default function PageCreator({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
-      if (res.ok) {
+      const data= await res.json();
+       console.log("response of page create", data)
+      if (res.ok && data) {
+        dispatch(updateWebsitePages(data))
         toast.success("Created successfully!");
         router.push("/admin/websites/pages");
        
       } else {
-        setMsg("Create failed");
+        toast.error("Create failed");
       }
     });
   };

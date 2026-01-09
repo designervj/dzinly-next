@@ -45,6 +45,7 @@ import {
   Wrench,
   Sparkles,
 } from "lucide-react";
+import { BsBoxArrowRight, BsGear, BsPersonCircle, BsSpeedometer2, BsStars } from "react-icons/bs";
 
 export default function WpAdminEditorBar({
   pageData,
@@ -281,45 +282,46 @@ export default function WpAdminEditorBar({
                 {/* </Link> */}
 
              
-                 <Link href="/admin/dashboard"> <DropdownMenuItem className="gap-2 font-semibold">
-                    {/* <Sparkles className="h-4 w-4" /> */}
-                    Dashboard
-                  </DropdownMenuItem>
-                  </Link> 
+              <Link href="/admin/dashboard">
+  <DropdownMenuItem className="gap-2 font-semibold">
+    <BsSpeedometer2 className="text-[16px] opacity-90" />
+    Dashboard
+  </DropdownMenuItem>
+</Link>
 
+<DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+<Link href="/admin/profile">
+  <DropdownMenuItem className="gap-2 font-semibold">
+    <BsPersonCircle className="text-[16px] opacity-90" />
+    Profile
+  </DropdownMenuItem>
+</Link>
 
-                <Link href="/admin/profile">
-                  <DropdownMenuItem className="font-semibold">
-                    Profile
-                  </DropdownMenuItem>
-                </Link>
+<DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+<Link href={`/admin/websites/${pageData?.websiteId || ""}/settings`}>
+  <DropdownMenuItem className="gap-2 font-semibold">
+    <BsGear className="text-[16px] opacity-90" />
+    Website Settings
+  </DropdownMenuItem>
+</Link>
 
-                <Link
-                  href={`/admin/websites/${pageData?.websiteId || ""}/settings`}
-                >
-                  <DropdownMenuItem className="gap-2 font-semibold">
-                    <Settings className="h-4 w-4" />
-                    Website Settings
-                  </DropdownMenuItem>
-                </Link>
+<DropdownMenuItem className="gap-2 font-semibold">
+  <BsStars className="text-[16px] opacity-90" />
+  LLM Setting:
+  <span className="ml-1 text-xs opacity-80">
+    {currentLLMSetting ? "Loaded" : "Not loaded"}
+  </span>
+</DropdownMenuItem>
 
-                <DropdownMenuItem className="gap-2 font-semibold">
-                  <Sparkles className="h-4 w-4" />
-                  LLM Setting:
-                  <span className="ml-1 text-xs opacity-80">
-                    {currentLLMSetting ? "Loaded" : "Not loaded"}
-                  </span>
-                </DropdownMenuItem>
+<DropdownMenuSeparator />
 
-                <DropdownMenuSeparator />
+<DropdownMenuItem className="gap-2 text-red-600 font-semibold">
+  <BsBoxArrowRight className="text-[16px] opacity-90" />
+  Log Out
+</DropdownMenuItem>
 
-                <DropdownMenuItem className="text-red-600 font-semibold">
-                  Log Out
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

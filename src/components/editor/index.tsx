@@ -18,6 +18,7 @@ import {
   fetchLLMSettingByWebsiteId,
   fetchLLMSettings,
 } from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
+import { toast } from "sonner";
 
 export default function GrapesJSEditor() {
   const mytheme = {
@@ -87,10 +88,10 @@ export default function GrapesJSEditor() {
   useEffect(() => {
     if (state.editor && page?.content) {
       // debugger;
-      //  const css= extractCssFromHtml(page.content)
-      //   if (css) {
-      //   state.editor.setStyle(css);
-      // }
+      const css = extractCssFromHtml(page.content)
+      if (css) {
+        state.editor.setStyle(css);
+      }
       state.editor.setComponents(page.content);
       setEditorHtml(page.content);
       // console.log("css---", css)
@@ -98,48 +99,50 @@ export default function GrapesJSEditor() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.editor, page?.content]);
-  useEffect(() => {
-    if (!state.editor) return;
 
-    // Priority: mockPage > page.content
-    if (mockPage?.html && mockPage?.css) {
-      // Apply HTML and CSS
-      state.editor.setComponents(mockPage.html);
-      setEditorHtml(mockPage.html);
+  // mock data update into editor
+  //   useEffect(() => {
+  //     if (!state.editor) return;
 
-      // Apply theme CSS variables and global CSS if available
-      if (themePage) {
-        // Generate CSS variables string
-        const cssVariablesString = Object.entries(themePage.cssVariables)
-          .map(([key, value]) => `${key}: ${value};`)
-          .join('\n    ');
 
-        // Create a combined CSS with variables and global CSS
-        const themeCSS = `:root {
-    ${cssVariablesString}
-  }
-  
-${themePage.globalCSS}`;
+  //     if (mockPage?.html && mockPage?.css) {
+  //       // Apply HTML and CSS
+  //       state.editor.setComponents(mockPage.html);
+  //       setEditorHtml(mockPage.html);
 
-        // Append theme CSS to the editor styles
-        const combinedCSS = `${themeCSS}\n\n${mockPage.css}`;
-        state.editor.setStyle(combinedCSS);
-        setEditorCss(combinedCSS);
+  //       // Apply theme CSS variables and global CSS if available
+  //       if (themePage) {
+  //         // Generate CSS variables string
+  //         const cssVariablesString = Object.entries(themePage.cssVariables)
+  //           .map(([key, value]) => `${key}: ${value};`)
+  //           .join('\n    ');
 
-        console.log('Theme applied to canvas:', {
-          variables: Object.keys(themePage.cssVariables).length,
-          hasGlobalCSS: !!themePage.globalCSS
-        });
-      } else {
-        // No theme, just apply page CSS
-        state.editor.setStyle(mockPage.css);
-        setEditorCss(mockPage.css);
-      }
-    } else if (page?.content) {
-      state.editor.setComponents(page.content);
-      setEditorHtml(page.content);
-    }
-  }, [state.editor, mockPage?.html, mockPage?.css, themePage, page?.content]);
+  //         // Create a combined CSS with variables and global CSS
+  //         const themeCSS = `:root {
+  //     ${cssVariablesString}
+  //   }
+
+  // ${themePage.globalCSS}`;
+
+  //         // Append theme CSS to the editor styles
+  //         const combinedCSS = `${themeCSS}\n\n${mockPage.css}`;
+  //         state.editor.setStyle(combinedCSS);
+  //         setEditorCss(combinedCSS);
+
+  //         console.log('Theme applied to canvas:', {
+  //           variables: Object.keys(themePage.cssVariables).length,
+  //           hasGlobalCSS: !!themePage.globalCSS
+  //         });
+  //       } else {
+  //         // No theme, just apply page CSS
+  //         state.editor.setStyle(mockPage.css);
+  //         setEditorCss(mockPage.css);
+  //       }
+  //     } else if (page?.content) {
+  //       state.editor.setComponents(page.content);
+  //       setEditorHtml(page.content);
+  //     }
+  //   }, [state.editor, mockPage?.html, mockPage?.css, themePage, page?.content]);
 
   useEffect(() => {
     if (!state.editor) return;
@@ -343,8 +346,8 @@ ${themePage.globalCSS}`;
     }
   };
 
-  const handleSaveData = () => {
-    console.log("Clicked", actions.savePage());
+  const handleSaveData = async () => {
+    await actions.savePage();
   };
 
   // ─────────────────────────────

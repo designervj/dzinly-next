@@ -371,8 +371,8 @@ export function DataTableExt({
     const copied = structuredClone(row);
     delete copied.website;
     dispatch(setPageEdit(copied));
-    router.push(`/${copied.slug}`);
-    // window.open("/builder", "_blank");
+    //  router.push(`/${copied.slug}`);
+    window.open(`/${copied.slug}`, "_blank", "noopener,noreferrer");
   }
 
   function handleViewPage(

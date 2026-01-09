@@ -30,7 +30,7 @@ import Link from "next/link";
 export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageModel }) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-
+    const {page:pageEditData} = useSelector((state: RootState) => state.pageEdit);
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const { currentLLMSetting } = useSelector((state: RootState) => state.llmSetting);
@@ -42,10 +42,7 @@ export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageMo
     }
   }, [pageData?.websiteId, currentWebsite, dispatch]);
 
-  const handleEditInBuilder = () => {
-    dispatch(setPageEdit(pageData));
-    router.push("/builder");
-  };
+
 
   // Only superadmin sees this bar (your same condition)
   if (!(user && user.id && user.role === "superadmin")) return null;
@@ -53,8 +50,8 @@ export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageMo
   const siteName = currentWebsite?.name || "Codified Web Solutions";
   const userName = user?.name || "Admin";
   const handleClick = () => {
-    dispatch(setPageEdit(pageData));
-    router.push("/builder");
+    //dispatch(setPageEdit(pageData));
+    router.push(`/builder/${pageData?.slug}`);
   };
  
   return (
@@ -77,31 +74,7 @@ export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageMo
               <img src="/dzinly-favicon.svg" alt="Dzinly Favicon" className="w-[26px] text-white"></img>
             </div>
 
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="h-8 px-2 rounded-sm flex items-center gap-2 hover:bg-[#2c3338] text-[13px] font-medium max-w-[260px] min-w-0"
-                  type="button"
-                >
-                  <span className="truncate">{siteName}</span>
-                  <ChevronDown className="h-4 w-4 opacity-80" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <Link href="/admin/dashboard"><DropdownMenuItem>Dashboard</DropdownMenuItem></Link>
-                <DropdownMenuItem>Visit Site</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Website Settings</DropdownMenuItem>
-                <DropdownMenuItem>
-                  LLM Setting: {currentLLMSetting ? "Loaded" : "Not loaded"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
-
-            {/* <BarIconOnly
-              label="Comments"
-              icon={<MessageSquareText className="h-4 w-4" />}
-            /> */}
+         
 
             <Separator orientation="vertical" className="h-4 bg-white/10 mx-1" />
 

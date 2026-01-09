@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Refreshpage from "../(frontend)/(clientpages)/[slug]/Refreshpage";
 
 // Dynamically import GrapesJS editor to ensure it only loads on the client side
 const GrapesJSEditor = dynamic(() => import("@/components/editor"), {
@@ -49,5 +50,9 @@ export default function BuilderClient() {
 
   }, [pageHome, hasfetchPage, user, cropSlug, dispatch]);
 
-  return <GrapesJSEditor />;
+  return (
+    <><GrapesJSEditor />
+       <Refreshpage/>
+    </>
+  )
 }

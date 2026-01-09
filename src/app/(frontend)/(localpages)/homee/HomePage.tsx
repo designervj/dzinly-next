@@ -1,11 +1,11 @@
 import { auth } from "@/auth";
 import GethomePage from "@/components/homePage/GethomePage";
 import { headers } from "next/headers";
-const API_BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:55803";
+
 import React from 'react'
 import EditButton from "../../(clientpages)/EditButton";
 import RootClientPage from "./page.client";
-
+const API_BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:55803";
 export default async function HomeTemplate({ params }: any) {
   const tenantId = "6941349ebc8a14e00bbc100c";
   const slug = "home-mahimavalenza";

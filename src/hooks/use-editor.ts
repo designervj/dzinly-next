@@ -946,18 +946,18 @@ export function useEditor(containerId: string) {
     </style>
     ${html}
   `;
-      // console.log("Saving page", page._id, html);
-      // const response = await dispatch(
-      //   savePageThunk({
-      //     id: page._id,
-      //     tenantId: page.tenantId,
-      //     content: fullHtml,
-      //   })
-      // ).unwrap();
-      // console.log("console.log----use editor", response)
-      // if (response && response.ok) {
-      //   toast.success("Page content updated successfully!");
-      // }
+      console.log("Saving page", page._id);
+      const response = await dispatch(
+        savePageThunk({
+          id: page._id,
+          tenantId: page.tenantId,
+          content: fullHtml,
+        })
+      ).unwrap();
+      console.log("console.log----use editor", response)
+      if (response && response.ok) {
+        toast.success("Page content updated successfully!");
+      }
       // Optionally handle response or errors here
     },
 

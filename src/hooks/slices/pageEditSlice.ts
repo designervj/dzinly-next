@@ -74,10 +74,10 @@ export const savePageThunk = createAsyncThunk(
       if (response.ok) {
 
         const updatedPage = await response.json();
-        console.log("updatedPage---->", updatedPage)
-        const { page } = (getState() as RootState).pageEdit;
-        const oldPage = { ...page, content: payload.content };
-        dispatch(setPageEdit(oldPage));
+        // console.log("updatedPage---->", updatedPage)
+        // const { page } = (getState() as RootState).pageEdit;
+        // const oldPage = { ...page, content: payload.content };
+        // dispatch(setPageEdit(oldPage));
         //   console.log("savePageThunk - Dispatching setPageEdit with updated content");
         //  dispatch(setPageEdit(updatedPage));
         return {

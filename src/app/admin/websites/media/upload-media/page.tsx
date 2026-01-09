@@ -176,7 +176,7 @@ export default function UploadMediaPage() {
         role="button"
         tabIndex={0}
       >
-        <div className="h-12 w-12 rounded-2xl bg-muted flex items-center justify-center">
+        <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center">
           <UploadCloud className="h-6 w-6" />
         </div>
         <p className="text-base font-semibold">Drop files here</p>
@@ -208,7 +208,7 @@ export default function UploadMediaPage() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((m) => (
-            <Card key={m.name} className="rounded-2xl overflow-hidden">
+            <Card key={m.name} className="rounded-md overflow-hidden">
               <div className="h-44 bg-muted/40 flex items-center justify-center">
                 {m.type === "IMAGE" ? (
                   // eslint-disable-next-line @next/next/no-img-element

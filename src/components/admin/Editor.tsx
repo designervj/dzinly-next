@@ -538,7 +538,7 @@ export default function PageEditor({
 
       <div className="mx-auto w-full max-w-7xl px-4 py-6">
         {/* Header */}
-        <div className="mb-6 rounded-2xl border bg-white p-5 shadow-sm">
+        <div className="mb-6 rounded-md border bg-white p-5 shadow-sm">
           {/* <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">

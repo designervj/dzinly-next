@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function ShippingPage() {
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-10">
+    <div className="space-y-6 max-full mx-auto pb-10">
       <div>
          {/* <h1 className="text-2xl font-bold tracking-tight">Shipping & Delivery</h1> */}
          <BreadCrumbPage/>

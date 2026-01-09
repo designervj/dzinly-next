@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -14,26 +15,50 @@ import { WebsitePageModel } from "@/components/admin/website/websitePage/Website
 // shadcn
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // icons
-import { ChevronDown, MessageSquareText, Plus, Pencil, BarChart3, Search } from "lucide-react";
-import Link from "next/link";
+import {
+  ChevronDown,
+  Plus,
+  Pencil,
+  Search,
+  Settings,
+  FileText,
+  Image as ImageIcon,
+  ShoppingBag,
+  UserPlus,
+  Wrench,
+  Sparkles,
+} from "lucide-react";
 
-export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageModel }) {
+export default function WpAdminEditorBar({
+  pageData,
+}: {
+  pageData: WebsitePageModel;
+}) {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-    const {page:pageEditData} = useSelector((state: RootState) => state.pageEdit);
+
   const { user } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
-  const { currentLLMSetting } = useSelector((state: RootState) => state.llmSetting);
+  const { currentLLMSetting } = useSelector(
+    (state: RootState) => state.llmSetting
+  );
 
   useEffect(() => {
     if (pageData?.websiteId && !currentWebsite) {
@@ -42,85 +67,259 @@ export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageMo
     }
   }, [pageData?.websiteId, currentWebsite, dispatch]);
 
-
-
-  // Only superadmin sees this bar (your same condition)
+  // ✅ Only superadmin sees this bar
   if (!(user && user.id && user.role === "superadmin")) return null;
 
-  const siteName = currentWebsite?.name || "Codified Web Solutions";
+  const siteName = (currentWebsite as any)?.name || "Dzinly";
   const userName = user?.name || "Admin";
-  const handleClick = () => {
-    //dispatch(setPageEdit(pageData));
-    router.push(`/builder/${pageData?.slug}`);
+
+  // ✅ Fix: pageData.id may not exist in your type
+  const pageId =
+    (pageData as any)?._id ?? (pageData as any)?.id ?? (pageData as any)?.pageId ?? "";
+
+  // ✅ Fix: Website type may not have domain in your project
+  const siteDomain = (currentWebsite as any)?.domain;
+  const siteUrl = (currentWebsite as any)?.url;
+  const visitSiteHref = siteDomain
+    ? `https://${siteDomain}`
+    : siteUrl
+    ? siteUrl
+    : "/";
+
+  const handleEditInBuilder = () => {
+    dispatch(setPageEdit(pageData));
+    router.push(pageData?.slug ? `/builder/${pageData.slug}` : "/builder");
   };
- 
+
+  const handleEditInAdmin = () => {
+    // adjust as per your admin route
+    if (!pageId) return;
+    router.push(`/admin/websites/pages/${pageId}`);
+  };
+
   return (
     <TooltipProvider delayDuration={120}>
-     <header
-  className="
-    w-full h-9
-    bg-gradient-to-b from-[#2a3138] to-[#1f252b]
-    text-slate-200
-    border-b border-white/10
-    shadow-[0_1px_0_rgba(255,255,255,0.06)]
-    sticky top-0 z-50 px-4
-  "
->
-        <div className="h-full px-2 flex items-center justify-between gap-2">
+      <header
+        className="
+          w-full h-10
+          bg-gradient-to-b from-[#2a3138] to-[#1f252b]
+          text-slate-200
+          border-b border-white/10
+          shadow-[0_1px_0_rgba(255,255,255,0.06)]
+          sticky top-0 z-50 px-4
+        "
+      >
+        <div className="h-full flex items-center justify-between gap-2">
           {/* LEFT */}
           <div className="flex items-center gap-1 min-w-0">
-            {/* <BarIconOnly label="WordPress" icon={<WpIcon />} /> */}
-            <div>
-              <img src="/dzinly-favicon.svg" alt="Dzinly Favicon" className="w-[26px] text-white"></img>
-            </div>
-
-         
+            <img
+              src="/dzinly-favicon.svg"
+              alt="Dzinly"
+              className="w-[28px] h-[28px]"
+            />
 
             <Separator orientation="vertical" className="h-4 bg-white/10 mx-1" />
 
-            <BarLink label="New" icon={<Plus className="h-4 w-4" />} />
-            <BarLink label="Edit Page" icon={<Pencil className="h-4 w-4" />} />
+            {/* NEW */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="h-8 px-2 rounded-sm flex items-center gap-2 hover:bg-[#2c3338] text-[13px] font-medium"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>New</span>
+                  <ChevronDown className="h-4 w-4 opacity-80" />
+                </button>
+              </DropdownMenuTrigger>
 
-            {/* ✅ Your button action placed here */}
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel className="text-xs text-muted-foreground">
+                  Create
+                </DropdownMenuLabel>
+
+                <Link href="/admin/pages/new">
+                  <DropdownMenuItem className="gap-2">
+                    <FileText className="h-4 w-4" /> Page
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href="/admin/posts/new">
+                  <DropdownMenuItem className="gap-2">
+                    <FileText className="h-4 w-4" /> Post
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href="/admin/products/new">
+                  <DropdownMenuItem className="gap-2">
+                    <ShoppingBag className="h-4 w-4" /> Product
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href="/admin/media">
+                  <DropdownMenuItem className="gap-2">
+                    <ImageIcon className="h-4 w-4" /> Media
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href="/admin/users/new">
+                  <DropdownMenuItem className="gap-2">
+                    <UserPlus className="h-4 w-4" /> User
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* EDIT */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="h-8 px-2 rounded-sm flex items-center gap-2 hover:bg-[#2c3338] text-[13px] font-medium"
+                >
+                  <Pencil className="h-4 w-4" />
+                  <span>Edit</span>
+                  <ChevronDown className="h-4 w-4 opacity-80" />
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="w-60">
+                <DropdownMenuLabel className="text-xs text-muted-foreground">
+                  Editing
+                </DropdownMenuLabel>
+
+                <DropdownMenuItem
+                  className="gap-2"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    handleEditInAdmin();
+                  }}
+                >
+                  <Pencil className="h-4 w-4" />
+                  Edit in Admin
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  className="gap-2"
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    handleEditInBuilder();
+                  }}
+                >
+                  <Wrench className="h-4 w-4" />
+                  Edit in Builder
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <Link href={`/admin/pages/${pageId}/settings`}>
+                  <DropdownMenuItem className="gap-2">
+                    <Settings className="h-4 w-4" />
+                    Page Settings
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Quick action */}
             <Button
               type="button"
               variant="ghost"
               size="sm"
-              onClick={handleClick}
+              onClick={handleEditInBuilder}
               className="h-8 px-2 rounded-sm hover:bg-[#2c3338] text-[#c3c4c7] hover:text-white text-[13px] font-semibold"
               title="Edit this page in Builder"
             >
               Edit in Builder
             </Button>
-
-            <Separator orientation="vertical" className="h-4 bg-white/10 mx-1" />
-
-            <BarLink label="Rank Math SEO" icon={<BarChart3 className="h-4 w-4" />} />
-            <BarText label="Hostinger" />
-            <BarText  label="Enable Visual Builder" />
-            {/* <BarText label="Edit Home Page" /> */}
           </div>
 
           {/* RIGHT */}
           <div className="flex items-center gap-1">
-            <BarIconOnly label="Search" icon={<Search className="h-4 w-4" />} />
+            {/* Search dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div>
+                  <BarIconOnly label="Search" icon={<Search className="h-4 w-4" />} />
+                </div>
+              </DropdownMenuTrigger>
 
+              <DropdownMenuContent align="end" className="w-72">
+                <DropdownMenuLabel className="text-xs text-muted-foreground">
+                  Search
+                </DropdownMenuLabel>
+                <div className="p-2">
+                  <Input
+                    placeholder="Search pages, posts, products..."
+                    className="h-9"
+                  />
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Tip: add global search later (Cmd+K) if needed.
+                  </p>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* User dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
                   className="h-8 px-2 rounded-sm flex items-center gap-2 hover:bg-[#2c3338] text-[13px] font-medium"
                   type="button"
                 >
-                  <span className="hidden sm:inline">Howdy, {userName}</span>
+                  <span className="hidden sm:inline">Hello, {userName}</span>
                   <span className="sm:hidden">{userName}</span>
                   <ChevronDown className="h-4 w-4 opacity-80" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <Link href="/admin/dashboard"><DropdownMenuItem>Dashboard</DropdownMenuItem></Link>
+
+              <DropdownMenuContent align="end" className="w-56">
+                {/* <Link href="/admin/dashboard"> */}
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    {siteName}
+                  </DropdownMenuLabel>
+                {/* </Link> */}
+
+             
+                 <Link href="/admin/dashboard"> <DropdownMenuItem className="gap-2 font-semibold">
+                    {/* <Sparkles className="h-4 w-4" /> */}
+                    Dashboard
+                  </DropdownMenuItem>
+                  </Link> 
+
+
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">Log Out</DropdownMenuItem>
+
+                <Link href="/admin/profile">
+                  <DropdownMenuItem className="font-semibold">
+                    Profile
+                  </DropdownMenuItem>
+                </Link>
+
+                <DropdownMenuSeparator />
+
+                <Link
+                  href={`/admin/websites/${pageData?.websiteId || ""}/settings`}
+                >
+                  <DropdownMenuItem className="gap-2 font-semibold">
+                    <Settings className="h-4 w-4" />
+                    Website Settings
+                  </DropdownMenuItem>
+                </Link>
+
+                <DropdownMenuItem className="gap-2 font-semibold">
+                  <Sparkles className="h-4 w-4" />
+                  LLM Setting:
+                  <span className="ml-1 text-xs opacity-80">
+                    {currentLLMSetting ? "Loaded" : "Not loaded"}
+                  </span>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem className="text-red-600 font-semibold">
+                  Log Out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -132,30 +331,13 @@ export default function WpAdminEditorBar({ pageData }: { pageData: WebsitePageMo
 
 /* ----------------- Small UI helpers ----------------- */
 
-function BarText({ label }: { label: string }) {
-  return (
-    <a
-      href="#"
-      className="h-8 px-2 rounded-sm flex items-center hover:bg-[#2c3338] text-[13px] font-medium whitespace-nowrap"
-    >
-      {label}
-    </a>
-  );
-}
-
-function BarLink({ label, icon }: { label: string; icon: React.ReactNode }) {
-  return (
-    <a
-      href="#"
-      className="h-8 px-2 rounded-sm flex items-center gap-2 hover:bg-[#2c3338] text-[13px] font-medium whitespace-nowrap"
-    >
-      {icon}
-      <span>{label}</span>
-    </a>
-  );
-}
-
-function BarIconOnly({ label, icon }: { label: string; icon: React.ReactNode }) {
+function BarIconOnly({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: React.ReactNode;
+}) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -170,21 +352,5 @@ function BarIconOnly({ label, icon }: { label: string; icon: React.ReactNode }) 
       </TooltipTrigger>
       <TooltipContent className="text-xs">{label}</TooltipContent>
     </Tooltip>
-  );
-}
-
-function WpIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" opacity="0.9" />
-      <path
-        d="M8.3 9.3l2.2 7.2 1.4-4.3-1-2.9m6 0l-2.3 7.2-1.3-4.1 1.1-3.1"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.9"
-      />
-    </svg>
   );
 }

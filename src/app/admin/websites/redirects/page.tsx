@@ -4,6 +4,7 @@ import React from "react";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import Link from "next/link";
 
 export default function Page() {
   const redirects = [
@@ -36,10 +37,12 @@ export default function Page() {
           </p>
         </div>
 
-        <Button className="flex items-center gap-2">
-          <Plus size={18} />
-          Add Redirect
-        </Button>
+        <Link href="/admin/websites/redirects/create">
+          <Button className="flex items-center gap-2">
+            <Plus size={18} />
+            Add Redirect
+          </Button>
+        </Link>
       </div>
 
       {/* ADD REDIRECT FORM */}

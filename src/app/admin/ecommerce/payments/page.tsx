@@ -13,7 +13,7 @@ import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function PaymentsPage() {
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-10">
+    <div className="space-y-6 max-full mx-auto pb-10">
       <div>
          {/* <h1 className="text-2xl font-bold tracking-tight">Payment Providers</h1> */}
          <BreadCrumbPage/>

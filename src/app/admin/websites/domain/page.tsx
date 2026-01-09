@@ -25,7 +25,7 @@ export default function Page() {
       </div>
 
       {/* ADD DOMAIN */}
-      <div className="bg-white rounded-xl border shadow-sm p-6 mb-6 max-w-4xl">
+      <div className="bg-white rounded-xl border shadow-sm p-6 mb-6 max-full">
         <h2 className="text-lg font-semibold mb-4">
           Add New Domain
         </h2>
@@ -46,7 +46,7 @@ export default function Page() {
       </div>
 
       {/* DOMAIN LIST */}
-      <div className="bg-white rounded-xl border shadow-sm p-6 max-w-4xl">
+      <div className="bg-white rounded-xl border shadow-sm p-6 max-full">
         <h2 className="text-lg font-semibold mb-4">
           Connected Domains
         </h2>

@@ -5,6 +5,7 @@ import { X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RightColumn } from "./RightColumn";
 import { ProductOptions } from "./ProductOptions";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 const categoryAttributeMap: { [key: string]: string[] } = {
   Paint: ["paint", "color"],
@@ -396,14 +397,16 @@ export function CreateProduct() {
 
   return (
     <div className="min-h-screen">
-      <div className="w-full mb-4 flex flex-row-reverse">
+      <div className="w-full mb-4 flex justify-between items-center">
+        <BreadCrumbPage />
+
         <Button onClick={handleSaveProduct}>Save Product</Button>
       </div>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* General */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-md shadow p-6">
               <h2 className="text-2xl font-bold tracking-tight mb-4">
                 General
               </h2>
@@ -451,7 +454,7 @@ export function CreateProduct() {
             </div>
 
             {/* Media */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-md shadow p-6">
               <h2 className="text-xl font-medium mb-1">
                 Media{" "}
                 <span className="text-gray-400 text-sm font-normal">
@@ -502,7 +505,7 @@ export function CreateProduct() {
             </div>
 
             {/* Product Options */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-md shadow p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">
@@ -555,7 +558,7 @@ export function CreateProduct() {
 
             {/* Variants */}
             {variantConfigs.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-white rounded-md shadow p-6">
                 <h2 className="text-2xl font-bold tracking-tight">
                   Configure Variants
                 </h2>

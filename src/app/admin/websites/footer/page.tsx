@@ -419,7 +419,7 @@ export default function Page() {
               </div>
 
               {/* Social */}
-              <div className="lg:col-span-4">
+              <div>
                 <h3 className={tmpl.sectionTitle}>Follow Us</h3>
                 <div className={tmpl.iconWrap}>
                   {showFacebook && <Facebook className="h-5 w-5 hover:text-white cursor-pointer" />}

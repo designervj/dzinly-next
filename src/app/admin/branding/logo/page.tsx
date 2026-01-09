@@ -99,7 +99,7 @@ export default function LogoSettingsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-10">
+    <div className="space-y-6 max-full mx-auto pb-10">
       <div className="flex items-center justify-between">
         <div>
           {/* <h1 className="text-2xl font-bold tracking-tight">Logo Settings</h1> */}

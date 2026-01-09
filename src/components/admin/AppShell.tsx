@@ -233,6 +233,7 @@ const currentWebsiteSections: NavSection[] = [
     label: "Websites",
     href: "/admin/websites",
     items: [
+       
       {
         label: "Pages",
         href: "/admin/websites/pages",
@@ -255,6 +256,19 @@ const currentWebsiteSections: NavSection[] = [
           "website:delete",
         ],
       },
+
+       {
+        label: "Templates",
+        href: "/admin/websites/templates",
+        icon: FileCode2,
+        permission: [
+          "websites:update",
+          "websites:create",
+          "websites:read",
+          "website:delete",
+        ],
+      },
+
       {
         label: "Media",
         href: "/admin/websites/media",
@@ -1974,7 +1988,7 @@ export function AppShell({
           onToggleCollapse={(event) => setSidebarCollapsed((prev) => !prev)}
         />
         <main className="flex-1 overflow-auto bg-muted/10 p-4 md:p-6">
-          <div className="mx-auto max-w-7xl h-full ">{children}</div>
+          <div className="mx-auto  h-full ">{children}</div>
         </main>
       </div>
 

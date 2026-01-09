@@ -1,70 +1,114 @@
+"use client";
+
 import React from "react";
 
+// shadcn/ui
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+
 export const RightColumn = ({ formData, handleInputChange }: any) => {
+  // helper: make Select work like your handleInputChange
+  const handleSelectChange = (name: string, value: string) => {
+    handleInputChange({ target: { name, value } });
+  };
+
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white rounded-lg shadow p-6 sticky top-6">
-        <h2 className="text-2xl font-bold tracking-tight mb-4">Organize</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+      <Card className="sticky top-6 ">
+        <CardHeader className="pb-0 mb-0">
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Organize
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="space-y-4">
+          {/* Segment Type */}
+          <div className="space-y-2">
+            <Label htmlFor="segmentType">
               Segment Type <span className="text-red-500">*</span>
-            </label>
-            <select
-              name="segmentType"
+            </Label>
+
+            <Select
               value={formData.segmentType}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-md"
+              onValueChange={(v) => handleSelectChange("segmentType", v)}
             >
-              <option>Wall</option>
-              <option>Floor</option>
-              <option>Ceiling</option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select segment type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Wall">Wall</SelectItem>
+                <SelectItem value="Floor">Floor</SelectItem>
+                <SelectItem value="Ceiling">Ceiling</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+
+          {/* Categories */}
+          <div className="space-y-2">
+            <Label htmlFor="categories">
               Categories <span className="text-red-500">*</span>
-            </label>
-            <select
-              name="categories"
+            </Label>
+
+            <Select
               value={formData.categories}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-md"
+              onValueChange={(v) => handleSelectChange("categories", v)}
             >
-              <option>Paint</option>
-              <option>Primer</option>
-              <option>Stain</option>
-            </select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Paint">Paint</SelectItem>
+                <SelectItem value="Primer">Primer</SelectItem>
+                <SelectItem value="Stain">Stain</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+
+          {/* Brands */}
+          <div className="space-y-2">
+            <Label htmlFor="brands">
               Brands <span className="text-red-500">*</span>
-            </label>
-            <select
-              name="brands"
+            </Label>
+
+            <Select
               value={formData.brands}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border-2 border-blue-500 rounded-md"
+              onValueChange={(v) => handleSelectChange("brands", v)}
             >
-              <option>PPG</option>
-              <option>Sherwin-Williams</option>
-              <option>Behr</option>
-            </select>
+              <SelectTrigger className="w-full border-2 border-blue-500 focus:ring-0 focus:ring-offset-0">
+                <SelectValue placeholder="Select brand" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PPG">PPG</SelectItem>
+                <SelectItem value="Sherwin-Williams">Sherwin-Williams</SelectItem>
+                <SelectItem value="Behr">Behr</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+
+          {/* Tags */}
+          <div className="space-y-2">
+            <Label htmlFor="tags">
               Tags <span className="text-gray-400 text-xs">Optional</span>
-            </label>
-            <input
-              type="text"
+            </Label>
+
+            <Input
+              id="tags"
               name="tags"
               value={formData.tags}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-md"
+              placeholder="e.g. premium, exterior"
             />
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

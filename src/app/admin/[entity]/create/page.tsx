@@ -16,6 +16,7 @@ import { ObjectId } from "mongodb";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 export default function EntityCreatePage() {
   const router = useRouter();
@@ -232,19 +233,23 @@ export default function EntityCreatePage() {
     <div className="container-xl mx-auto py-8 px-4 max-w-4xl">
       {/* Header */}
       <div className="mb-6">
-        <Button
+        
+        {/* <h1 className="text-3xl font-bold">Create New {getEntityTitle()}</h1> */}
+      <BreadCrumbPage/>
+        
+        <p className="text-muted-foreground mt-2">
+          Fill in the form below to create a new {entity}.
+        </p>
+      </div>
+
+      {/* <Button
           variant="ghost"
           onClick={() => router.push(`/admin/${entity}`)}
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to {getEntityTitle()} List
-        </Button>
-        <h1 className="text-3xl font-bold">Create New {getEntityTitle()}</h1>
-        <p className="text-muted-foreground mt-2">
-          Fill in the form below to create a new {entity}.
-        </p>
-      </div>
+        </Button> */}
 
       {/* Form */}
       <div className="bg-card rounded-lg border shadow-sm">

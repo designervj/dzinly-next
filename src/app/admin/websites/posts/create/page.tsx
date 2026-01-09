@@ -496,7 +496,7 @@ export default function Page() {
       return (
         <footer className="bg-slate-950 text-slate-200">
           <div className="max-w-7xl mx-auto px-6 pt-10">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="rounded-md border border-slate-800 bg-slate-900/40 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <div className="text-xl font-semibold text-white">{newsletterTitle}</div>
                 <div className="text-sm text-slate-400 mt-1">{newsletterDesc}</div>
@@ -732,7 +732,7 @@ export default function Page() {
 
             {/* Newsletter card */}
             <div className="lg:col-span-5">
-              <div className="bg-white rounded-2xl shadow-md p-8 max-w-xl mx-auto">
+              <div className="bg-white rounded-md shadow-md p-8 max-w-xl mx-auto">
                 <div className="text-xl font-bold">{newsletterTitle.toUpperCase()}</div>
                 <div className="text-sm text-slate-600 mt-2">{newsletterDesc}</div>
 
@@ -771,7 +771,7 @@ export default function Page() {
 
       {/* ================= EDITOR PANEL ================= */}
       <div className="px-6 pb-6">
-        <Card className="rounded-2xl p-5 bg-white">
+        <Card className="rounded-md p-5 bg-white">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold">Footer Editor</h2>
@@ -851,7 +851,7 @@ export default function Page() {
               </div>
 
               {(tmpl.needsNewsletter ?? false) && (
-                <div className="rounded-2xl border p-4 space-y-4">
+                <div className="rounded-md border p-4 space-y-4">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold">Newsletter / CTA</p>
                     <Badge variant="outline" className="rounded-full">
@@ -893,7 +893,7 @@ export default function Page() {
             {/* RIGHT: Contact + Groups */}
             <div className="space-y-5">
               {/* Contact */}
-              <div className="rounded-2xl border p-4">
+              <div className="rounded-md border p-4">
                 <h3 className="font-semibold mb-3">Contact Info</h3>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2 md:col-span-2">
@@ -926,7 +926,7 @@ export default function Page() {
               </div>
 
               {/* Groups / Links */}
-              <div className="rounded-2xl border p-4 space-y-4">
+              <div className="rounded-md border p-4 space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <h3 className="font-semibold">Footer Link Groups</h3>
@@ -1019,7 +1019,7 @@ export default function Page() {
               </div>
 
               {/* Social Toggles */}
-              <div className="rounded-2xl border p-4">
+              <div className="rounded-md border p-4">
                 <h3 className="font-semibold mb-3">Social Icons</h3>
                 <div className="flex flex-wrap gap-4 text-sm">
                   <label className="flex items-center gap-2">

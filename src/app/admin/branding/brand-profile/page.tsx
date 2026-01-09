@@ -58,7 +58,7 @@ export default function BrandProfilePage() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-10">
+    <div className="space-y-6 max-full mx-auto pb-10">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -103,20 +103,26 @@ export default function BrandProfilePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Industry</Label>
-                <Select defaultValue={formData.industry}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Architecture">Architecture</SelectItem>
-                    <SelectItem value="Interior Design">Interior Design</SelectItem>
-                    <SelectItem value="Construction">Construction</SelectItem>
-                    <SelectItem value="Real Estate">Real Estate</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+             <div className="space-y-2 w-full">
+            <Label>Industry</Label>
+
+            <Select
+              value={formData.industry}
+              onValueChange={(v) => setFormData((p) => ({ ...p, industry: v }))}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select industry" />
+              </SelectTrigger>
+
+              <SelectContent className="w-full">
+                <SelectItem value="Architecture">Architecture</SelectItem>
+                <SelectItem value="Interior Design">Interior Design</SelectItem>
+                <SelectItem value="Construction">Construction</SelectItem>
+                <SelectItem value="Real Estate">Real Estate</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
               <div className="space-y-2">
                 <Label htmlFor="founded">Founded Year</Label>
                 <Input

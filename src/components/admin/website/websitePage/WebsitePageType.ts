@@ -1,6 +1,7 @@
 
 // WebsitePageModel interface for a website page document
 export interface WebsitePageModel {
+  id: string;
 	_id: string; // MongoDB ObjectId as string
 	tenantId: string;
 	websiteId?:string;

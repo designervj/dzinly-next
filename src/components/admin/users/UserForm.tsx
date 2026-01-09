@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -10,14 +10,44 @@ import {
   Search,
   ChevronDown,
   ChevronUp,
+  Check,
 } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import { RolePermissionModel } from "@/components/onboarding/RolePermisionModel";
 import { TenantModel } from "../accounts/AccountType";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
-import { da } from "zod/v4/locales";
+
+// shadcn
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
 
 interface FormData {
   email: string;
@@ -31,69 +61,43 @@ interface FormData {
 // Helper function to categorize permissions
 const categorizePermissions = (permissions: string[]) => {
   const categories: Record<string, string[]> = {};
-
   permissions.forEach((permission) => {
     const [category] = permission.split(":");
-    if (!categories[category]) {
-      categories[category] = [];
-    }
+    if (!categories[category]) categories[category] = [];
     categories[category].push(permission);
   });
-
   return categories;
 };
 
 // Helper function to format permission display
 const formatPermission = (permission: string) => {
-  const [category, action] = permission.split(":");
+  const [, action] = permission.split(":");
   return {
-    category: category.charAt(0).toUpperCase() + category.slice(1),
-    action: action.charAt(0).toUpperCase() + action.slice(1),
+    action: action ? action.charAt(0).toUpperCase() + action.slice(1) : permission,
   };
 };
 
 export function UserForm() {
   const params = useParams();
-  const id = params.id;
+  const id = params.id as string | undefined;
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
-  const {
-    user,
-    alluser,
-    hasFetched: alluserfetched,
-  } = useSelector((state: RootState) => state.user);
+
+  const { user, alluser } = useSelector((state: RootState) => state.user);
+  const { rolesPermissions } = useSelector(
+    (state: RootState) => state.rolePermission
+  );
+  const { allAccounts } = useSelector((state: RootState) => state.account);
+
   const [availableRoles, setAvailableRoles] = useState<RolePermissionModel[]>(
     []
   );
-  const { rolesPermissions, hasFetched } = useSelector(
-    (state: RootState) => state.rolePermission
-  );
-  const { allAccounts, hasFetched: allaccountsfetched } = useSelector(
-    (state: RootState) => state.account
-  );
 
-  const [showTenantDropdown, setShowTenantDropdown] = useState(false);
-  const [tenantSearchQuery, setTenantSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<
     Record<string, boolean>
   >({});
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (user?.role == "superadmin") {
-      setAvailableRoles(rolesPermissions);
-    } else {
-      const find = rolesPermissions.find(
-        (d) => d.code == user?.role
-      )?.canCreateRole;
-      const filteredRoles = rolesPermissions.filter((d) => {
-        return find?.includes(d.code!);
-      });
-      setAvailableRoles(filteredRoles);
-    }
-  }, [user, rolesPermissions]);
 
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -104,6 +108,31 @@ export function UserForm() {
     tenantId: [],
   });
 
+  const [rolePermissions, setRolePermissions] = useState<string[]>([]);
+  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [canSelectMultipleTenants, setCanSelectMultipleTenants] =
+    useState(false);
+
+  // Tenant combobox UI state (shadcn)
+  const [tenantPopoverOpen, setTenantPopoverOpen] = useState(false);
+  const [tenantSearchQuery, setTenantSearchQuery] = useState("");
+
+  // roles filter (same logic)
+  useEffect(() => {
+    if (user?.role == "superadmin") {
+      setAvailableRoles(rolesPermissions);
+    } else {
+      const find = rolesPermissions.find((d) => d.code == user?.role)
+        ?.canCreateRole;
+      const filteredRoles = rolesPermissions.filter((d) => {
+        return find?.includes(d.code!);
+      });
+      setAvailableRoles(filteredRoles);
+    }
+  }, [user, rolesPermissions]);
+
+  // set form if edit id (same logic)
   useEffect(() => {
     if (alluser.length > 0 && id) {
       const dataifId = alluser.find((d) => d._id == id);
@@ -125,29 +154,9 @@ export function UserForm() {
         });
       }
     }
-  }, [alluser]);
+  }, [alluser, id]);
 
-  const [rolePermissions, setRolePermissions] = useState<string[]>([]);
-  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [canSelectMultipleTenants, setCanSelectMultipleTenants] =
-    useState(false);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setShowTenantDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
+  // Role -> permissions same behavior
   useEffect(() => {
     if (formData.role) {
       const selectedRole = availableRoles.find((r) => r.code === formData.role);
@@ -157,17 +166,13 @@ export function UserForm() {
         setSelectedPermissions(selectedRole.permissions || []);
         setCanSelectMultipleTenants(selectedRole.canMultipleTenants);
 
-        // Initialize all categories as expanded
-        const categories = categorizePermissions(
-          selectedRole.permissions || []
-        );
+        // expand all
+        const categories = categorizePermissions(selectedRole.permissions || []);
         const expanded: Record<string, boolean> = {};
-        Object.keys(categories).forEach((cat) => {
-          expanded[cat] = true;
-        });
+        Object.keys(categories).forEach((cat) => (expanded[cat] = true));
         setExpandedCategories(expanded);
 
-        // Reset tenantId based on canMultipleTenants
+        // Reset tenantId based on canMultipleTenants (same logic)
         if (selectedRole.canMultipleTenants) {
           setFormData((prev) => ({
             ...prev,
@@ -196,45 +201,29 @@ export function UserForm() {
   }, [formData.role, availableRoles]);
 
   const toggleCategory = (category: string) => {
-    setExpandedCategories((prev) => ({
-      ...prev,
-      [category]: !prev[category],
-    }));
+    setExpandedCategories((prev) => ({ ...prev, [category]: !prev[category] }));
   };
 
   const togglePermission = (permission: string) => {
     setSelectedPermissions((prev) => {
-      if (prev.includes(permission)) {
-        return prev.filter((p) => p !== permission);
-      } else {
-        return [...prev, permission];
-      }
+      if (prev.includes(permission)) return prev.filter((p) => p !== permission);
+      return [...prev, permission];
     });
   };
 
-  const toggleCategoryPermissions = (
-    category: string,
-    permissions: string[]
-  ) => {
-    const allSelected = permissions.every((p) =>
-      selectedPermissions.includes(p)
-    );
-
+  const toggleCategoryPermissions = (category: string, permissions: string[]) => {
+    const allSelected = permissions.every((p) => selectedPermissions.includes(p));
     if (allSelected) {
-      // Deselect all permissions in this category
       setSelectedPermissions((prev) =>
         prev.filter((p) => !permissions.includes(p))
       );
     } else {
-      // Select all permissions in this category
       setSelectedPermissions((prev) => {
-        const newPermissions = [...prev];
+        const next = [...prev];
         permissions.forEach((p) => {
-          if (!newPermissions.includes(p)) {
-            newPermissions.push(p);
-          }
+          if (!next.includes(p)) next.push(p);
         });
-        return newPermissions;
+        return next;
       });
     }
   };
@@ -242,38 +231,24 @@ export function UserForm() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email is invalid";
-    }
 
-    if (!id && !formData.password) {
-      newErrors.password = "Password is required";
-    } else if (!id && formData.password.length < 8) {
+    if (!id && !formData.password) newErrors.password = "Password is required";
+    else if (!id && formData.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
-    }
 
-    if (!formData.name) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.role) {
-      newErrors.role = "Role is required";
-    }
+    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.role) newErrors.role = "Role is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  console.log(errors);
-
   const handleSubmit = async () => {
     setMessage({ type: "", text: "" });
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
@@ -292,13 +267,13 @@ export function UserForm() {
 
       let result;
       if (!id) {
-        let response = await fetch("/api/admin/users", {
+        const response = await fetch("/api/admin/users", {
           method: "POST",
           body: JSON.stringify(userData),
         });
         result = await response.json();
       } else {
-        let response = await fetch(`/api/admin/users/${id}`, {
+        const response = await fetch(`/api/admin/users/${id}`, {
           method: "PUT",
           body: JSON.stringify(userData),
         });
@@ -335,16 +310,6 @@ export function UserForm() {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
   const handleReset = () => {
     setFormData({
       email: "",
@@ -357,49 +322,13 @@ export function UserForm() {
     setErrors({});
     setMessage({ type: "", text: "" });
     setTenantSearchQuery("");
+    setTenantPopoverOpen(false);
     setCanSelectMultipleTenants(false);
     setSelectedPermissions([]);
     setRolePermissions([]);
   };
 
-  const toggleTenantSelection = (tenantId: string) => {
-    if (canSelectMultipleTenants) {
-      // Multiple selection mode (array)
-      setFormData((prev) => {
-        const currentIds = Array.isArray(prev.tenantId) ? prev.tenantId : [];
-        const isSelected = currentIds.includes(tenantId);
-        return {
-          ...prev,
-          tenantId: isSelected
-            ? currentIds.filter((id) => id !== tenantId)
-            : [...currentIds, tenantId],
-        };
-      });
-    } else {
-      // Single selection mode (string)
-      setFormData((prev) => ({
-        ...prev,
-        tenantId: tenantId,
-      }));
-      setShowTenantDropdown(false);
-    }
-  };
-
-  const removeTenant = (tenantId: string) => {
-    if (canSelectMultipleTenants && Array.isArray(formData.tenantId)) {
-      setFormData((prev) => ({
-        ...prev,
-        tenantId: (prev.tenantId as string[]).filter((id) => id !== tenantId),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        tenantId: "",
-      }));
-    }
-  };
-
-  // Cast allAccounts to Tenant[] to resolve type mismatch
+  // Cast allAccounts to Tenant[]
   const tenants = (allAccounts as TenantModel[]) || [];
 
   const filteredTenants = tenants.filter(
@@ -416,413 +345,527 @@ export function UserForm() {
   });
 
   const isTenantSelected = (tenantId: string): boolean => {
-    if (Array.isArray(formData.tenantId)) {
-      return formData.tenantId.includes(tenantId);
-    }
+    if (Array.isArray(formData.tenantId)) return formData.tenantId.includes(tenantId);
     return formData.tenantId === tenantId;
+  };
+
+  const toggleTenantSelection = (tenantId: string) => {
+    if (canSelectMultipleTenants) {
+      setFormData((prev) => {
+        const currentIds = Array.isArray(prev.tenantId) ? prev.tenantId : [];
+        const isSelected = currentIds.includes(tenantId);
+        return {
+          ...prev,
+          tenantId: isSelected
+            ? currentIds.filter((id) => id !== tenantId)
+            : [...currentIds, tenantId],
+        };
+      });
+    } else {
+      setFormData((prev) => ({ ...prev, tenantId }));
+      setTenantPopoverOpen(false);
+    }
+  };
+
+  const removeTenant = (tenantId: string) => {
+    if (canSelectMultipleTenants && Array.isArray(formData.tenantId)) {
+      setFormData((prev) => ({
+        ...prev,
+        tenantId: (prev.tenantId as string[]).filter((id) => id !== tenantId),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, tenantId: "" }));
+    }
   };
 
   const categorizedPermissions = categorizePermissions(rolePermissions);
 
+  // keep your same loading condition (logic unchanged)
   const isDataLoading = alluser.length <= 0;
 
-  // Show loading screen when data is not ready
   if (isDataLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8 px-4 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-md p-8 max-w-md w-full">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            <h2 className="text-xl font-semibold text-gray-900">Loading...</h2>
-            <p className="text-gray-600 text-center">
-              Please wait while we load the required data
-            </p>
-          </div>
-        </div>
+      <div className="min-h-screen bg-muted/30 p-4 flex items-center justify-center">
+        <Card className="max-w-md w-full">
+          <CardContent className="p-8">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+              <div className="text-center space-y-1">
+                <h2 className="text-xl font-semibold">Loading…</h2>
+                <p className="text-sm text-muted-foreground">
+                  Please wait while we load the required data
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {id ? "Update User" : "Create User"}
-          </h1>
-          <p className="text-gray-600 mb-6">Add a new user to the system</p>
+    <div className="min-h-screen  px-4 py-8">
+      <div className=" mx-auto">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              {/* <h1 className="text-3xl font-bold tracking-tight">
+                {id ? "Update User" : "Create User"}
+              </h1> */}
+              <BreadCrumbPage />
 
-          {message.text && (
-            <div
-              className={`mb-6 p-4 rounded-lg flex items-start gap-3 ${
-                message.type === "success"
-                  ? "bg-green-50 text-green-800"
-                  : "bg-red-50 text-red-800"
-              }`}
-            >
-              {message.type === "success" ? (
-                <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+              <p className="text-muted-foreground mt-1">
+                Add a new user to the system
+              </p>
+            </div>
+
+            <div className="hidden md:flex items-center gap-2">
+              <Badge variant="outline" className="bg-background">
+                Admin Panel
+              </Badge>
+              {formData.role ? (
+                <Badge className="bg-primary text-primary-foreground">
+                  {formData.role}
+                </Badge>
               ) : (
-                <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-              )}
-              <span>{message.text}</span>
-            </div>
-          )}
-
-          <div className="space-y-6">
-            {/* Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="John Doe"
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+                <Badge variant="secondary">No role selected</Badge>
               )}
             </div>
+          </div>
+        </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="john@example.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-              )}
-            </div>
+        {/* Message */}
+        {message.text && (
+          <Card
+            className={`mb-6 border ${
+              message.type === "success"
+                ? "border-green-200 bg-green-50"
+                : "border-red-200 bg-red-50"
+            }`}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                {message.type === "success" ? (
+                  <CheckCircle className="w-5 h-5 mt-0.5 text-green-700" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 mt-0.5 text-red-700" />
+                )}
+                <div className="text-sm font-medium">{message.text}</div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-            {/* Password */}
-            {!id && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Password <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2 pr-12 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors.password ? "border-red-500" : "border-gray-300"
-                    }`}
-                    placeholder="Minimum 8 characters"
+        {/* Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* LEFT */}
+          <Card className="lg:col-span-8">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-base">User Information</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Name */}
+                <div className="space-y-2">
+                  <Label>
+                    Full Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    name="name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, name: e.target.value }))
+                    }
+                    placeholder="John Doe"
+                    className={errors.name ? "border-red-500" : ""}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
-                  </button>
+                  {errors.name && (
+                    <p className="text-xs text-red-600">{errors.name}</p>
+                  )}
                 </div>
-                {errors.password && (
-                  <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label>
+                    Email Address <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, email: e.target.value }))
+                    }
+                    placeholder="john@example.com"
+                    className={errors.email ? "border-red-500" : ""}
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-600">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Password */}
+                {!id && (
+                  <div className="space-y-2 md:col-span-2">
+                    <Label>
+                      Password <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password}
+                        onChange={(e) =>
+                          setFormData((p) => ({ ...p, password: e.target.value }))
+                        }
+                        placeholder="Minimum 8 characters"
+                        className={`pr-12 ${errors.password ? "border-red-500" : ""}`}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-1 top-1/2 -translate-y-1/2"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-xs text-red-600">{errors.password}</p>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
 
-            {/* Role */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  errors.role ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="">Select a role</option>
-                {availableRoles.map((role) => (
-                  <option key={role._id} value={role.code}>
-                    {role.name}
-                  </option>
-                ))}
-              </select>
-              {errors.role && (
-                <p className="mt-1 text-sm text-red-500">{errors.role}</p>
-              )}
-            </div>
+              <Separator className="my-6" />
 
-            {/* Permissions Selection with Categories */}
-            {rolePermissions.length > 0 && (
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    Role Permissions
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {selectedPermissions.length} of {rolePermissions.length}{" "}
-                    selected
-                  </span>
-                </div>
-
+              {/* Permissions */}
+              {rolePermissions.length > 0 && (
                 <div className="space-y-3">
-                  {Object.entries(categorizedPermissions).map(
-                    ([category, permissions]) => {
-                      const allSelected = permissions.every((p) =>
-                        selectedPermissions.includes(p)
-                      );
-                      const someSelected = permissions.some((p) =>
-                        selectedPermissions.includes(p)
-                      );
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold">Role Permissions</p>
+                      <p className="text-xs text-muted-foreground">
+                        Select or deselect permissions per category.
+                      </p>
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {selectedPermissions.length} / {rolePermissions.length} selected
+                    </Badge>
+                  </div>
 
-                      return (
-                        <div
-                          key={category}
-                          className="border border-gray-200 rounded-lg overflow-hidden bg-white"
-                        >
+                  <div className="space-y-3">
+                    {Object.entries(categorizedPermissions).map(
+                      ([category, permissions]) => {
+                        const allSelected = permissions.every((p) =>
+                          selectedPermissions.includes(p)
+                        );
+
+                        return (
                           <div
-                            className="flex items-center justify-between p-3 bg-gray-100 cursor-pointer hover:bg-gray-150"
-                            onClick={() => toggleCategory(category)}
+                            key={category}
+                            className="rounded-xl border bg-background overflow-hidden"
                           >
-                            <div className="flex  items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={allSelected}
-                                onChange={(e) => {
-                                  e.stopPropagation();
-                                  toggleCategoryPermissions(
-                                    category,
-                                    permissions
-                                  );
-                                }}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                              />
-                              <span className="font-medium text-gray-900 capitalize">
-                                {category}
-                              </span>
-                              <span className="text-xs text-gray-500">
-                                (
-                                {
-                                  permissions.filter((p) =>
-                                    selectedPermissions.includes(p)
-                                  ).length
-                                }
-                                /{permissions.length})
-                              </span>
-                            </div>
                             <button
                               type="button"
-                              className="text-gray-500 hover:text-gray-700"
+                              onClick={() => toggleCategory(category)}
+                              className="w-full flex items-center justify-between px-4 py-3 bg-muted/40 hover:bg-muted/60 transition"
                             >
-                              {expandedCategories[category] ? (
-                                <ChevronUp className="w-4 h-4" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4" />
-                              )}
-                            </button>
-                          </div>
-
-                          {expandedCategories[category] && (
-                            <div className="p-3 space-y-2">
-                              {permissions.map((permission) => {
-                                const { action } = formatPermission(permission);
-                                return (
-                                  <label
-                                    key={permission}
-                                    className="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedPermissions.includes(
-                                        permission
-                                      )}
-                                      onChange={() =>
-                                        togglePermission(permission)
-                                      }
-                                      className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                                    />
-                                    <span className="text-sm text-gray-700">
-                                      {action}
-                                    </span>
-                                    <span className="text-xs text-gray-400 ml-auto font-mono">
-                                      {permission}
-                                    </span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Tenant Selection */}
-            {formData.role && user?.role == "superadmin" && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tenant{canSelectMultipleTenants ? "s" : ""}
-                  {canSelectMultipleTenants && (
-                    <span className="ml-2 text-xs text-blue-600 font-normal">
-                      (Multiple selection enabled)
-                    </span>
-                  )}
-                </label>
-                <div className="relative" ref={dropdownRef}>
-                  <div
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    onClick={() => setShowTenantDropdown(!showTenantDropdown)}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Search className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-500">
-                        {selectedTenants.length > 0
-                          ? canSelectMultipleTenants
-                            ? `${selectedTenants.length} tenant(s) selected`
-                            : selectedTenants[0]?.name
-                          : canSelectMultipleTenants
-                          ? "Search and select tenants"
-                          : "Search and select a tenant"}
-                      </span>
-                    </div>
-                  </div>
-
-                  {showTenantDropdown && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-64 overflow-hidden">
-                      <div className="p-2 border-b">
-                        <input
-                          type="text"
-                          value={tenantSearchQuery}
-                          onChange={(e) => setTenantSearchQuery(e.target.value)}
-                          placeholder="Search tenants..."
-                          className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                      </div>
-                      <div className="max-h-48 overflow-y-auto">
-                        {filteredTenants.length > 0 ? (
-                          filteredTenants.map((tenant) => (
-                            <div
-                              key={String(tenant._id)}
-                              className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-3"
-                              onClick={() =>
-                                toggleTenantSelection(String(tenant._id))
-                              }
-                            >
-                              {canSelectMultipleTenants ? (
-                                <input
-                                  type="checkbox"
-                                  checked={isTenantSelected(String(tenant._id))}
-                                  onChange={() => {}}
-                                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                              <div className="flex items-center gap-3">
+                                <Checkbox
+                                  checked={allSelected}
+                                  onCheckedChange={() =>
+                                    toggleCategoryPermissions(category, permissions)
+                                  }
+                                  onClick={(e) => e.stopPropagation()}
                                 />
-                              ) : (
-                                <input
-                                  type="radio"
-                                  checked={isTenantSelected(String(tenant._id))}
-                                  onChange={() => {}}
-                                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                                />
-                              )}
-                              <div>
-                                <div className="font-medium text-gray-900">
-                                  {tenant.name}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {tenant.slug}
+                                <div className="text-left">
+                                  <div className="text-sm font-semibold capitalize">
+                                    {category}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {
+                                      permissions.filter((p) =>
+                                        selectedPermissions.includes(p)
+                                      ).length
+                                    }
+                                    /{permissions.length} selected
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="px-4 py-3 text-sm text-gray-500 text-center">
-                            No tenants found
+
+                              {expandedCategories[category] ? (
+                                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </button>
+
+                            {expandedCategories[category] && (
+                              <div className="p-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  {permissions.map((permission) => {
+                                    const { action } = formatPermission(permission);
+                                    const checked = selectedPermissions.includes(permission);
+
+                                    return (
+                                      <label
+                                        key={permission}
+                                        className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition ${
+                                          checked
+                                            ? "border-primary/30 bg-primary/5"
+                                            : "hover:bg-muted/30"
+                                        }`}
+                                      >
+                                        <Checkbox
+                                          checked={checked}
+                                          onCheckedChange={() =>
+                                            togglePermission(permission)
+                                          }
+                                        />
+                                        <div className="min-w-0">
+                                          <div className="text-sm font-medium">
+                                            {action}
+                                          </div>
+                                          <div className="text-[11px] text-muted-foreground font-mono break-all">
+                                            {permission}
+                                          </div>
+                                        </div>
+                                      </label>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* RIGHT */}
+          <div className="lg:col-span-4 space-y-6">
+            <Card className="sticky top-6">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-base">Access & Assignment</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 space-y-5">
+                {/* Role (shadcn Select) */}
+                <div className="space-y-2">
+                  <Label>
+                    Role <span className="text-red-500">*</span>
+                  </Label>
+
+                  <div className="w-full">
+                    <Select
+                      value={formData.role}
+                      onValueChange={(v) => {
+                        setFormData((p) => ({ ...p, role: v }));
+                        if (errors.role) setErrors((e) => ({ ...e, role: "" }));
+                      }}
+                    >
+                      <SelectTrigger className={`w-full ${errors.role ? "border-red-500" : ""}`}>
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+
+                      {/* width match trigger */}
+                      <SelectContent className="w-[--radix-select-trigger-width]">
+                        {availableRoles.map((role) => (
+                          <SelectItem key={role._id} value={role.code!}>
+                            {role.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {errors.role && (
+                    <p className="text-xs text-red-600">{errors.role}</p>
                   )}
                 </div>
 
-                {/* Selected Tenants Display */}
-                {selectedTenants.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {selectedTenants.map((tenant) => (
-                      <div
-                        key={String(tenant._id)}
-                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full border border-blue-200"
-                      >
-                        <span className="text-sm font-medium">
-                          {tenant.name}
+                {/* Tenant selection (shadcn Popover + Command) */}
+                {formData.role && user?.role == "superadmin" && (
+                  <div className="space-y-2">
+                    <Label>
+                      Select Business{canSelectMultipleTenants ? "s" : ""}
+                      {canSelectMultipleTenants && (
+                        <span className="ml-2 text-xs text-primary font-normal">
+                          (Multiple selection enabled)
                         </span>
-                        <button
+                      )}
+                    </Label>
+
+                    <Popover open={tenantPopoverOpen} onOpenChange={setTenantPopoverOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
                           type="button"
-                          onClick={() => removeTenant(String(tenant._id))}
-                          className="hover:bg-blue-200 rounded-full p-0.5 transition-colors"
+                          variant="outline"
+                          className="w-full justify-between"
                         >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
+                          <span className="flex items-center gap-2 truncate">
+                            <Search className="w-4 h-4 text-muted-foreground" />
+                            {selectedTenants.length > 0
+                              ? canSelectMultipleTenants
+                                ? `${selectedTenants.length} tenant(s) selected`
+                                : selectedTenants[0]?.name
+                              : canSelectMultipleTenants
+                              ? "Search and select business"
+                              : "Search and select a business"}
+                          </span>
+                          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                        </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                        <Command>
+                          <CommandInput
+                            placeholder="Search business..."
+                            value={tenantSearchQuery}
+                            onValueChange={setTenantSearchQuery}
+                          />
+                          <CommandEmpty>No tenants found.</CommandEmpty>
+
+                          <CommandGroup>
+                            <ScrollArea className="h-64">
+                              {filteredTenants.map((tenant) => {
+                                const tid = String(tenant._id);
+                                const selected = isTenantSelected(tid);
+
+                                return (
+                                  <CommandItem
+                                    key={tid}
+                                    value={`${tenant.name ?? ""} ${tenant.slug ?? ""}`}
+                                    onSelect={() => toggleTenantSelection(tid)}
+                                    className="flex items-start gap-3"
+                                  >
+                                    <div className="mt-0.5">
+                                      {canSelectMultipleTenants ? (
+                                        <Checkbox checked={selected} />
+                                      ) : (
+                                        <div className="h-4 w-4 rounded-full border flex items-center justify-center">
+                                          {selected ? (
+                                            <Check className="h-3 w-3" />
+                                          ) : null}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div className="min-w-0">
+                                      <div className="text-sm font-medium truncate">
+                                        {tenant.name}
+                                      </div>
+                                      <div className="text-xs text-muted-foreground truncate">
+                                        {tenant.slug}
+                                      </div>
+                                    </div>
+                                  </CommandItem>
+                                );
+                              })}
+                            </ScrollArea>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
+                    {/* Selected chips */}
+                    {selectedTenants.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {selectedTenants.map((tenant) => (
+                          <Badge
+                            key={String(tenant._id)}
+                            variant="secondary"
+                            className="gap-2 pr-1"
+                          >
+                            <span className="truncate max-w-[220px]">
+                              {tenant.name}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={() => removeTenant(String(tenant._id))}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </Badge>
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
                 )}
-              </div>
-            )}
 
-            {/* Status */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="pending">Pending</option>
-              </select>
-            </div>
+                {/* Status (shadcn Select) */}
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <div className="w-full">
+                    <Select
+                      value={formData.status}
+                      onValueChange={(v) =>
+                        setFormData((p) => ({ ...p, status: v }))
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent className="w-[--radix-select-trigger-width]">
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-            {/* Submit Button */}
-            <div className="flex gap-4 pt-4">
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {loading ? "Creating..." : "Create User"}
-              </button>
-              <button
-                onClick={handleReset}
-                className="px-6 py-3 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
+                <Separator />
+
+                {/* Actions */}
+                <div className="grid grid-cols-1 gap-3">
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    className="h-11 font-semibold"
+                  >
+                    {loading
+                      ? id
+                        ? "Updating..."
+                        : "Creating..."
+                      : id
+                      ? "Update User"
+                      : "Create User"}
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleReset}
+                    className="h-11 font-semibold"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-4">
+                <div className="text-sm font-semibold">Tip</div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Role select karte hi permissions auto-load hoti hain (as per role config).
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

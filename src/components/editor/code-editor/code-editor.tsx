@@ -49,6 +49,16 @@ export function CodeEditor({
     }
   }, [isDialogOpen]);
 
+   function extractCssFromHtml(html: string): string {
+    const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+    if (!matches) return "";
+    return matches
+      .map((styleTag) => {
+        const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        return inner ? inner[1] : "";
+      })
+      .join("\n");
+  }
   const generatePreview = () => {
     const previewHtml = `
       <!DOCTYPE html>
@@ -70,12 +80,20 @@ export function CodeEditor({
   };
 
   const handleApplyChanges = () => {
+     const css = extractCssFromHtml(localHtml)
+       onUpdateCss(css)
     onUpdateHtml(localHtml);
-    onUpdateCss(localCss);
     onUpdateJs(localJs);
-    setIsDialogOpen(false);
+    setIsDialogOpen(false)
+    
   };
 
+
+  const handlePreviewClick=()=>{
+     const css = extractCssFromHtml(localHtml)
+     setLocalCss(css)
+     generatePreview()
+  }
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -157,7 +175,9 @@ export function CodeEditor({
 
           <div className="flex flex-col md:w-1/2">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium">Preview</h3>
+              <h3 className="text-sm font-medium"
+              onClick={handlePreviewClick}
+              >Preview</h3>
               <Button variant="outline" size="sm" onClick={generatePreview}>
                 <Play className="w-4 h-4 mr-2" />
                 Refresh

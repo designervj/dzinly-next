@@ -59,9 +59,6 @@ export default function GrapesJSEditor() {
   const dispatch = require("react-redux").useDispatch();
   const { page, mockPage, themePage } = useSelector((state: RootState) => state.pageEdit);
 
-  console.log("Page: ==>>>>", page)
-  console.log("MockPage: ==>>>>", mockPage)
-  console.log("ThemePage: ==>>>>", themePage)
 
 
   function extractCssFromHtml(html: string): string {
@@ -288,7 +285,10 @@ export default function GrapesJSEditor() {
   const handleUpdateHtml = (html: string) => {
     console.log("update html");
     if (!state.editor) return;
-    //onsole.log("html ---", html)
+       const css = extractCssFromHtml(html)
+      if (css) {
+        state.editor.setStyle(css);
+      }
     state.editor.setComponents(html);
     setEditorHtml(html);
   };

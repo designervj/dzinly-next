@@ -18,30 +18,32 @@ import accountReducer from "../hooks/slices/user/accountSlice"
 import packageReducer from "../hooks/slices/package/packageSlice"
 import websitePageReducer from "../hooks/slices/websites/websitePageSlice"
 import themePresetReducer from "../hooks/slices/branding/theme-preset-slice"
+import templateReducer from "../hooks/slices/templates/TemplateSlice"
 
 export const store = configureStore({
   reducer: {
 
-    user:userSlice,
+    user: userSlice,
     pageEdit: pageEditReducer,
-    themePreset:themePresetReducer,
+    themePreset: themePresetReducer,
+    template: templateReducer,
     category: categoryReducer,
-    brand:brandReducer,
-    segment:segmentReducer,
-    attribute:attributeReducer,
-    product:productReducer,
+    brand: brandReducer,
+    segment: segmentReducer,
+    attribute: attributeReducer,
+    product: productReducer,
     websites: websitesReducer,
-    websitePage:websitePageReducer,
-    llmSetting:llmSettingReducer,
+    websitePage: websitePageReducer,
+    llmSetting: llmSettingReducer,
     dataStorage: dataStorageReducer,
-    block:BlockReducer,
-    projects:projectReducer,
-    rolePermission:rolePermissionReducer,
-    canvas:canvasReducer,
-    tabContent:tabContentReducer,
-    account:accountReducer,
-    package:packageReducer,
- 
+    block: BlockReducer,
+    projects: projectReducer,
+    rolePermission: rolePermissionReducer,
+    canvas: canvasReducer,
+    tabContent: tabContentReducer,
+    account: accountReducer,
+    package: packageReducer,
+
   },
 });
 

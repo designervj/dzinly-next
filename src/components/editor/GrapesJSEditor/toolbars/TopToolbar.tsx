@@ -25,6 +25,7 @@ import { BlocksManager } from "../../blocks-manager/blocks-manager";
 import { CodeEditor } from "../../code-editor/code-editor";
 import { TemplateManager } from "../../template-manager/template-manager";
 
+
 type TopToolbarProps = {
   editor: any;
   blocks: any[];

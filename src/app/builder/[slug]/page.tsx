@@ -16,5 +16,10 @@ export default async function BuilderSlug() {
     redirect("/"); // Redirect to home if not authorized
   }
 
-  return <BuilderClient />;
+  return(
+    <>
+    <BuilderClient/>
+  
+    </>
+  );
 }

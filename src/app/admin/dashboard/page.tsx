@@ -46,6 +46,7 @@ import {
 import Link from "next/link";
 import { IoMdHome } from "react-icons/io";
 import BreadCrumbPage from "@/components/breadCrumb/BreadCrumbPage";
+import GetUserAccount from "./GetUserAccount";
 
 // --- Mock Data for Chart ---
 const chartData = [
@@ -60,6 +61,8 @@ const chartData = [
 
 export default function DashboardPage() {
   return (
+    <>
+    <GetUserAccount/>
     <div className="space-y-6 max-w-[1600px] mx-auto pb-10 font-sans text-slate-900">
 
       {/* Top Header */}
@@ -323,6 +326,7 @@ export default function DashboardPage() {
 
       </div>
     </div>
+    </>
   );
 }
 

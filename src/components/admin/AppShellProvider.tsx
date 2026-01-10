@@ -11,7 +11,7 @@ type AppShellProviderProps = {
 export async function AppShellProvider({ children }: AppShellProviderProps) {
   // Get session and user data
   const session = await auth();
-  console.log("session",session)
+
   const user: User | null = session?.user
     ? {
         id: session.user.id || "",

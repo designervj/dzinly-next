@@ -2,6 +2,8 @@ import { IUser } from "@/models/user";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createCustomer } from "./userThunks";
+import { TenantModel } from "@/components/admin/accounts/AccountType";
+import { fetchAccount } from "./accountSlice";
 // Thunk to get all users
 export const getAllUser = createAsyncThunk<IUser[]>(
   "user/getAllUser",
@@ -18,6 +20,7 @@ export const getAllUser = createAsyncThunk<IUser[]>(
 
 interface UserState {
   user: IUser | null;
+  tenantUser: TenantModel | null;
   alluser: IUser[];
   isLoading: boolean;
   hasFetched: boolean;
@@ -26,6 +29,7 @@ interface UserState {
 
 const initialState: UserState = {
   user: null,
+  tenantUser: null,
   alluser: [],
   isLoading: false,
   hasFetched: false,
@@ -78,6 +82,20 @@ const userSlice = createSlice({
       .addCase(createCustomer.rejected, (state) => {
         state.isLoading = false;
       })
+    // uset tenant
+    .addCase(fetchAccount.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(
+      fetchAccount.fulfilled,
+      (state, action: PayloadAction<TenantModel>) => {
+        state.isLoading = false;
+        state.tenantUser = action.payload;
+      }
+    )
+    .addCase(fetchAccount.rejected, (state) => {
+      state.isLoading = false;
+    })  
 
      
   },

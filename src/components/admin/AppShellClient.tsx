@@ -3,8 +3,8 @@
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell, Website, User } from "./AppShell";
-import { useDispatch } from "react-redux";
-import { AppDispatch, store } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, store } from "@/store/store";
 import {
   setWebsites as setWebsitesAction,
   setCurrentWebsite as setCurrentWebsiteAction,
@@ -32,19 +32,10 @@ export function AppShellClient({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { currentWebsite: reduxCurrentWebsite } = useSelector((state: RootState) => state.websites);
 
 
-  const resetRedux = () => {
-    dispatch(clearAttributes());
-    dispatch(clearBrands());
-    dispatch(clearSegments());
-    dispatch(clearCategories());
-    dispatch(clearProducts());
-  };
-  const handleWebsiteChange = async (websiteId: string) => {
-    const newWebsite = websites.find((w) => w._id === websiteId) || null;
-  
-    setCurrentWebsite(newWebsite);
+  const setCurrentWebsiteToCookies = async (websiteId: string) => {
     try {
       // Call API to update the current website cookie
       const response = await fetch("/api/session/website", {
@@ -57,9 +48,8 @@ export function AppShellClient({
       if (response.ok) {
         // Clear Redux state first to prevent old data from being used
         resetRedux();
-        // Navigate to /admin (which will load fresh data for new website)
-         window.location.href = "/admin/dashboard";
-        // router.push("/admin")
+        // Navigate to /admin/dashboard (which will load fresh data for new website)
+        window.location.href = "/admin/dashboard";
       } else {
         console.error("Failed to update website context");
         // Revert the optimistic update
@@ -69,6 +59,31 @@ export function AppShellClient({
       console.error("Error updating website context:", error);
       setCurrentWebsite(initialCurrentWebsite);
     }
+  };
+
+  // useEffect(() => {
+  //   if (reduxCurrentWebsite) {
+  //     setCurrentWebsite(reduxCurrentWebsite);
+
+  //     // Only sync to cookies if the redux website is different from what we started with
+  //     if (reduxCurrentWebsite._id !== initialCurrentWebsite?._id) {
+  //       setCurrentWebsiteToCookies(reduxCurrentWebsite._id);
+  //     }
+  //   }
+  // }, [reduxCurrentWebsite, initialCurrentWebsite]);
+
+  const resetRedux = () => {
+    dispatch(clearAttributes());
+    dispatch(clearBrands());
+    dispatch(clearSegments());
+    dispatch(clearCategories());
+    dispatch(clearProducts());
+  };
+
+  const handleWebsiteChange = async (websiteId: string) => {
+    const newWebsite = websites.find((w) => w._id === websiteId) || null;
+    setCurrentWebsite(newWebsite);
+    setCurrentWebsiteToCookies(websiteId);
   };
 
   // useEffect(() => {

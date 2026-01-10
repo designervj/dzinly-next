@@ -13,7 +13,7 @@ import { toast } from 'sonner'
 
 const WebsitePageTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user, tenantUser } = useSelector((state: RootState) => state.user);
   const { currentWebsite } = useSelector((state: RootState) => state.websites);
   const { websitePages } = useSelector((state: RootState) => state.websitePage);
  
@@ -75,7 +75,15 @@ const WebsitePageTable = () => {
     { key: 'slug', label: 'Slug' },
     { key: 'title', label: 'Title' },
     { key: 'status', label: 'Status' },
-    { key: 'publishedAt', label: 'Published' },
+    { key: 'tenantId', label: 'Tenant ID',
+      render: (row: WebsitePageModel) => {
+        console.log("tenantUser", tenantUser?._id)
+        console.log("tenantUser", row.tenantId)
+        return(
+      
+        <span>{ tenantUser?.name }</span>
+      )}
+     },
     { key: 'createdAt', label: 'Created' },
   ];
 

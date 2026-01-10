@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
  * Template document schema for MongoDB "templates" collection
  */
 export interface TemplateDocument {
-    _id: ObjectId;
+    _id?: ObjectId;
     id?:string;
     templateId: string;
     label: string;
@@ -12,7 +12,6 @@ export interface TemplateDocument {
     content: string;
     attributes: Record<string, any>;
     thumbnail: string | null;
-
     // Metadata
     status: 'active' | 'inactive' | 'draft';
     isPublic: boolean;
@@ -72,4 +71,15 @@ export interface UpdateTemplateInput {
     isPublic?: boolean;
     isPremium?: boolean;
     tags?: string[];
+}
+
+
+
+export interface ComponentTemplateModel {
+  id: string;
+  label: string;
+  category: string;
+  content: string;
+  attributes?: Record<string, any>;
+  thumbnail?: string;
 }

@@ -63,7 +63,7 @@ export default function WpAdminEditorBar({
 
   useEffect(() => {
     if (pageData?.websiteId && !currentWebsite) {
-      dispatch(fetchWebsiteById(pageData.websiteId));
+     dispatch(fetchWebsiteById(pageData.websiteId));
       dispatch(fetchLLMSettingByWebsiteId({ websiteId: pageData.websiteId }));
     }
   }, [pageData?.websiteId, currentWebsite, dispatch]);

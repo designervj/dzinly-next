@@ -19,6 +19,7 @@ import {
   fetchLLMSettings,
 } from "@/hooks/slices/setting/llmSetting/LLMSettingSlice";
 import { toast } from "sonner";
+import { extractCssFromHtml } from "./util/GetCss";
 
 export default function GrapesJSEditor() {
   const mytheme = {
@@ -61,16 +62,6 @@ export default function GrapesJSEditor() {
 
 
 
-  function extractCssFromHtml(html: string): string {
-    const matches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
-    if (!matches) return "";
-    return matches
-      .map((styleTag) => {
-        const inner = styleTag.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-        return inner ? inner[1] : "";
-      })
-      .join("\n");
-  }
 
   // get llm setting data based on tenenantId
   const { currentWebsite } = useSelector((state: RootState) => state.websites);

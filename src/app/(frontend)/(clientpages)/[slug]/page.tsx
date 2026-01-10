@@ -28,7 +28,7 @@ export default async function Builder({ params }: { params: { slug: string } }) 
     
       if (res.ok) {
          data = await res.json();
-        console.log(data)
+     
 
      
         // dispatch(setPageEdit(data.item));
